@@ -1,0 +1,4 @@
+0.1: 
+Nieuw gui voor het menu
+Sprites scalen nu met het formaat van resolutie
+begin gemaakt voor de resolutie settings
