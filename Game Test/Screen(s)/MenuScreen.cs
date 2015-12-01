@@ -11,7 +11,7 @@ namespace Game_Test
     public class MenuScreen : Screen
     {
         Image background, sign, poster;
-        MenuItem[] menuItems;
+        MenuItem[] menuItems; //The Class MenuItem is at the bottom of the this Code
         Vector2 menuLenght;
         Vector2 menuPosition;
         int currentSelected;
@@ -19,15 +19,17 @@ namespace Game_Test
         cText test_text;
         List<DisplayMode> dmList = new List<DisplayMode>();
 
-
     public MenuScreen()
         {
+            //Create the Images for the Menuscreen
             background = new Image("TitleScreen/background");
             sign = new Image("TitleScreen/woodsign_marshal_law");
             poster = new Image("TitleScreen/gun_poster1280x720");
             menuItems = new MenuItem[text.Length];
 
-
+            //A Loop for the Text Images
+            //Each element has 2 images, one for selected and one for unselected
+            //They also have a ID
             for (int i = 0; i < text.Length; i++)
             {
                 menuItems[i] = new MenuItem();
@@ -35,12 +37,14 @@ namespace Game_Test
                 menuItems[i].imageunselected = new Image("TitleScreen/menutext_" + (i+1).ToString() + "_unselected");
                 menuItems[i].ItemID = i;
             }
+            //By the default the first selected value is
             menuItems[0].Selected = true;
 
             Size = new Vector2(1280, 720);
             ScreenManager.Instance.Dimensions = Size;
             ScreenManager.Instance.ScreenDimChanged = true;
 
+            //Test code
             foreach (DisplayMode dm in GraphicsAdapter.DefaultAdapter.SupportedDisplayModes)
             {
                 dmList.Add(dm);
@@ -58,6 +62,7 @@ namespace Game_Test
             test_text.LoadContent();
 
             //Maak menu aan en zet op midde van scherm
+            #region
             for (int i = 0; i < text.Length; i++)
             {
                 menuItems[i].Position.X = 0;
@@ -79,6 +84,7 @@ namespace Game_Test
                     menuItems[i].Position.Y = menuPosition.Y;
                 menuItems[i].SetPosition();
             }
+            #endregion
         }
 
         public override void UnloadContent()
@@ -114,6 +120,7 @@ namespace Game_Test
             if (background.Alpha > 0.0f)
                 IsVisible = true;
 
+            //If the down key is selected then move the selected 1 down
             if (InputManager.Instance.KeyPressed(Keys.Down))
             {
                 menuItems[currentSelected].Selected = false;
@@ -124,6 +131,7 @@ namespace Game_Test
 
             }
 
+            //If the up key is selected then move the selected 1 up
             if (InputManager.Instance.KeyPressed(Keys.Up))
             {
                 menuItems[currentSelected].Selected = false;
@@ -133,6 +141,7 @@ namespace Game_Test
                 menuItems[currentSelected].Selected = true;
             }
 
+            //If the Exit button is selected and Enter has been pressed exit the game
             if (menuItems[currentSelected].ItemID == 2 && InputManager.Instance.KeyPressed(Keys.Enter))
             {
                 GameInstance.ExitGame = true;
@@ -148,7 +157,6 @@ namespace Game_Test
             poster.Draw(spriteBatch);
             test_text.DrawString(spriteBatch);
             
-
             for (int i = 0; i < text.Length; i++)
             {
                 menuItems[i].Draw(spriteBatch);
