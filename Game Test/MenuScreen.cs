@@ -37,7 +37,7 @@ namespace Game_Test
             }
             menuItems[0].Selected = true;
 
-            Size = new Vector2(1600, 900);
+            Size = new Vector2(1280, 720);
             ScreenManager.Instance.Dimensions = Size;
             ScreenManager.Instance.ScreenDimChanged = true;
 
