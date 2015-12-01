@@ -17,7 +17,6 @@ namespace Game_Test
         public SplashScreen()
         {
             background = new Image("Images/loadingbar");
-
             bar = new Image[17];
             for (int i = 0; i < bar.Length-1; i++)
             {
