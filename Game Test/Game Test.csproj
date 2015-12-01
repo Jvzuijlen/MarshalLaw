@@ -67,6 +67,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Animation_Effects\FadeEffect.cs" />
+    <Compile Include="GameObjects\Items.cs" />
+    <Compile Include="PlayerCharacter\Perks.cs" />
     <Compile Include="PlayerCharacter\Player.cs" />
     <Compile Include="DrawBaseClasses\Image.cs" />
     <Compile Include="GameInstance.cs" />
