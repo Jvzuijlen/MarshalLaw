@@ -30,6 +30,13 @@ namespace Game_Test
             this.SourceRect = Rectangle.Empty;
         }
 
+        /// <summary>
+        /// Load the content for the Image
+        /// </summary>
+        /// <param name="pos_X">Defines the X coordinate for the position</param>
+        /// <param name="pos_Y">Defines the Y coordinate for the position</param>
+        /// <param name="centered">If true then if the coordinates are 0 then the image will be centered</param>
+        /// <param name="scale">Scale is used to create the Image size</param>
         public void LoadContent(int pos_X, int pos_Y, bool centered, float scale)
         {
             content = new ContentManager(ScreenManager.Instance.Content.ServiceProvider, "Content");
@@ -50,6 +57,8 @@ namespace Game_Test
                 dimensions.Y = scale * dimensions.Y;
             }
 
+            //When the Position is 0 and the Texture dimensions are smaller then the window and
+            //the image is supposed to be centered it will center the image
             if (Position.X == 0 && ScreenManager.Instance.Dimensions.X > dimensions.X && centered)
             {
                 Position.X = (ScreenManager.Instance.Dimensions.X - dimensions.X) / 2;
@@ -70,6 +79,7 @@ namespace Game_Test
         }
         public void Update(GameTime gameTime)
         {
+            //If the Alpha is 0.0f or lower then the image isn't visible
             if (Alpha <= 0.0f)
                 IsInvisible = true;
         }
@@ -78,6 +88,8 @@ namespace Game_Test
             //spriteBatch.Draw(Texture, Position + origin, SourceRect, Color.White * Alpha, 0.0f, origin, Scale, SpriteEffects.None, 0.0f);
             //spriteBatch.Draw(Texture, Position, SourceRect, Color.White * Alpha, 0.0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0.0f);
             //spriteBatch.Draw(Texture, SourceRect, Color.White * Alpha);
+
+            //Draw the Image
             spriteBatch.Draw(Texture, new Vector2(Position.X, Position.Y), null, Color.White * Alpha, 0.0f, Vector2.Zero, Scale, SpriteEffects.None, 0.0f);
         }
     }

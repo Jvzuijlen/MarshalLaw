@@ -10,13 +10,13 @@ namespace Game_Test
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
-    public class Game1 : Game
+    public class GameInstance : Game
     {
         public GraphicsDeviceManager Graphics;
         SpriteBatch spriteBatch;
         public static bool ExitGame;
 
-        public Game1()
+        public GameInstance()
         {
             this.Graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";

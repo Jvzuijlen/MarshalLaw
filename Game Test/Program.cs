@@ -14,7 +14,7 @@ namespace Game_Test
         [STAThread]
         static void Main()
         {
-            using (var game = new Game1())
+            using (var game = new GameInstance())
                 game.Run();
         }
     }

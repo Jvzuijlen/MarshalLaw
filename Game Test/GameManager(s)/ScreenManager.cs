@@ -15,6 +15,9 @@ namespace Game_Test
         //Fields
         private static ScreenManager instance;
 
+        /// <summary>
+        /// Maken van een Instance, Deze Class is een Singleton class
+        /// </summary>
         public static ScreenManager Instance
         {
             get
@@ -27,13 +30,15 @@ namespace Game_Test
             }
         }
 
+        //Waardes voor het scherm zodat hiermee gewerkt kan worden in andere classes
         public Vector2 Dimensions;
         public Vector2 Screensize;
         public Point Position;
         public DisplayMode DisplayMode;
-        public int Scale;
 
-        public ContentManager Content { private set; get; }     //Contentmanager regelt het laden en verwijdered van content, zoals sprites en text
+        //Contentmanager regelt het laden en verwijdered van content, zoals sprites en text
+        public ContentManager Content { private set; get; }
+
 
         public bool IsTransitioning;
         public bool HasChangedScreen;
@@ -44,26 +49,23 @@ namespace Game_Test
         public SpriteBatch SpriteBatch;         //Maak een Sprite
 
         Screen currentscreen;
-        //Screen newscreen;
         string newscreen;
 
         Image fade;
         FadeEffect fadeEffect;
 
         //Contructor
-        public ScreenManager()
+        private ScreenManager()
         {
             DisplayMode = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode;
             Screensize = new Vector2(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height);
 
-            //Screen Centered
+
             Dimensions = new Vector2(506, 84);
+            //Zorgt ervoor dat de window in het midden van je beeldscherm begint
             Position = new Point((int)(Screensize.X - Dimensions.X) / 2, (int)(Screensize.Y - Dimensions.Y) / 2);
 
-            //FullScreen, zorg dat screen op borderless staat
-            //Dimensions = new Vector2(Screensize.X, Screensize.Y-40);
-            //Position = new Point(0, 0);
-
+            //CurrentScreen begint met het SplashScreen
             currentscreen = new SplashScreen();
             IsTransitioning = false;
         }

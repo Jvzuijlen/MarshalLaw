@@ -9,6 +9,10 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Game_Test
 {
+    /// <summary>
+    /// Base class for drawing screen, each screen has to inherit this class
+    /// Then the class can be used with the ScreenManager
+    /// </summary>
     public class Screen
     {
         protected ContentManager content;

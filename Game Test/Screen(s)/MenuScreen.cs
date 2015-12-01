@@ -135,7 +135,7 @@ namespace Game_Test
 
             if (menuItems[currentSelected].ItemID == 2 && InputManager.Instance.KeyPressed(Keys.Enter))
             {
-                Game1.ExitGame = true;
+                GameInstance.ExitGame = true;
             }
 
         }
