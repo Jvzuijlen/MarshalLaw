@@ -12,9 +12,9 @@ namespace Game_Test
     public class Image
     {
         //Fields
-        public float Alpha, Scale;
+        public float Alpha;
         public string Path;
-        public Vector2 Position;
+        public Vector2 Position, Scale;
         public Rectangle SourceRect;
         public Texture2D Texture;
         public bool IsInvisible;
@@ -37,7 +37,7 @@ namespace Game_Test
         /// <param name="pos_Y">Defines the Y coordinate for the position</param>
         /// <param name="centered">If true then if the coordinates are 0 then the image will be centered</param>
         /// <param name="scale">Scale is used to create the Image size</param>
-        public void LoadContent(int pos_X, int pos_Y, bool centered, float scale)
+        public void LoadContent(int pos_X, int pos_Y, bool centered, Vector2 scale)
         {
             content = new ContentManager(ScreenManager.Instance.Content.ServiceProvider, "Content");
 
@@ -53,8 +53,8 @@ namespace Game_Test
                 dimensions.X += Texture.Width;
                 dimensions.Y += Texture.Height;
 
-                dimensions.X = scale * dimensions.X;
-                dimensions.Y = scale * dimensions.Y;
+                dimensions.X = scale.X * dimensions.X;
+                dimensions.Y = scale.Y * dimensions.Y;
             }
 
             //When the Position is 0 and the Texture dimensions are smaller then the window and
@@ -90,7 +90,12 @@ namespace Game_Test
             //spriteBatch.Draw(Texture, SourceRect, Color.White * Alpha);
 
             //Draw the Image
-            spriteBatch.Draw(Texture, new Vector2(Position.X, Position.Y), null, Color.White * Alpha, 0.0f, Vector2.Zero, Scale, SpriteEffects.None, 0.0f);
+            spriteBatch.Draw(Texture, new Vector2(Position.X, Position.Y), null, Color.White * Alpha, 0.0f, Vector2.Zero, new Vector2(Scale.X, Scale.Y), SpriteEffects.None, 0.0f);
+        }
+
+        public void SetScale(Vector2 scale)
+        {
+            this.Scale = scale;
         }
     }
 }

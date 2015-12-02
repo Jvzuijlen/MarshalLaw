@@ -68,6 +68,7 @@
   <ItemGroup>
     <Compile Include="Animation_Effects\FadeEffect.cs" />
     <Compile Include="GameObjects\Items.cs" />
+    <Compile Include="Screen%28s%29\Options Screen\OptionsScreen.cs" />
     <Compile Include="PlayerCharacter\Perks.cs" />
     <Compile Include="PlayerCharacter\Player.cs" />
     <Compile Include="DrawBaseClasses\Image.cs" />

@@ -32,11 +32,11 @@ namespace Game_Test
             ScreenManager.Instance.ScreenDimChanged = true;
 
             base.LoadContent();
-            background.LoadContent( 0, 0, true, 1.0f);
+            background.LoadContent( 0, 0, true, new Vector2(1.0f, 1.0f));
 
             for (int i = 0; i < bar.Length; i++)
             {
-                bar[i].LoadContent((int)background.Position.X + 46 + (i * 26), 0, true, 1.0f);
+                bar[i].LoadContent((int)background.Position.X + 46 + (i * 26), 0, true, new Vector2(1.0f, 1.0f));
             }
         }
 

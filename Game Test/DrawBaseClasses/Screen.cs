@@ -38,7 +38,8 @@ namespace Game_Test
 
         public virtual void Update(GameTime gameTime)
         {
-            InputManager.Instance.Update();
+            if(!ScreenManager.Instance.IsTransitioning)
+                InputManager.Instance.Update();
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)

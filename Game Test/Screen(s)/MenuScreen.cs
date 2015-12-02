@@ -56,9 +56,12 @@ namespace Game_Test
         public override void LoadContent()
         {
             base.LoadContent();
-            background.LoadContent(0, 0, true, ScreenManager.Instance.Dimensions.X / 2732f);
-            sign.LoadContent(0, 0, false, ScreenManager.Instance.Dimensions.X / 2732f);
-            poster.LoadContent(0, (int)(350 * (ScreenManager.Instance.Dimensions.X / 1920f)), true, ScreenManager.Instance.Dimensions.X / 1920f);
+            background.LoadContent(0, 0, true, new Vector2( ScreenManager.Instance.Dimensions.X / 2732f, ScreenManager.Instance.Dimensions.Y / 1536f));
+            sign.LoadContent(0, 0, false, new Vector2(ScreenManager.Instance.Dimensions.X / 2732f, ScreenManager.Instance.Dimensions.Y / 1536f));
+            poster.LoadContent(pos_X: 0,
+                               pos_Y: (int)(350 * (ScreenManager.Instance.Dimensions.Y / 1080f)),
+                               centered: true,
+                               scale: new Vector2( ScreenManager.Instance.Dimensions.X / 1920f, ScreenManager.Instance.Dimensions.Y / 1080f));
             test_text.LoadContent();
 
             //Maak menu aan en zet op midde van scherm
@@ -142,6 +145,12 @@ namespace Game_Test
             }
 
             //If the Exit button is selected and Enter has been pressed exit the game
+            if (menuItems[currentSelected].ItemID == 1 && InputManager.Instance.KeyPressed(Keys.Enter))
+            {
+                ScreenManager.Instance.ChangeScreen("OptionsScreen");
+            }
+
+            //If the Exit button is selected and Enter has been pressed exit the game
             if (menuItems[currentSelected].ItemID == 2 && InputManager.Instance.KeyPressed(Keys.Enter))
             {
                 GameInstance.ExitGame = true;
@@ -176,8 +185,8 @@ namespace Game_Test
 
         public void LoadContent()
         {
-            imageselected.LoadContent( 0, (int)Position.Y, true, ScreenManager.Instance.Dimensions.X / 1920f);
-            imageunselected.LoadContent( 0, (int)Position.Y, true, ScreenManager.Instance.Dimensions.X / 1920f);
+            imageselected.LoadContent( 0, (int)Position.Y, true, new Vector2(ScreenManager.Instance.Dimensions.X / 1920f, ScreenManager.Instance.Dimensions.Y / 1080f));
+            imageunselected.LoadContent( 0, (int)Position.Y, true, new Vector2(ScreenManager.Instance.Dimensions.X / 1920f, ScreenManager.Instance.Dimensions.Y / 1080f));
         }
 
         public void UnloadContent()

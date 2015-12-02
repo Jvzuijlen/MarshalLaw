@@ -80,7 +80,7 @@ namespace Game_Test
             if (fadeEffect == null)
                 fadeEffect = new FadeEffect(2.0f, 0.0f);
             fade.SourceRect = new Rectangle(0, 0, (int)Dimensions.X, (int)Dimensions.Y);
-            fade.LoadContent( 0, 0, true, 1.0f);
+            fade.LoadContent( 0, 0, true, new Vector2(Dimensions.X, Dimensions.Y));
         }
 
         public void UnloadContent()
@@ -93,8 +93,6 @@ namespace Game_Test
         {
             currentscreen.Update(gameTime);
             TransitionScreen(gameTime);
-
-
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -102,6 +100,7 @@ namespace Game_Test
             spriteBatch.Begin();
 
             currentscreen.Draw(spriteBatch);
+
             if (IsTransitioning)
                 fade.Draw(spriteBatch);
 
@@ -113,6 +112,7 @@ namespace Game_Test
             currentscreen.UnloadContent();
             currentscreen = new MenuScreen();
             currentscreen.LoadContent();
+            fade.SetScale(new Vector2(Dimensions.X, Dimensions.Y));
         }
 
         public void ChangeScreen(string screenName)
@@ -132,12 +132,14 @@ namespace Game_Test
                     currentscreen.UnloadContent();
                     currentscreen = (Screen)Activator.CreateInstance(Type.GetType("Game_Test." + newscreen));
                     currentscreen.LoadContent();
+                    fade.SetScale(new Vector2(Dimensions.X, Dimensions.Y));
                     HasChangedScreen = true;
                 }
 
                 if (HasChangedScreen && fade.Alpha <= 0.0f)
                     IsTransitioning = false;
-                fade.Update(gameTime);
+
+                //fade.Update(gameTime);
             }
         }
     }
