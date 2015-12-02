@@ -50,7 +50,7 @@ namespace Game_Test
                 dmList.Add(dm);
             }
 
-            test_text = new cText(dmList[0].AspectRatio.ToString() + " NumDisplaymodes:" + dmList.Count);
+            test_text = new cText(dmList[0].AspectRatio.ToString() + " NumDisplaymodes:" + dmList.Count, "Carne");
         }
 
         public override void LoadContent()

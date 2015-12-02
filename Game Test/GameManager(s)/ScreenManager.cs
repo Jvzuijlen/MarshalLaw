@@ -67,7 +67,7 @@ namespace Game_Test
             Position = new Point((int)(Screensize.X - Dimensions.X) / 2, (int)(Screensize.Y - Dimensions.Y) / 2);
 
             //CurrentScreen begint met het SplashScreen
-            currentscreen = new OptionsScreen();
+            currentscreen = new SplashScreen();
             IsTransitioning = false;
         }
 

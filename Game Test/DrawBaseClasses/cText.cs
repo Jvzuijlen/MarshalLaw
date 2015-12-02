@@ -20,11 +20,20 @@ namespace Game_Test
         ContentManager content;
         SpriteFont font;
 
-        public cText(string Text)
+        public cText(string Text, string fontname)
         {
             this.Text = Text;
             this.Path = String.Empty;
-            this.FontName = "SpriteFonts/Carne_50";
+
+            switch(fontname)
+            {
+                case "Carne":
+                    this.FontName = "SpriteFonts/Carne";
+                    break;
+                case "DryGood":
+                    this.FontName = "SpriteFonts/DryGood/Carne";
+                    break;
+            }
             this.Position = Vector2.Zero;
             this.Scale = Vector2.One;
             this.Alpha = 1.0f;
@@ -49,6 +58,9 @@ namespace Game_Test
             //Create a rectangle wich other classes can work with
             if (SourceRect == Rectangle.Empty)
                 SourceRect = new Rectangle(0, 0, (int)dimensions.X, (int)dimensions.Y);
+
+            this.Scale.X = ScreenManager.Instance.Dimensions.X / 1920;
+            this.Scale.Y = ScreenManager.Instance.Dimensions.Y / 1080;
         }
 
         public void UnloadContent()
@@ -63,7 +75,7 @@ namespace Game_Test
 
         public void DrawString(SpriteBatch spriteBatch)
         {
-            spriteBatch.DrawString(font, Text, Position, Color.Black * Alpha);
+            spriteBatch.DrawString(font, Text, Position, Color.Black * Alpha, 0.0f, Vector2.Zero, Scale, SpriteEffects.None, 0.0f);
         }
     }
 }

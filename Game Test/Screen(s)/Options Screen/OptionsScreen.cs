@@ -12,7 +12,7 @@ namespace Game_Test
     public class OptionsScreen : Screen
     {
 
-        Image background, field_active, mainbuttonup, mainbuttonmiddle, mainbuttondown;
+        Image background, field_active, mainbuttonup, mainbuttonmiddle, mainbuttondown, mainbuttonup_pressed, mainbuttondown_pressed;
 
 
 
@@ -24,6 +24,8 @@ namespace Game_Test
             mainbuttonup = new Image("OptionsScreen/buttonup_selected");
             mainbuttonmiddle = new Image("OptionsScreen/buttonmiddel_selected");
             mainbuttondown = new Image("OptionsScreen/buttondown_selected");
+            mainbuttonup_pressed = new Image("OptionsScreen/buttonup_selected_pressed");
+            mainbuttondown_pressed = new Image("OptionsScreen/buttondown_selected_pressed");
         }
 
 
@@ -51,6 +53,12 @@ namespace Game_Test
                                      centered: true,
                                      scale: new Vector2(ScreenManager.Instance.Dimensions.X / 2732f, ScreenManager.Instance.Dimensions.Y / 1536f)
                                     );
+            mainbuttonup_pressed.LoadContent(
+                                     pos_X: (int)(214 * ScreenManager.Instance.Dimensions.X / 1920),
+                                     pos_Y: (int)(174 * ScreenManager.Instance.Dimensions.Y / 1080),
+                                     centered: true,
+                                     scale: new Vector2(ScreenManager.Instance.Dimensions.X / 2732f, ScreenManager.Instance.Dimensions.Y / 1536f)
+                                    );
             mainbuttonmiddle.LoadContent(
                                      pos_X: (int)(214 * ScreenManager.Instance.Dimensions.X / 1920),
                                      pos_Y: (int)(443 * ScreenManager.Instance.Dimensions.Y / 1080),
@@ -58,8 +66,14 @@ namespace Game_Test
                                      scale: new Vector2(ScreenManager.Instance.Dimensions.X / 2732f, ScreenManager.Instance.Dimensions.Y / 1536f)
                                     );
             mainbuttondown.LoadContent(
-                                     pos_X: (int)(210 * ScreenManager.Instance.Dimensions.X / 1920),
-                                     pos_Y: 0,
+                                     pos_X: (int)(214 * ScreenManager.Instance.Dimensions.X / 1920),
+                                     pos_Y: (int)(802 * ScreenManager.Instance.Dimensions.Y / 1080),
+                                     centered: true,
+                                     scale: new Vector2(ScreenManager.Instance.Dimensions.X / 2732f, ScreenManager.Instance.Dimensions.Y / 1536f)
+                                    );
+            mainbuttondown_pressed.LoadContent(
+                                     pos_X: (int)(214 * ScreenManager.Instance.Dimensions.X / 1920),
+                                     pos_Y: (int)(802 * ScreenManager.Instance.Dimensions.Y / 1080),
                                      centered: true,
                                      scale: new Vector2(ScreenManager.Instance.Dimensions.X / 2732f, ScreenManager.Instance.Dimensions.Y / 1536f)
                                     );
@@ -74,8 +88,10 @@ namespace Game_Test
             field_active.UnloadContent();
 
             mainbuttonup.UnloadContent();
+            mainbuttonup_pressed.UnloadContent();
             mainbuttonmiddle.UnloadContent();
             mainbuttondown.UnloadContent();
+            mainbuttondown_pressed.UnloadContent();
         }
 
         public override void Update(GameTime gameTime)
@@ -85,8 +101,10 @@ namespace Game_Test
             field_active.Update(gameTime);
 
             mainbuttonup.Update(gameTime);
+            mainbuttonup_pressed.Update(gameTime);
             mainbuttonmiddle.Update(gameTime);
             mainbuttondown.Update(gameTime);
+            mainbuttondown_pressed.Update(gameTime);
 
             //When the Escape key has been pressed exit the game
             if (InputManager.Instance.KeyPressed(Keys.Escape))
@@ -101,10 +119,11 @@ namespace Game_Test
             background.Draw(spriteBatch);
             field_active.Draw(spriteBatch);
 
-            //mainbuttonup.Alpha = 0.5f;
             mainbuttonup.Draw(spriteBatch);
+            mainbuttonup_pressed.Draw(spriteBatch);
             mainbuttonmiddle.Draw(spriteBatch);
-            //mainbuttondown.Draw(spriteBatch);
+            mainbuttondown.Draw(spriteBatch);
+            mainbuttondown_pressed.Draw(spriteBatch);
         }
     }
 }

@@ -109,12 +109,6 @@
 /processorParam:TextureFormat=Color
 /build:Images/black.png
 
-#begin SpriteFonts/Carne_50.spritefont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
-/processorParam:TextureFormat=Compressed
-/build:SpriteFonts/Carne_50.spritefont
-
 #begin TitleScreen/background.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -313,6 +307,17 @@
 /processorParam:TextureFormat=Color
 /build:OptionsScreen/buttonup_selected_pressed.png
 
+#begin OptionsScreen/field_active.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:TextureFormat=Color
+/build:OptionsScreen/field_active.png
+
 #begin OptionsScreen/poster_background.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -324,14 +329,129 @@
 /processorParam:TextureFormat=Color
 /build:OptionsScreen/poster_background.png
 
-#begin OptionsScreen/field_active.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:TextureFormat=Color
-/build:OptionsScreen/field_active.png
+#begin SpriteFonts/DryGood/DryGood_12.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:SpriteFonts/DryGood/DryGood_12.spritefont
+
+#begin SpriteFonts/DryGood/DryGood_14.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:SpriteFonts/DryGood/DryGood_14.spritefont
+
+#begin SpriteFonts/DryGood/DryGood_16.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:SpriteFonts/DryGood/DryGood_16.spritefont
+
+#begin SpriteFonts/DryGood/DryGood_18.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:SpriteFonts/DryGood/DryGood_18.spritefont
+
+#begin SpriteFonts/DryGood/DryGood_20.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:SpriteFonts/DryGood/DryGood_20.spritefont
+
+#begin SpriteFonts/DryGood/DryGood_22.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:SpriteFonts/DryGood/DryGood_22.spritefont
+
+#begin SpriteFonts/DryGood/DryGood_24.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:SpriteFonts/DryGood/DryGood_24.spritefont
+
+#begin SpriteFonts/DryGood/DryGood_26.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:SpriteFonts/DryGood/DryGood_26.spritefont
+
+#begin SpriteFonts/DryGood/DryGood_28.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:SpriteFonts/DryGood/DryGood_28.spritefont
+
+#begin SpriteFonts/DryGood/DryGood_30.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:SpriteFonts/DryGood/DryGood_30.spritefont
+
+#begin SpriteFonts/DryGood/DryGood_32.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:SpriteFonts/DryGood/DryGood_32.spritefont
+
+#begin SpriteFonts/DryGood/DryGood_34.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:SpriteFonts/DryGood/DryGood_34.spritefont
+
+#begin SpriteFonts/DryGood/DryGood_36.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:SpriteFonts/DryGood/DryGood_36.spritefont
+
+#begin SpriteFonts/DryGood/DryGood_38.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:SpriteFonts/DryGood/DryGood_38.spritefont
+
+#begin SpriteFonts/DryGood/DryGood_40.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:SpriteFonts/DryGood/DryGood_40.spritefont
+
+#begin SpriteFonts/DryGood/DryGood_42.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:SpriteFonts/DryGood/DryGood_42.spritefont
+
+#begin SpriteFonts/DryGood/DryGood_44.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:SpriteFonts/DryGood/DryGood_44.spritefont
+
+#begin SpriteFonts/DryGood/DryGood_46.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:SpriteFonts/DryGood/DryGood_46.spritefont
+
+#begin SpriteFonts/DryGood/DryGood_48.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:SpriteFonts/DryGood/DryGood_48.spritefont
+
+#begin SpriteFonts/DryGood/DryGood.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:SpriteFonts/DryGood/DryGood.spritefont
+
+#begin SpriteFonts/Carne.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:SpriteFonts/Carne.spritefont
 
