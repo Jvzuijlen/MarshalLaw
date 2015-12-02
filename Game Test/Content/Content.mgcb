@@ -313,17 +313,6 @@
 /processorParam:TextureFormat=Color
 /build:OptionsScreen/buttonup_selected_pressed.png
 
-#begin OptionsScreen/field_active.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:TextureFormat=Color
-/build:OptionsScreen/field_active.png
-
 #begin OptionsScreen/poster_background.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -334,4 +323,15 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:TextureFormat=Color
 /build:OptionsScreen/poster_background.png
+
+#begin OptionsScreen/field_active.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:TextureFormat=Color
+/build:OptionsScreen/field_active.png
 

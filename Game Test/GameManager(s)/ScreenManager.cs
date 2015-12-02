@@ -61,12 +61,13 @@ namespace Game_Test
             Screensize = new Vector2(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height);
 
 
-            Dimensions = new Vector2(506, 84);
+            Dimensions = new Vector2(1920, 1080);
+            //Dimensions = new Vector2(506, 84);
             //Zorgt ervoor dat de window in het midden van je beeldscherm begint
             Position = new Point((int)(Screensize.X - Dimensions.X) / 2, (int)(Screensize.Y - Dimensions.Y) / 2);
 
             //CurrentScreen begint met het SplashScreen
-            currentscreen = new SplashScreen();
+            currentscreen = new OptionsScreen();
             IsTransitioning = false;
         }
 
@@ -78,7 +79,7 @@ namespace Game_Test
             if (fade == null)
                 fade = new Image("Images/black");
             if (fadeEffect == null)
-                fadeEffect = new FadeEffect(2.0f, 0.0f);
+                fadeEffect = new FadeEffect(3.0f, 0.0f);
             fade.SourceRect = new Rectangle(0, 0, (int)Dimensions.X, (int)Dimensions.Y);
             fade.LoadContent( 0, 0, true, new Vector2(Dimensions.X, Dimensions.Y));
         }

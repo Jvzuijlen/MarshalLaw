@@ -75,7 +75,7 @@ namespace Game_Test
             if (ScreenManager.Instance.ScreenDimChanged)
                 SceenReload();
             //if (Keyboard.GetState().IsKeyDown(Keys.Escape) || ExitGame == true)
-            if (ExitGame == true)
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape) || ExitGame == true)
                 Exit();
 
             ScreenManager.Instance.Update(gameTime);
