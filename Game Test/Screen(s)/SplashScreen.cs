@@ -9,6 +9,7 @@ namespace Game_Test
 {
     public class SplashScreen : Screen
     {
+        public Vector2 Dimensions;
         Image background;
         Image[] bar;
         int LoadSpeed = 20;
@@ -16,6 +17,7 @@ namespace Game_Test
 
         public SplashScreen()
         {
+            Dimensions = new Vector2(506, 84);
             background = new Image("Images/loadingbar");
             bar = new Image[17];
             for (int i = 0; i < bar.Length-1; i++)
@@ -23,14 +25,10 @@ namespace Game_Test
                 bar[i] = new Image("Images/loadingbar_bar");
             }
             bar[bar.Length - 1] = new Image("Images/loadingbar_end");
-            Size = new Vector2(506, 84);
         }
 
         public override void LoadContent()
         {
-            ScreenManager.Instance.Dimensions = Size;
-            ScreenManager.Instance.ScreenDimChanged = true;
-
             base.LoadContent();
             background.LoadContent( 0, 0, true, new Vector2(1.0f, 1.0f));
 

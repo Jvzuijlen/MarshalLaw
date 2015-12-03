@@ -59,13 +59,13 @@ namespace Game_Test
 
             //When the Position is 0 and the Texture dimensions are smaller then the window and
             //the image is supposed to be centered it will center the image
-            if (Position.X == 0 && ScreenManager.Instance.Dimensions.X > dimensions.X && centered)
+            if (Position.X == 0 && GameSettings.Instance.Dimensions.X > dimensions.X && centered)
             {
-                Position.X = (ScreenManager.Instance.Dimensions.X - dimensions.X) / 2;
+                Position.X = (GameSettings.Instance.Dimensions.X - dimensions.X) / 2;
             }
-            if (Position.Y == 0 && ScreenManager.Instance.Dimensions.Y > dimensions.Y && centered)
+            if (Position.Y == 0 && GameSettings.Instance.Dimensions.Y > dimensions.Y && centered)
             {
-                Position.Y = (ScreenManager.Instance.Dimensions.Y - dimensions.Y) / 2;
+                Position.Y = (GameSettings.Instance.Dimensions.Y - dimensions.Y) / 2;
             }
 
             if (SourceRect == Rectangle.Empty)

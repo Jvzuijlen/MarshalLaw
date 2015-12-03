@@ -16,8 +16,6 @@ namespace Game_Test
         Vector2 menuPosition;
         int currentSelected;
         string[] text = { "Start", "Options", "Exit"};
-        cText test_text;
-        List<DisplayMode> dmList = new List<DisplayMode>();
 
     public MenuScreen()
         {
@@ -39,30 +37,17 @@ namespace Game_Test
             }
             //By the default the first selected value is
             menuItems[0].Selected = true;
-
-            Size = new Vector2(1920, 1080);
-            ScreenManager.Instance.Dimensions = Size;
-            ScreenManager.Instance.ScreenDimChanged = true;
-
-            //Test code
-            foreach (DisplayMode dm in GraphicsAdapter.DefaultAdapter.SupportedDisplayModes)
-            {
-                dmList.Add(dm);
-            }
-
-            test_text = new cText(dmList[0].AspectRatio.ToString() + " NumDisplaymodes:" + dmList.Count, "Carne");
         }
 
         public override void LoadContent()
         {
             base.LoadContent();
-            background.LoadContent(0, 0, true, new Vector2( ScreenManager.Instance.Dimensions.X / 2732f, ScreenManager.Instance.Dimensions.Y / 1536f));
-            sign.LoadContent(0, 0, false, new Vector2(ScreenManager.Instance.Dimensions.X / 2732f, ScreenManager.Instance.Dimensions.Y / 1536f));
+            background.LoadContent(0, 0, true, new Vector2( GameSettings.Instance.Dimensions.X / 2732f, GameSettings.Instance.Dimensions.Y / 1536f));
+            sign.LoadContent(0, 0, false, new Vector2(GameSettings.Instance.Dimensions.X / 2732f, GameSettings.Instance.Dimensions.Y / 1536f));
             poster.LoadContent(pos_X: 0,
-                               pos_Y: (int)(350 * (ScreenManager.Instance.Dimensions.Y / 1080f)),
+                               pos_Y: (int)(350 * (GameSettings.Instance.Dimensions.Y / 1080f)),
                                centered: true,
-                               scale: new Vector2( ScreenManager.Instance.Dimensions.X / 1920f, ScreenManager.Instance.Dimensions.Y / 1080f));
-            test_text.LoadContent();
+                               scale: new Vector2(GameSettings.Instance.Dimensions.X / 1920f, GameSettings.Instance.Dimensions.Y / 1080f));
 
             //Maak menu aan en zet op midde van scherm
             #region
@@ -103,7 +88,6 @@ namespace Game_Test
             background.UnloadContent();
             sign.UnloadContent();
             poster.UnloadContent();
-            test_text.UnloadContent();
         }
 
         public override void Update(GameTime gameTime)
@@ -118,7 +102,6 @@ namespace Game_Test
             background.Update(gameTime);
             sign.Update(gameTime);
             poster.Update(gameTime);
-            test_text.Update(gameTime);
 
             if (background.Alpha > 0.0f)
                 IsVisible = true;
@@ -164,7 +147,6 @@ namespace Game_Test
             background.Draw(spriteBatch);
             sign.Draw(spriteBatch);
             poster.Draw(spriteBatch);
-            test_text.DrawString(spriteBatch);
             
             for (int i = 0; i < text.Length; i++)
             {
@@ -185,8 +167,8 @@ namespace Game_Test
 
         public void LoadContent()
         {
-            imageselected.LoadContent( 0, (int)Position.Y, true, new Vector2(ScreenManager.Instance.Dimensions.X / 1920f, ScreenManager.Instance.Dimensions.Y / 1080f));
-            imageunselected.LoadContent( 0, (int)Position.Y, true, new Vector2(ScreenManager.Instance.Dimensions.X / 1920f, ScreenManager.Instance.Dimensions.Y / 1080f));
+            imageselected.LoadContent( 0, (int)Position.Y, true, new Vector2(GameSettings.Instance.Dimensions.X / 1920f, GameSettings.Instance.Dimensions.Y / 1080f));
+            imageunselected.LoadContent( 0, (int)Position.Y, true, new Vector2(GameSettings.Instance.Dimensions.X / 1920f, GameSettings.Instance.Dimensions.Y / 1080f));
         }
 
         public void UnloadContent()

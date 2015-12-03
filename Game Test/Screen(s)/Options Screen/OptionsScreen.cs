@@ -11,100 +11,53 @@ namespace Game_Test
 {
     public class OptionsScreen : Screen
     {
-
-        Image background, field_active, mainbuttonup, mainbuttonmiddle, mainbuttondown, mainbuttonup_pressed, mainbuttondown_pressed;
-
+        Control1 control;
+        Control1_Item videoOption;
+        Control1_Item audioOption;
+        Control1_Item controlOption;
 
 
         //Contructor
         public OptionsScreen()
         {
-            background = new Image("OptionsScreen/poster_background");
-            field_active = new Image("OptionsScreen/field_active");
-            mainbuttonup = new Image("OptionsScreen/buttonup_selected");
-            mainbuttonmiddle = new Image("OptionsScreen/buttonmiddel_selected");
-            mainbuttondown = new Image("OptionsScreen/buttondown_selected");
-            mainbuttonup_pressed = new Image("OptionsScreen/buttonup_selected_pressed");
-            mainbuttondown_pressed = new Image("OptionsScreen/buttondown_selected_pressed");
+            control = new Control1(3);
+
+            videoOption = new Control1_Item("Video", 1, 2);
+            audioOption = new Control1_Item("Audio", 2, 0);
+            controlOption = new Control1_Item("Control", 3, 1);
         }
 
 
         public override void LoadContent()
         {
             base.LoadContent();
+            control.LoadContent();
 
-            //LoadContent for the Images, and position them to the window dimensions
-            #region
-            background.LoadContent(
-                                   pos_X:0,
-                                   pos_Y:0,
-                                   centered:true,
-                                   scale:new Vector2(ScreenManager.Instance.Dimensions.X / 2732f, ScreenManager.Instance.Dimensions.Y / 1536f)
-                                  );
-            field_active.LoadContent( 
-                                     pos_X:(int)(573 * ScreenManager.Instance.Dimensions.X / 1920),
-                                     pos_Y:0,
-                                     centered:true,
-                                     scale:new Vector2(ScreenManager.Instance.Dimensions.X / 2732f, ScreenManager.Instance.Dimensions.Y / 1536f)
-                                    );
-            mainbuttonup.LoadContent(
-                                     pos_X: (int)(214 * ScreenManager.Instance.Dimensions.X / 1920),
-                                     pos_Y: (int)(174 * ScreenManager.Instance.Dimensions.Y / 1080),
-                                     centered: true,
-                                     scale: new Vector2(ScreenManager.Instance.Dimensions.X / 2732f, ScreenManager.Instance.Dimensions.Y / 1536f)
-                                    );
-            mainbuttonup_pressed.LoadContent(
-                                     pos_X: (int)(214 * ScreenManager.Instance.Dimensions.X / 1920),
-                                     pos_Y: (int)(174 * ScreenManager.Instance.Dimensions.Y / 1080),
-                                     centered: true,
-                                     scale: new Vector2(ScreenManager.Instance.Dimensions.X / 2732f, ScreenManager.Instance.Dimensions.Y / 1536f)
-                                    );
-            mainbuttonmiddle.LoadContent(
-                                     pos_X: (int)(214 * ScreenManager.Instance.Dimensions.X / 1920),
-                                     pos_Y: (int)(443 * ScreenManager.Instance.Dimensions.Y / 1080),
-                                     centered: true,
-                                     scale: new Vector2(ScreenManager.Instance.Dimensions.X / 2732f, ScreenManager.Instance.Dimensions.Y / 1536f)
-                                    );
-            mainbuttondown.LoadContent(
-                                     pos_X: (int)(214 * ScreenManager.Instance.Dimensions.X / 1920),
-                                     pos_Y: (int)(802 * ScreenManager.Instance.Dimensions.Y / 1080),
-                                     centered: true,
-                                     scale: new Vector2(ScreenManager.Instance.Dimensions.X / 2732f, ScreenManager.Instance.Dimensions.Y / 1536f)
-                                    );
-            mainbuttondown_pressed.LoadContent(
-                                     pos_X: (int)(214 * ScreenManager.Instance.Dimensions.X / 1920),
-                                     pos_Y: (int)(802 * ScreenManager.Instance.Dimensions.Y / 1080),
-                                     centered: true,
-                                     scale: new Vector2(ScreenManager.Instance.Dimensions.X / 2732f, ScreenManager.Instance.Dimensions.Y / 1536f)
-                                    );
-            #endregion
-
+            videoOption.LoadContent();
+            audioOption.LoadContent();
+            controlOption.LoadContent();
         }
 
         public override void UnloadContent()
         {
             base.UnloadContent();
-            background.UnloadContent();
-            field_active.UnloadContent();
 
-            mainbuttonup.UnloadContent();
-            mainbuttonup_pressed.UnloadContent();
-            mainbuttonmiddle.UnloadContent();
-            mainbuttondown.UnloadContent();
-            mainbuttondown_pressed.UnloadContent();
+            control.UnloadContent();
+
+            videoOption.UnloadContent();
+            audioOption.UnloadContent();
+            controlOption.UnloadContent();
         }
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            background.Update(gameTime);
-            field_active.Update(gameTime);
 
-            mainbuttonup.Update(gameTime);
-            mainbuttonup_pressed.Update(gameTime);
-            mainbuttonmiddle.Update(gameTime);
-            mainbuttondown.Update(gameTime);
-            mainbuttondown_pressed.Update(gameTime);
+            control.Update(gameTime);
+
+            videoOption.Update(gameTime);
+            audioOption.Update(gameTime);
+            controlOption.Update(gameTime);
 
             //When the Escape key has been pressed exit the game
             if (InputManager.Instance.KeyPressed(Keys.Escape))
@@ -116,14 +69,12 @@ namespace Game_Test
         public override void Draw(SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);
-            background.Draw(spriteBatch);
-            field_active.Draw(spriteBatch);
 
-            mainbuttonup.Draw(spriteBatch);
-            mainbuttonup_pressed.Draw(spriteBatch);
-            mainbuttonmiddle.Draw(spriteBatch);
-            mainbuttondown.Draw(spriteBatch);
-            mainbuttondown_pressed.Draw(spriteBatch);
+            control.Draw(spriteBatch);
+
+            videoOption.Draw(spriteBatch);
+            audioOption.Draw(spriteBatch);
+            controlOption.Draw(spriteBatch);
         }
     }
 }

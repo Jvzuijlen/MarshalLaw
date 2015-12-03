@@ -31,7 +31,7 @@ namespace Game_Test
                     this.FontName = "SpriteFonts/Carne";
                     break;
                 case "DryGood":
-                    this.FontName = "SpriteFonts/DryGood/Carne";
+                    this.FontName = "SpriteFonts/DryGood/DryGood";
                     break;
             }
             this.Position = Vector2.Zero;
@@ -59,8 +59,8 @@ namespace Game_Test
             if (SourceRect == Rectangle.Empty)
                 SourceRect = new Rectangle(0, 0, (int)dimensions.X, (int)dimensions.Y);
 
-            this.Scale.X = ScreenManager.Instance.Dimensions.X / 1920;
-            this.Scale.Y = ScreenManager.Instance.Dimensions.Y / 1080;
+            this.Scale.X = (GameSettings.Instance.Dimensions.X / 1920);
+            this.Scale.Y = (GameSettings.Instance.Dimensions.Y / 1080);
         }
 
         public void UnloadContent()

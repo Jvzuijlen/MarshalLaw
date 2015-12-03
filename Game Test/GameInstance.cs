@@ -31,14 +31,17 @@ namespace Game_Test
         protected override void Initialize()
         {
             this.TargetElapsedTime = TimeSpan.FromSeconds(1.0f / 60.0f); //Verander de laatste float naar aantal frames per seconde
-            this.Graphics.PreferredBackBufferWidth = (int)ScreenManager.Instance.Dimensions.X;
-            this.Graphics.PreferredBackBufferHeight = (int)ScreenManager.Instance.Dimensions.Y;
+            this.Graphics.PreferredBackBufferWidth = (int)GameSettings.Instance.Dimensions.X;
+            this.Graphics.PreferredBackBufferHeight = (int)GameSettings.Instance.Dimensions.Y;
+            //if (!Graphics.IsFullScreen)
+                //Graphics.ToggleFullScreen();
             this.Graphics.ApplyChanges();
 
-            this.Window.Position = ScreenManager.Instance.Position;
+
+            this.Window.Position = GameSettings.Instance.Position;
             this.Window.IsBorderless = true;
             this.Window.AllowAltF4 = true;
-
+            
             base.Initialize();
         }
 
@@ -72,13 +75,16 @@ namespace Game_Test
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (ScreenManager.Instance.ScreenDimChanged)
+            if (GameSettings.Instance.ScreenDimChanged)
                 SceenReload();
             //if (Keyboard.GetState().IsKeyDown(Keys.Escape) || ExitGame == true)
             if (Keyboard.GetState().IsKeyDown(Keys.Escape) || ExitGame == true)
                 Exit();
 
             ScreenManager.Instance.Update(gameTime);
+
+            if (GameSettings.Instance.ScreenDimChanged)
+                SceenReload();
 
             base.Update(gameTime);
         }
@@ -89,25 +95,23 @@ namespace Game_Test
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            if (ScreenManager.Instance.ScreenDimChanged)
-                SceenReload();
-            GraphicsDevice.Clear(Color.TransparentBlack);
+            //GraphicsDevice.Clear(Color.TransparentBlack);
 
             ScreenManager.Instance.Draw(spriteBatch);
 
             base.Draw(gameTime);
         }
+
         public void SceenReload()
         {
-            this.Graphics.PreferredBackBufferWidth = (int)ScreenManager.Instance.Dimensions.X;
-            this.Graphics.PreferredBackBufferHeight = (int)ScreenManager.Instance.Dimensions.Y;
-
+            this.Graphics.PreferredBackBufferWidth = (int)GameSettings.Instance.Dimensions.X;
+            this.Graphics.PreferredBackBufferHeight = (int)GameSettings.Instance.Dimensions.Y;
             this.Graphics.ApplyChanges();
 
             this.Window.Position = new Point(
-                                                        x: (int)(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width - ScreenManager.Instance.Dimensions.X) / 2,
-                                                        y: (int)(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height - ScreenManager.Instance.Dimensions.Y) / 2);
-            ScreenManager.Instance.ScreenDimChanged = false;
+                                                        x: (int)(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width - GameSettings.Instance.Dimensions.X) / 2,
+                                                        y: (int)(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height - GameSettings.Instance.Dimensions.Y) / 2);
+            GameSettings.Instance.ScreenDimChanged = false;
         }
     }
 }
