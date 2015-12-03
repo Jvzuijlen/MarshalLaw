@@ -40,7 +40,7 @@ namespace Game_Test
             //By the default the first selected value is
             menuItems[0].Selected = true;
 
-            Size = new Vector2(1920, 1080);
+            Size = new Vector2(1336, 768);
             ScreenManager.Instance.Dimensions = Size;
             ScreenManager.Instance.ScreenDimChanged = true;
 
