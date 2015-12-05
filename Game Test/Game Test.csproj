@@ -67,7 +67,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Animation_Effects\FadeEffect.cs" />
-    <Compile Include="Control1_Field.cs" />
+    <Compile Include="Screen%28s%29\Options Screen\Control1_Field.cs" />
     <Compile Include="Screen%28s%29\Options Screen\Control1_Item.cs" />
     <Compile Include="GameObjects\Items.cs" />
     <Compile Include="GameSettings.cs" />

@@ -20,11 +20,11 @@ namespace Game_Test
         //Contructor
         public OptionsScreen()
         {
-            control = new Control1(3);
-
-            videoOption = new Control1_Item("Video", 1, 2);
+            videoOption = new Control1_Item("Video", 1, 1);
             audioOption = new Control1_Item("Audio", 2, 0);
-            controlOption = new Control1_Item("Control", 3, 1);
+            controlOption = new Control1_Item("Control", 3, 2);
+
+            control = new Control1(3, videoOption.Title.Text, audioOption.Title.Text, controlOption.Title.Text);
         }
 
 
