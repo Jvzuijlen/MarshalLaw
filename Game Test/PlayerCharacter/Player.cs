@@ -8,38 +8,42 @@ namespace Game_Test
     class Player
     {
         //Fields
-        private string Name;
-        private bool Gender;
-        private int TotalHP;
-        private int TotalEnergy;
-        private int TotalStamina;
-        private int Gold;
-        private int XP;
-        private int Lvl;
-        private List<Perks> PlayerPerks;
-        private List<Items> Inventory;
+        private string name;
+        private bool gender;
+        private int totalHP;
+        private int totalEnergy;
+        private int totalStamina;
+        private int gold;
+        private int xP;
+        private int lvl;
+        private List<Perks> playerPerks;
+        private List<Items> inventory;
 
-        private int CurrentHP;
-        private int CurrentEnergy;
-        private int CurrentStamina;
+        private int currentHP;
+        private int currentEnergy;
+        private int currentStamina;
+
+        //properties
+        public string Name {  get { return this.name; } }
+        public bool Gender { get { return this.gender; } }
 
         //Constructor
         public Player(string name, bool gender, Perks startperk)
         {
-            this.Name = name;
-            this.Gender = gender;
-            this.TotalHP = 1; //Default Value
-            this.TotalEnergy = 1; //Default Value
-            this.TotalStamina = 1; //Default Value
-            this.Gold = 1; //Default Value
-            this.XP = 0; //Default Value
-            this.Lvl = 1; //Default Value
-            this.PlayerPerks = new List<Perks> {startperk };
-            this.Inventory = new List<Items> { };
+            this.name = name;
+            this.gender = gender;
+            this.totalHP = 1; //Default Value
+            this.totalEnergy = 1; //Default Value
+            this.totalStamina = 1; //Default Value
+            this.gold = 1; //Default Value
+            this.xP = 0; //Default Value
+            this.lvl = 1; //Default Value
+            this.playerPerks = new List<Perks> {startperk };
+            this.inventory = new List<Items> { };
 
-            this.CurrentHP = this.TotalHP;
-            this.CurrentEnergy = this.TotalEnergy;
-            this.CurrentStamina = this.TotalStamina;
+            this.currentHP = this.totalHP;
+            this.currentEnergy = this.totalEnergy;
+            this.currentStamina = this.totalStamina;
         }
 
     }
