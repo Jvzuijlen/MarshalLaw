@@ -34,7 +34,7 @@ namespace Game_Test
             arrow_right.LoadContent(100+ itemtitle.SourceRect.Width, 200, false,
                                     scale: new Vector2(GameSettings.Instance.Dimensions.X / 2732f, GameSettings.Instance.Dimensions.Y / 1536f)
                                   );
-        }
+        } 
 
         public void UnloadContent()
         {
