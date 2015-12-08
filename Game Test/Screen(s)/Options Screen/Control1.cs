@@ -12,19 +12,16 @@ namespace Game_Test
     {
         Image background, field_active, mainbuttonup, mainbuttonmiddle, mainbuttondown, mainbuttonup_pressed, mainbuttondown_pressed;
 
-        cText title1, title2, title3;
         enum selection
         {
             buttonup, buttonmiddle, buttondown, fieldactive,
         };
 
-        
-
         int numberControlItems;
         public int CurrentActiveItem;
         selection currentSelected;
 
-        public Control1(int numItems, string title1, string title2, string title3)
+        public Control1(int numItems)
         {
             //Create instances of all the Images
             #region
@@ -38,13 +35,12 @@ namespace Game_Test
             #endregion
 
             this.numberControlItems = numItems;
-            if (numberControlItems > 2)
-                CurrentActiveItem = 1;
             currentSelected = selection.buttonmiddle;
-            this.title1 = new cText(title1, "DryGood");
-            this.title2 = new cText(title2, "DryGood");
-            this.title3 = new cText(title3, "DryGood");
-            
+
+
+            int[] items = new int[numItems];
+            CurrentActiveItem = 2;
+
         }
 
         public virtual void LoadContent()
@@ -94,11 +90,6 @@ namespace Game_Test
                                      scale: new Vector2(GameSettings.Instance.Dimensions.X / 2732f, GameSettings.Instance.Dimensions.Y / 1536f)
                                     );
             #endregion
-
-
-            SetTitlePosition(title1, 0);
-            SetTitlePosition(title2, 1);
-            SetTitlePosition(title3, 2);
         }
         public virtual void UnloadContent()
         {
@@ -111,9 +102,9 @@ namespace Game_Test
             mainbuttondown.UnloadContent();
             mainbuttondown_pressed.UnloadContent();
 
-            title1.UnloadContent();
-            title2.UnloadContent();
-            title3.UnloadContent();
+            //title1.UnloadContent();
+            //title2.UnloadContent();
+            //title3.UnloadContent();
         }
 
         public virtual void Update(GameTime gameTime)
@@ -141,11 +132,10 @@ namespace Game_Test
             }
             #endregion
 
-            title1.Update(gameTime);
-            title2.Update(gameTime);
-            title3.Update(gameTime);
 
-            if(InputManager.Instance.KeyPressed(Keys.Up))
+
+            #region "Navigation of the control"
+            if (InputManager.Instance.KeyPressed(Keys.Up))
             {
                 if(currentSelected == selection.buttonmiddle)
                     currentSelected = selection.buttonup;
@@ -169,6 +159,28 @@ namespace Game_Test
             {
                 currentSelected = selection.buttonup;
             }
+            #endregion
+
+            #region "Actions"
+            if (InputManager.Instance.KeyPressed(Keys.Enter))
+            {
+                switch(currentSelected)
+                {
+                    case selection.buttondown:
+                        if (CurrentActiveItem == numberControlItems - 1)
+                            CurrentActiveItem = 0;
+                        else
+                            CurrentActiveItem++;
+                        break;
+                    case selection.buttonup:
+                        if (CurrentActiveItem == 0)
+                            CurrentActiveItem = numberControlItems - 1;
+                        else 
+                            CurrentActiveItem--;
+                        break;
+                }
+            }
+            #endregion
             //mainbuttonup_pressed.Update(gameTime);
             //mainbuttondown_pressed.Update(gameTime);
         }
@@ -191,40 +203,24 @@ namespace Game_Test
             }
 
             mainbuttonmiddle.Draw(spriteBatch);
+
             //mainbuttonup_pressed.Draw(spriteBatch);
             //mainbuttondown_pressed.Draw(spriteBatch);
 
-            title1.DrawString(spriteBatch);
-            title2.DrawString(spriteBatch);
-            title3.DrawString(spriteBatch);
+            //title1.DrawString(spriteBatch);
+            //title2.DrawString(spriteBatch);
+            //title3.DrawString(spriteBatch);
         }
 
-        public void AnimationDown(GameTime gameTime)
+        public void AnimationDown(GameTime gameTime, bool downPressed)
         {
-            //Title pos
-            //
-        }
-
-        public void SetTitlePosition(cText text, int status)
-        {
-            //The scale is nessecary because if the window gets resized the position changes aswell.
-            float scale = GameSettings.Instance.Dimensions.X / 1366;
-            //The middle x coordiantes get calculated here, it takes the width of the text and the width of the control bar,
-            //and divides those by 2 to calculate the middle
-            float x_position = (((375 - 170) - (text.SourceRect.Width / 2)) / 2);
-
-            switch (status)
+            if (downPressed)
             {
-                case 0:
-                    text.Position = new Vector2((160 + x_position) * scale, 230 * scale);
-                    break;
-                case 1:
-                    text.Position = new Vector2((155 + x_position) * scale, 350 * scale);
-                    break;
-                case 2:
 
-                    text.Position = new Vector2((160 + x_position) * scale, 485 * scale);
-                    break;
+            }
+            else
+            {
+
             }
         }
     }
