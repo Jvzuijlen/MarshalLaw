@@ -65,16 +65,35 @@ namespace Game_Test
             switch (status)
             {
                 case 1:
-                    title.Position = new Vector2((160 + x_position) * scale, 230 * scale);
+                    title.Position = new Vector2((160 + x_position) * scale, 225 * scale);
                     break;
                 case 2:
                     title.Position = new Vector2((155 + x_position) * scale, 350 * scale);
                     break;
                 case 3:
 
-                    title.Position = new Vector2((160 + x_position) * scale, 485 * scale);
+                    title.Position = new Vector2((160 + x_position) * scale, 475 * scale);
                     break;
             }
+        }
+
+        //
+        public void SetStatus(int currentActive)
+        {
+            if (currentActive == FieldID)
+                status = 2;
+            else if (currentActive - 1 == FieldID)
+                status = 1;
+            else if (currentActive - 2 == FieldID)
+                status = 0;
+            else if (currentActive + 1 == FieldID)
+                status = 3;
+            else if (currentActive + 2 == FieldID)
+                status = 4;
+            if (FieldID == 0 && currentActive == nextFieldID - 1)
+                status = 3;
+            if (FieldID == nextFieldID - 1 && currentActive == 0)
+                status = 1;
         }
     }
 }

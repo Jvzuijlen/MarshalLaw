@@ -45,8 +45,7 @@ namespace Game_Test
 
         public virtual void LoadContent()
         {
-            //LoadContent for the Images, and position them to the window dimensions
-            #region
+            #region "LoadContent for the Images, and position them to the window dimensions"
             background.LoadContent(
                                    pos_X: 0,
                                    pos_Y: 0,
@@ -90,6 +89,8 @@ namespace Game_Test
                                      scale: new Vector2(GameSettings.Instance.Dimensions.X / 2732f, GameSettings.Instance.Dimensions.Y / 1536f)
                                     );
             #endregion
+
+
         }
         public virtual void UnloadContent()
         {
@@ -102,9 +103,6 @@ namespace Game_Test
             mainbuttondown.UnloadContent();
             mainbuttondown_pressed.UnloadContent();
 
-            //title1.UnloadContent();
-            //title2.UnloadContent();
-            //title3.UnloadContent();
         }
 
         public virtual void Update(GameTime gameTime)
@@ -207,9 +205,6 @@ namespace Game_Test
             //mainbuttonup_pressed.Draw(spriteBatch);
             //mainbuttondown_pressed.Draw(spriteBatch);
 
-            //title1.DrawString(spriteBatch);
-            //title2.DrawString(spriteBatch);
-            //title3.DrawString(spriteBatch);
         }
 
         public void AnimationDown(GameTime gameTime, bool downPressed)

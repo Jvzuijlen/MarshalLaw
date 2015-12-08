@@ -66,22 +66,10 @@ namespace Game_Test
 
             foreach (var control_field in fields)
             {
-                control_field.Update(gameTime);
                 control_field.Status = -1;
+                control_field.SetStatus(control.CurrentActiveItem);
+                control_field.Update(gameTime);
             }
-
-
-            if(control.CurrentActiveItem - 2 >= 0)
-                fields[control.CurrentActiveItem - 2].Status = 0;
-            else
-            if (control.CurrentActiveItem - 1 >= 0)
-                fields[control.CurrentActiveItem-1].Status = 1;
-            if (control.CurrentActiveItem >= 0 && control.CurrentActiveItem < numFields)
-                fields[control.CurrentActiveItem].Status = 2;
-            if (control.CurrentActiveItem + 1 < numFields)
-                fields[control.CurrentActiveItem+1].Status = 3;
-            if (control.CurrentActiveItem + 2 < numFields)
-                fields[control.CurrentActiveItem + 2].Status = 4;
 
             //When the Escape key has been pressed exit the game
             if (InputManager.Instance.KeyPressed(Keys.Escape))
