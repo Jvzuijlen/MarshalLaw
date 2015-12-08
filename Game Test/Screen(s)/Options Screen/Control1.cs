@@ -23,8 +23,8 @@ namespace Game_Test
 
         public Control1(int numItems)
         {
-            //Create instances of all the Images
-            #region
+
+            #region "Create Instances of all the Images"
             background = new Image("OptionsScreen/poster_background");
             field_active = new Image("OptionsScreen/field_active");
             mainbuttonup = new Image("OptionsScreen/buttonup_selected");

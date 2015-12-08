@@ -14,6 +14,7 @@ namespace Game_Test
         Control1 control;
         static int numFields = 5;
         Control1_Field[] fields = new Control1_Field[numFields];
+        Control1_Item resultionOption;
 
 
         //Contructor
@@ -31,6 +32,8 @@ namespace Game_Test
             fields[1].Status = 1;
             fields[2].Status = 2;
             fields[3].Status = 3;
+
+            resultionOption = new Control1_Item("Resultion");
         }
 
 
@@ -44,6 +47,8 @@ namespace Game_Test
                 control_field.LoadContent();
             }
 
+            resultionOption.LoadContent();
+
         }
 
         public override void UnloadContent()
@@ -56,6 +61,8 @@ namespace Game_Test
             {
                 control_field.UnloadContent();
             }
+
+            resultionOption.UnloadContent();
         }
 
         public override void Update(GameTime gameTime)
@@ -70,6 +77,8 @@ namespace Game_Test
                 control_field.SetStatus(control.CurrentActiveItem);
                 control_field.Update(gameTime);
             }
+
+            resultionOption.Update(gameTime);
 
             //When the Escape key has been pressed exit the game
             if (InputManager.Instance.KeyPressed(Keys.Escape))
@@ -88,6 +97,8 @@ namespace Game_Test
             {
                 control_field.Draw(spriteBatch);
             }
+
+            resultionOption.Draw(spriteBatch);
         }
     }
 }

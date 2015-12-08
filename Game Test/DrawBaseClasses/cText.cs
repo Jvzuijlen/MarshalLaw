@@ -63,6 +63,31 @@ namespace Game_Test
             this.Scale.Y = (GameSettings.Instance.Dimensions.Y / 1080);
         }
 
+        public void LoadContent(Vector2 position)
+        {
+            //Load the content for the text
+            content = new ContentManager(ScreenManager.Instance.Content.ServiceProvider, "Content");
+            font = content.Load<SpriteFont>(FontName);
+
+            Vector2 dimensions = Vector2.Zero;
+
+            //Make sure the text class has the dimensions from the font
+            if (Text != string.Empty)
+            {
+                dimensions.X += font.MeasureString(Text).X;
+                dimensions.Y += font.MeasureString(Text).Y;
+            }
+
+            //Create a rectangle wich other classes can work with
+            if (SourceRect == Rectangle.Empty)
+                SourceRect = new Rectangle(0, 0, (int)dimensions.X, (int)dimensions.Y);
+
+            this.Scale.X = (GameSettings.Instance.Dimensions.X / 1920);
+            this.Scale.Y = (GameSettings.Instance.Dimensions.Y / 1080);
+
+            Position = position;
+        }
+
         public void UnloadContent()
         {
             content.Unload();
