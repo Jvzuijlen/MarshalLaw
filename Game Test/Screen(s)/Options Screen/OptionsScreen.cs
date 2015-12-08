@@ -12,19 +12,25 @@ namespace Game_Test
     public class OptionsScreen : Screen
     {
         Control1 control;
-        Control1_Item videoOption;
-        Control1_Item audioOption;
-        Control1_Item controlOption;
+        static int numFields = 5;
+        Control1_Field[] fields = new Control1_Field[numFields];
 
 
         //Contructor
         public OptionsScreen()
         {
-            videoOption = new Control1_Item("Video", 1, 1);
-            audioOption = new Control1_Item("Audio", 2, 0);
-            controlOption = new Control1_Item("Control", 3, 2);
 
-            control = new Control1(3, videoOption.Title.Text, audioOption.Title.Text, controlOption.Title.Text);
+            fields[0] = new Control1_Field("Test1");
+            fields[1] = new Control1_Field("Test2");
+            fields[2] = new Control1_Field("Test3");
+            fields[3] = new Control1_Field("Test4");
+            fields[4] = new Control1_Field("Test5");
+
+            control = new Control1(numFields);
+
+            fields[1].Status = 1;
+            fields[2].Status = 2;
+            fields[3].Status = 3;
         }
 
 
@@ -33,9 +39,11 @@ namespace Game_Test
             base.LoadContent();
             control.LoadContent();
 
-            videoOption.LoadContent();
-            audioOption.LoadContent();
-            controlOption.LoadContent();
+            foreach (var control_field in fields)
+            {
+                control_field.LoadContent();
+            }
+
         }
 
         public override void UnloadContent()
@@ -44,9 +52,10 @@ namespace Game_Test
 
             control.UnloadContent();
 
-            videoOption.UnloadContent();
-            audioOption.UnloadContent();
-            controlOption.UnloadContent();
+            foreach (var control_field in fields)
+            {
+                control_field.UnloadContent();
+            }
         }
 
         public override void Update(GameTime gameTime)
@@ -55,9 +64,24 @@ namespace Game_Test
 
             control.Update(gameTime);
 
-            videoOption.Update(gameTime);
-            audioOption.Update(gameTime);
-            controlOption.Update(gameTime);
+            foreach (var control_field in fields)
+            {
+                control_field.Update(gameTime);
+                control_field.Status = -1;
+            }
+
+
+            if(control.CurrentActiveItem - 2 >= 0)
+                fields[control.CurrentActiveItem - 2].Status = 0;
+            else
+            if (control.CurrentActiveItem - 1 >= 0)
+                fields[control.CurrentActiveItem-1].Status = 1;
+            if (control.CurrentActiveItem >= 0 && control.CurrentActiveItem < numFields)
+                fields[control.CurrentActiveItem].Status = 2;
+            if (control.CurrentActiveItem + 1 < numFields)
+                fields[control.CurrentActiveItem+1].Status = 3;
+            if (control.CurrentActiveItem + 2 < numFields)
+                fields[control.CurrentActiveItem + 2].Status = 4;
 
             //When the Escape key has been pressed exit the game
             if (InputManager.Instance.KeyPressed(Keys.Escape))
@@ -72,9 +96,10 @@ namespace Game_Test
 
             control.Draw(spriteBatch);
 
-            videoOption.Draw(spriteBatch);
-            audioOption.Draw(spriteBatch);
-            controlOption.Draw(spriteBatch);
+            foreach (var control_field in fields)
+            {
+                control_field.Draw(spriteBatch);
+            }
         }
     }
 }

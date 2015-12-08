@@ -68,7 +68,6 @@
   <ItemGroup>
     <Compile Include="Animation_Effects\FadeEffect.cs" />
     <Compile Include="Screen%28s%29\Options Screen\Control1_Field.cs" />
-    <Compile Include="Screen%28s%29\Options Screen\Control1_Item.cs" />
     <Compile Include="GameObjects\Items.cs" />
     <Compile Include="GameSettings.cs" />
     <Compile Include="Screen%28s%29\Options Screen\OptionsScreen.cs" />
@@ -120,6 +119,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
