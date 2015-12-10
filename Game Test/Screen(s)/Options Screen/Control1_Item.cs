@@ -10,7 +10,7 @@ namespace Game_Test
 {
     public class Control1_Item
     {
-        private int ItemID;
+        public int ItemID { get; set; }
         public Vector2 Dimensions;
         static int nextItemID = 0;
         private Image arrow_left, arrow_right;
@@ -25,12 +25,14 @@ namespace Game_Test
         float x_scale;
         Vector2 imageScale;
         public bool IsSelected { get; set; }
+        public bool LeftIsSelected;
 
-        enum selection
+        public enum selection
         {
             title, arrowleft, arrowright
         }
-        selection currentSelected;
+
+        public selection currentSelected;
 
         public Control1_Item(string itemname, string itemsetting, int fieldID)
         {
@@ -162,19 +164,24 @@ namespace Game_Test
             arrow_left.Color = Color.Black;
             arrow_right.Color = Color.Black;
 
-            if(InputManager.Instance.KeyPressed(Keys.Right))
+            if(InputManager.Instance.KeyPressed(Keys.Right) && IsSelected)
             {
                 currentSelected++;
                 if (currentSelected == selection.arrowright + 1)
                     currentSelected = selection.title;
             }
 
-            if (InputManager.Instance.KeyPressed(Keys.Left))
+            if (InputManager.Instance.KeyPressed(Keys.Left) && IsSelected)
             {
                 currentSelected--;
                 if (currentSelected == selection.title - 1)
-                    currentSelected = selection.arrowright;
+                    currentSelected = selection.title;
             }
+
+            if (currentSelected == selection.title)
+                LeftIsSelected = true;
+            else
+                LeftIsSelected = false;
 
             if (IsSelected)
             {
@@ -214,6 +221,11 @@ namespace Game_Test
             itemsetting.DrawString(spriteBatch);
             arrow_left.Draw(spriteBatch);
             arrow_right.Draw(spriteBatch);
+        }
+
+        public void ResetSelected()
+        {
+            currentSelected = selection.title;
         }
     }
 }

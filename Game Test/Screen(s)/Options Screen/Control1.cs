@@ -14,12 +14,13 @@ namespace Game_Test
 
         public enum selection
         {
-            buttonup, buttonmiddle, buttondown, fieldactive,
+            buttonup, buttonmiddle, buttondown, fieldactive, itemtitle, arrow_left, arrow_right
         };
 
         int numberControlFields;
         public int CurrentActiveField;
         public selection currentSelected;
+        public bool LeftItemSelected;
 
         public Control1(int numFields)
         {
@@ -154,7 +155,7 @@ namespace Game_Test
             {
                 currentSelected = selection.fieldactive;
             }
-            if (InputManager.Instance.KeyPressed(Keys.Left))
+            if (InputManager.Instance.KeyPressed(Keys.Left) && LeftItemSelected)
             {
                 currentSelected = selection.buttonup;
             }

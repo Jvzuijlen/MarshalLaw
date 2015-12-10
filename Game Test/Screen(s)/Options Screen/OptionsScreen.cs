@@ -94,6 +94,7 @@ namespace Game_Test
 
             foreach (var item in items)
             {
+                if(item.ItemID != fields[control.CurrentActiveField].currentActiveItem)
                 item.IsSelected = false;
             }
 
@@ -103,18 +104,24 @@ namespace Game_Test
                     if (control.currentSelected == Control1.selection.fieldactive)
                     {
                         fields[control.CurrentActiveField].IsActive = true;
-                        items[fields[control.CurrentActiveField].currentActiveItem].IsSelected = true;
+                        if(items[fields[control.CurrentActiveField].currentActiveItem].IsSelected == false)
+                        {
+                            items[fields[control.CurrentActiveField].currentActiveItem].IsSelected = true;
+                            items[fields[control.CurrentActiveField].currentActiveItem].currentSelected = Control1_Item.selection.title;
+                        }
+                        control.LeftItemSelected = items[fields[control.CurrentActiveField].currentActiveItem].LeftIsSelected;
                     }
                     else
-                        fields[control.CurrentActiveField].IsActive = false;
-                    
-                    foreach (var item in items)
                     {
-                        item.Update(gameTime);
+                        fields[control.CurrentActiveField].IsActive = false;
                     }
                     break;
             }
-            
+
+            foreach (var item in items)
+            {
+                item.Update(gameTime);
+            }
 
             //When the Escape key has been pressed exit the game
             if (InputManager.Instance.KeyPressed(Keys.Escape))

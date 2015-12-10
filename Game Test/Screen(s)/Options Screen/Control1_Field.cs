@@ -65,7 +65,6 @@ namespace Game_Test
                 }
                 if (InputManager.Instance.KeyPressed(Keys.Up))
                 {
-
                     currentActiveItem--;
                     if (currentActiveItem == -1)
                         currentActiveItem = numberItems - 1;
