@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,21 +17,27 @@ namespace Game_Test
         static int nextFieldID = 0;
         public int selectedItem { get; set; }
         public bool IsActive { get; set; }
+        public int currentActiveItem;
+        int numberItems;
 
         public cText Title { get { return title; } }
         public int Status { get { return status; } set { status = value; } }
+
+
 
         /// <summary>
         /// Contructor for a Control Item
         /// </summary>
         /// <param name="">The title of the Item</param>
-        public Control1_Field(string title)
+        public Control1_Field(string title, int numItems)
         {
             this.title = new cText(title, "DryGood");
             FieldID = nextFieldID++;
             this.status = 0;
             selectedItem = 0;
             IsActive = false;
+            currentActiveItem = 0;
+            numberItems = numItems;
         }
 
         public void LoadContent()
@@ -47,6 +54,23 @@ namespace Game_Test
         {
             title.Update(gameTime);
             SetTitlePosition();
+            if (IsActive)
+            {
+                if (InputManager.Instance.KeyPressed(Keys.Down))
+                {
+                    
+                    currentActiveItem++;
+                    if (currentActiveItem == numberItems)
+                        currentActiveItem = 0;
+                }
+                if (InputManager.Instance.KeyPressed(Keys.Up))
+                {
+
+                    currentActiveItem--;
+                    if (currentActiveItem == -1)
+                        currentActiveItem = numberItems - 1;
+                }
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -78,7 +102,7 @@ namespace Game_Test
             }
         }
 
-        //
+
         public void SetStatus(int currentActive)
         {
             if (currentActive == FieldID)

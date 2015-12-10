@@ -15,6 +15,7 @@ namespace Game_Test
         private Image arrow_left, arrow_right;
         private cText itemtitle;
         private cText itemsetting;
+        int fieldID;
 
         FadeEffect fadeeffect;
         Vector2 textScale;
@@ -29,8 +30,9 @@ namespace Game_Test
             title, arrowleft, setting, arrowright
         }
 
-        public Control1_Item(string itemname, string itemsetting)
+        public Control1_Item(string itemname, string itemsetting, int fieldID)
         {
+            this.fieldID = fieldID;
             ItemID = nextItemID++;
             this.itemtitle = new cText(itemname + ":", "DryGood");
             this.itemsetting = new cText(itemsetting, "DryGood");
@@ -46,8 +48,9 @@ namespace Game_Test
             textScale = new Vector2(GameSettings.Instance.Dimensions.X / (3200 / 1.2f), GameSettings.Instance.Dimensions.Y / (1800 / 1.2f));
             imageScale = new Vector2(GameSettings.Instance.Dimensions.X / 2732f, GameSettings.Instance.Dimensions.Y / 1536f);
 
-            textPos_Y = 370;
-            imagePos_Y = 390;
+            #region "Position the Text on the Y axis"
+            textPos_Y = 400;
+            imagePos_Y = 420;
             switch (ItemID)
             {
                 case 0:
@@ -84,10 +87,15 @@ namespace Game_Test
                     textPos_Y += 880;
                     imagePos_Y += 880;
                     break;
+                case 9:
+                    textPos_Y += 990;
+                    imagePos_Y += 990;
+                    break;
             }
 
             textPos_Y = textPos_Y * (GameSettings.Instance.Dimensions.Y / 1920);
             imagePos_Y = imagePos_Y * (GameSettings.Instance.Dimensions.Y / 1920);
+            #endregion
 
             #region "Load Content"
             itemtitle.LoadContent();
@@ -154,6 +162,13 @@ namespace Game_Test
                 itemsetting.Alpha = temp;
                 arrow_left.Alpha = temp;
                 arrow_right.Alpha = temp;
+            }
+            else
+            {
+                itemtitle.Alpha = 1.0f;
+                itemsetting.Alpha = 1.0f;
+                arrow_left.Alpha = 1.0f;
+                arrow_right.Alpha = 1.0f;
             }
                 
         }
