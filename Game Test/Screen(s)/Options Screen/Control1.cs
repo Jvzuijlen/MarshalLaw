@@ -12,14 +12,14 @@ namespace Game_Test
     {
         Image background, field_active, mainbuttonup, mainbuttonmiddle, mainbuttondown, mainbuttonup_pressed, mainbuttondown_pressed;
 
-        enum selection
+        public enum selection
         {
             buttonup, buttonmiddle, buttondown, fieldactive,
         };
 
         int numberControlFields;
         public int CurrentActiveField;
-        selection currentSelected;
+        public selection currentSelected;
 
         public Control1(int numFields)
         {

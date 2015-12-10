@@ -100,8 +100,14 @@ namespace Game_Test
             switch (control.CurrentActiveField)
             {
                 case 2:
-                    fields[control.CurrentActiveField].IsActive = true;
-                    items[fields[control.CurrentActiveField].currentActiveItem].IsSelected = true;
+                    if (control.currentSelected == Control1.selection.fieldactive)
+                    {
+                        fields[control.CurrentActiveField].IsActive = true;
+                        items[fields[control.CurrentActiveField].currentActiveItem].IsSelected = true;
+                    }
+                    else
+                        fields[control.CurrentActiveField].IsActive = false;
+                    
                     foreach (var item in items)
                     {
                         item.Update(gameTime);

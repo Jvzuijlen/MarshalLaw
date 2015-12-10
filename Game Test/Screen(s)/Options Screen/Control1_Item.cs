@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,8 +28,9 @@ namespace Game_Test
 
         enum selection
         {
-            title, arrowleft, setting, arrowright
+            title, arrowleft, arrowright
         }
+        selection currentSelected;
 
         public Control1_Item(string itemname, string itemsetting, int fieldID)
         {
@@ -40,7 +42,8 @@ namespace Game_Test
             arrow_right = new Image("OptionsScreen/arrow_right");
             arrow_left.Color = Color.Black;
             arrow_right.Color = Color.Black;
-            fadeeffect = new FadeEffect(1.0f, 1.0f, 0.5f);
+            fadeeffect = new FadeEffect(1.5f, 1.0f, 0.3f);
+            currentSelected = selection.title;
         }
 
         public void LoadContent()
@@ -155,6 +158,24 @@ namespace Game_Test
             arrow_left.Update(gameTime);
             arrow_right.Update(gameTime);
 
+            itemtitle.Color = Color.Black;
+            arrow_left.Color = Color.Black;
+            arrow_right.Color = Color.Black;
+
+            if(InputManager.Instance.KeyPressed(Keys.Right))
+            {
+                currentSelected++;
+                if (currentSelected == selection.arrowright + 1)
+                    currentSelected = selection.title;
+            }
+
+            if (InputManager.Instance.KeyPressed(Keys.Left))
+            {
+                currentSelected--;
+                if (currentSelected == selection.title - 1)
+                    currentSelected = selection.arrowright;
+            }
+
             if (IsSelected)
             {
                 var temp = fadeeffect.Update(gameTime);
@@ -162,6 +183,18 @@ namespace Game_Test
                 itemsetting.Alpha = temp;
                 arrow_left.Alpha = temp;
                 arrow_right.Alpha = temp;
+                switch (currentSelected)
+                {
+                    case selection.title:
+                        itemtitle.Color = Color.White;
+                        break;
+                    case selection.arrowleft:
+                        arrow_left.Color = Color.White;
+                        break;
+                    case selection.arrowright:
+                        arrow_right.Color = Color.White;
+                        break;
+                }
             }
             else
             {
@@ -169,8 +202,10 @@ namespace Game_Test
                 itemsetting.Alpha = 1.0f;
                 arrow_left.Alpha = 1.0f;
                 arrow_right.Alpha = 1.0f;
+                itemtitle.Color = Color.Black;
+                arrow_left.Color = Color.Black;
+                arrow_right.Color = Color.Black;
             }
-                
         }
 
         public void Draw(SpriteBatch spriteBatch)
