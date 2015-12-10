@@ -14,7 +14,8 @@ namespace Game_Test
         private int FieldID;
         public Vector2 Dimensions;
         static int nextFieldID = 0;
-        
+        public int selectedItem { get; set; }
+        public bool IsActive { get; set; }
 
         public cText Title { get { return title; } }
         public int Status { get { return status; } set { status = value; } }
@@ -23,13 +24,13 @@ namespace Game_Test
         /// Contructor for a Control Item
         /// </summary>
         /// <param name="">The title of the Item</param>
-        /// <param name="">Each control needs its own ID</param>
-        /// <param name="">This wil be the starting status</param>
         public Control1_Field(string title)
         {
             this.title = new cText(title, "DryGood");
             FieldID = nextFieldID++;
             this.status = 0;
+            selectedItem = 0;
+            IsActive = false;
         }
 
         public void LoadContent()

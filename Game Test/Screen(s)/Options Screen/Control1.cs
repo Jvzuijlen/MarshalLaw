@@ -17,11 +17,11 @@ namespace Game_Test
             buttonup, buttonmiddle, buttondown, fieldactive,
         };
 
-        int numberControlItems;
-        public int CurrentActiveItem;
+        int numberControlFields;
+        public int CurrentActiveField;
         selection currentSelected;
 
-        public Control1(int numItems)
+        public Control1(int numFields)
         {
 
             #region "Create Instances of all the Images"
@@ -34,12 +34,12 @@ namespace Game_Test
             mainbuttondown_pressed = new Image("OptionsScreen/buttondown_selected_pressed");
             #endregion
 
-            this.numberControlItems = numItems;
+            this.numberControlFields = numFields;
             currentSelected = selection.buttonmiddle;
 
 
-            int[] items = new int[numItems];
-            CurrentActiveItem = 2;
+            int[] Fields = new int[numFields];
+            CurrentActiveField = 2;
 
         }
 
@@ -109,6 +109,7 @@ namespace Game_Test
         {
             background.Update(gameTime);
             
+
             //
             //SwitchCase for Selected Update
             //
@@ -165,16 +166,16 @@ namespace Game_Test
                 switch(currentSelected)
                 {
                     case selection.buttondown:
-                        if (CurrentActiveItem == numberControlItems - 1)
-                            CurrentActiveItem = 0;
+                        if (CurrentActiveField == numberControlFields - 1)
+                            CurrentActiveField = 0;
                         else
-                            CurrentActiveItem++;
+                            CurrentActiveField++;
                         break;
                     case selection.buttonup:
-                        if (CurrentActiveItem == 0)
-                            CurrentActiveItem = numberControlItems - 1;
+                        if (CurrentActiveField == 0)
+                            CurrentActiveField = numberControlFields - 1;
                         else 
-                            CurrentActiveItem--;
+                            CurrentActiveField--;
                         break;
                 }
             }

@@ -13,8 +13,11 @@ namespace Game_Test
     {
         Control1 control;
         static int numFields = 5;
+        static int numItems = 8;
         Control1_Field[] fields = new Control1_Field[numFields];
+        Control1_Item[] items = new Control1_Item[numItems];
         Control1_Item resultionOption;
+        Control1_Item fpsOption;
 
 
         //Contructor
@@ -33,7 +36,14 @@ namespace Game_Test
             fields[2].Status = 2;
             fields[3].Status = 3;
 
-            resultionOption = new Control1_Item("Resultion");
+            items[0] = new Control1_Item("Test1","Test1");
+            items[1] = new Control1_Item("Test2", "Test2");
+            items[2] = new Control1_Item("Test3", "Test3");
+            items[3] = new Control1_Item("Test4", "Test4");
+            items[4] = new Control1_Item("Test5", "Test5");
+            items[5] = new Control1_Item("Test6", "Test6");
+            items[6] = new Control1_Item("Test7", "Test7");
+            items[7] = new Control1_Item("Test8", "Test8");
         }
 
 
@@ -47,7 +57,10 @@ namespace Game_Test
                 control_field.LoadContent();
             }
 
-            resultionOption.LoadContent();
+            foreach (var item in items)
+            {
+                item.LoadContent();
+            }
 
         }
 
@@ -62,7 +75,11 @@ namespace Game_Test
                 control_field.UnloadContent();
             }
 
-            resultionOption.UnloadContent();
+            foreach (var item in items)
+            {
+                item.UnloadContent();
+            }
+
         }
 
         public override void Update(GameTime gameTime)
@@ -74,11 +91,23 @@ namespace Game_Test
             foreach (var control_field in fields)
             {
                 control_field.Status = -1;
-                control_field.SetStatus(control.CurrentActiveItem);
+                control_field.SetStatus(control.CurrentActiveField);
                 control_field.Update(gameTime);
             }
 
-            resultionOption.Update(gameTime);
+
+
+            switch (control.CurrentActiveField)
+            {
+                case 2:
+                    fields[control.CurrentActiveField].IsActive = true;
+                    foreach (var item in items)
+                    {
+                        item.Update(gameTime);
+                    }
+                    break;
+            }
+            
 
             //When the Escape key has been pressed exit the game
             if (InputManager.Instance.KeyPressed(Keys.Escape))
@@ -98,7 +127,15 @@ namespace Game_Test
                 control_field.Draw(spriteBatch);
             }
 
-            resultionOption.Draw(spriteBatch);
+            switch (control.CurrentActiveField)
+            {
+                case 2:
+                    foreach (var item in items)
+                    {
+                        item.Draw(spriteBatch);
+                    }
+                    break;
+            }
         }
     }
 }

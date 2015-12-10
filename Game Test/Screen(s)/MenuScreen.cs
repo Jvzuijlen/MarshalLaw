@@ -53,8 +53,7 @@ namespace Game_Test
             #region
             for (int i = 0; i < text.Length; i++)
             {
-                menuItems[i].Position.X = 0;
-                menuItems[i].Position.Y = 0;
+                menuItems[i].Position = Vector2.Zero;
                 menuItems[i].LoadContent();
                 menuLenght.Y += menuItems[i].imageselected.SourceRect.Height;
             }
@@ -201,8 +200,8 @@ namespace Game_Test
 
         public void SetPosition()
         {
-            imageselected.Position.Y = Position.Y;
-            imageunselected.Position.Y = Position.Y;
+            imageselected.Position =  new Vector2(imageselected.Position.X, Position.Y);
+            imageunselected.Position = new Vector2(imageunselected.Position.X, Position.Y);
         }
 
     }
