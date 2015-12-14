@@ -13,9 +13,7 @@ namespace Game_Test
     {
         Control1 control;
         static int numFields = 5;
-        static int numItems = 10;
-        int activeField;
-        int activeItem;
+        static int numItems = 9;
         Control1_Field[] fields = new Control1_Field[numFields];
         Control1_Item[] items = new Control1_Item[numItems];
 
@@ -29,7 +27,7 @@ namespace Game_Test
             fields[3] = new Control1_Field("Test4", numItems);
             fields[4] = new Control1_Field("Test5", numItems);
 
-            control = new Control1(numFields);
+            control = new Control1(numFields, numItems);
 
             items[0] = new Control1_Item("Test1","Test1", 2);
             items[1] = new Control1_Item("Test2", "Test2", 2);
@@ -40,7 +38,6 @@ namespace Game_Test
             items[6] = new Control1_Item("Test7", "Test7", 2);
             items[7] = new Control1_Item("Test8", "Test8", 2);
             items[8] = new Control1_Item("Test9", "Test9", 2);
-            items[9] = new Control1_Item("Test10", "Test10", 2);
         }
 
 
@@ -94,33 +91,14 @@ namespace Game_Test
 
             foreach (var item in items)
             {
-                if(item.ItemID != fields[control.CurrentActiveField].currentActiveItem)
                 item.IsSelected = false;
-            }
-
-            switch (control.CurrentActiveField)
-            {
-                case 2:
-                    if (control.currentSelected == Control1.selection.fieldactive)
-                    {
-                        fields[control.CurrentActiveField].IsActive = true;
-                        if(items[fields[control.CurrentActiveField].currentActiveItem].IsSelected == false)
-                        {
-                            items[fields[control.CurrentActiveField].currentActiveItem].IsSelected = true;
-                            items[fields[control.CurrentActiveField].currentActiveItem].currentSelected = Control1_Item.selection.title;
-                        }
-                        control.LeftItemSelected = items[fields[control.CurrentActiveField].currentActiveItem].LeftIsSelected;
-                    }
-                    else
-                    {
-                        fields[control.CurrentActiveField].IsActive = false;
-                    }
-                    break;
-            }
-
-            foreach (var item in items)
-            {
+                item.SetSelected((int)control.currentSelectedItemControl);
                 item.Update(gameTime);
+            }
+            if(control.currentSelectedMainControl == Control1.selection.fieldactive)
+            {
+                items[control.CurrentActiveItem].IsSelected = true;
+                items[control.CurrentActiveItem].Update(gameTime);
             }
 
             //When the Escape key has been pressed exit the game

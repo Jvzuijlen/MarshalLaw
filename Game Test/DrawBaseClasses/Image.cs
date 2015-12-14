@@ -22,7 +22,6 @@ namespace Game_Test
         public Rectangle SourceRect;
         public Texture2D Texture;
         public bool IsInvisible;
-        Vector2 origin;
 
         ContentManager content;
 

@@ -164,25 +164,6 @@ namespace Game_Test
             arrow_left.Color = Color.Black;
             arrow_right.Color = Color.Black;
 
-            if(InputManager.Instance.KeyPressed(Keys.Right) && IsSelected)
-            {
-                currentSelected++;
-                if (currentSelected == selection.arrowright + 1)
-                    currentSelected = selection.title;
-            }
-
-            if (InputManager.Instance.KeyPressed(Keys.Left) && IsSelected)
-            {
-                currentSelected--;
-                if (currentSelected == selection.title - 1)
-                    currentSelected = selection.title;
-            }
-
-            if (currentSelected == selection.title)
-                LeftIsSelected = true;
-            else
-                LeftIsSelected = false;
-
             if (IsSelected)
             {
                 var temp = fadeeffect.Update(gameTime);
@@ -226,6 +207,22 @@ namespace Game_Test
         public void ResetSelected()
         {
             currentSelected = selection.title;
+        }
+
+        public void SetSelected(int selected)
+        {
+            switch(selected)
+            {
+                case 4:
+                    currentSelected = selection.title;
+                    break;
+                case 5:
+                    currentSelected = selection.arrowleft;
+                    break;
+                case 6:
+                    currentSelected = selection.arrowright;
+                    break;
+            }
         }
     }
 }

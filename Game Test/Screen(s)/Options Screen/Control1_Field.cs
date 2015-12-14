@@ -15,10 +15,7 @@ namespace Game_Test
         private int FieldID;
         public Vector2 Dimensions;
         static int nextFieldID = 0;
-        public int selectedItem { get; set; }
         public bool IsActive { get; set; }
-        public int currentActiveItem;
-        int numberItems;
 
         public cText Title { get { return title; } }
         public int Status { get { return status; } set { status = value; } }
@@ -34,10 +31,7 @@ namespace Game_Test
             this.title = new cText(title, "DryGood");
             FieldID = nextFieldID++;
             this.status = 0;
-            selectedItem = 0;
             IsActive = false;
-            currentActiveItem = 0;
-            numberItems = numItems;
         }
 
         public void LoadContent()
@@ -54,22 +48,6 @@ namespace Game_Test
         {
             title.Update(gameTime);
             SetTitlePosition();
-            if (IsActive)
-            {
-                if (InputManager.Instance.KeyPressed(Keys.Down))
-                {
-                    
-                    currentActiveItem++;
-                    if (currentActiveItem == numberItems)
-                        currentActiveItem = 0;
-                }
-                if (InputManager.Instance.KeyPressed(Keys.Up))
-                {
-                    currentActiveItem--;
-                    if (currentActiveItem == -1)
-                        currentActiveItem = numberItems - 1;
-                }
-            }
         }
 
         public void Draw(SpriteBatch spriteBatch)
