@@ -13,7 +13,7 @@ namespace Game_Test
     {
         Playerstats player;
 
-        private int SpeedScale; //Scales up the movementspeed
+        private float SpeedScale; //Scales up the movementspeed
 
         private float sprSheetX;
         private int MaxSheetX;
@@ -22,8 +22,7 @@ namespace Game_Test
         private string direction;
         private bool moveActive;
 
-        private float MoveScale;
-
+        //Slow down animation speed
         private const float Interval = 0.25f;
 
         private enum Movestate
@@ -51,12 +50,10 @@ namespace Game_Test
             mHor = 0.0f;
             mVer = 0.0f;
             direction = "down";
-
-            MoveScale = 2.5f;
             
             sprite = new SprSheetImage("OptionsScreen/light");
             
-            SpeedScale = 10;
+            SpeedScale = 2.5f;
         }
 
         public void LoadContent(int X, int Y)
@@ -120,8 +117,8 @@ namespace Game_Test
         private void Move(float dirX, float dirY, string direction, GameTime gameTime)
         {
             //Scale the movement
-            dirX /= MoveScale;
-            dirY /= MoveScale;
+            dirX *= SpeedScale;
+            dirY *= SpeedScale;
 
             //change sprSheetX and sprSheetY based on previous movement direction
             switch (direction)
@@ -167,9 +164,6 @@ namespace Game_Test
             //Reset X at the final animation frame
             if (sprSheetX > MaxSheetX)
                 sprSheetX = 0;
-
-            dirX *= SpeedScale;
-            dirY *= SpeedScale;
 
             if (sprite.Position.X + dirX >= 0 && sprite.Position.X + dirX <= GameSettings.Instance.Dimensions.X - 64 && sprite.Position.Y + dirY >= 0 && sprite.Position.Y + dirY <= GameSettings.Instance.Dimensions.Y - 64)
                 sprite.Position = new Vector2(sprite.Position.X + dirX, sprite.Position.Y + dirY); //Set new position
