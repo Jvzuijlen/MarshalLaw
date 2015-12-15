@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Game_Test
 {
-    public class Control_Members
+    public class Options_Members
     {
         public enum Actions
         {
@@ -31,19 +31,26 @@ namespace Game_Test
             #region "Resolutions"
             foreach (DisplayMode mode in GraphicsAdapter.DefaultAdapter.SupportedDisplayModes)
             {
-
+                string temp;
+                if (mode.AspectRatio >= 1.7f && mode.AspectRatio <= 1.8f)
+                {
+                    temp = mode.Width.ToString() + "x" + mode.Height;
+                    Resolutions.Add(temp);
+                }
             }
             #endregion
         }
 
-        /*public List<string> GetList(int ID)
+        public List<string> GetList(int ID)
         {
             switch(ID)
             {
                 case 1:
                     return Resolutions;
                     break;
+
             }
-        }*/
+            return null;
+        }
     }
 }

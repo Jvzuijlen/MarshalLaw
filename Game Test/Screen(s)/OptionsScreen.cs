@@ -12,6 +12,7 @@ namespace Game_Test
     public class OptionsScreen : Screen
     {
         Control1 control;
+        Options_Members control_member;
         static int numFields = 5;
         static int numItems = 9;
         Control1_Field[] fields = new Control1_Field[numFields];
@@ -20,8 +21,9 @@ namespace Game_Test
         //Contructor
         public OptionsScreen()
         {
+            control_member.Create_Lists();
 
-            fields[0] = new Control1_Field("Test1", numItems);
+            fields[0] = new Control1_Field("Video", numItems);
             fields[1] = new Control1_Field("Test2", numItems);
             fields[2] = new Control1_Field("Test3", numItems);
             fields[3] = new Control1_Field("Test4", numItems);
@@ -29,7 +31,7 @@ namespace Game_Test
 
             control = new Control1(numFields, numItems);
 
-            items[0] = new Control1_Item("Test1","Test1", 2);
+            items[0] = new Control1_Item("Resolution", control_member.GetList(1)[0], 2);
             items[1] = new Control1_Item("Test2", "Test2", 2);
             items[2] = new Control1_Item("Test3", "Test3", 2);
             items[3] = new Control1_Item("Test4", "Test4", 2);
