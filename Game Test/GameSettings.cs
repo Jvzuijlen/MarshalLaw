@@ -44,7 +44,7 @@ namespace Game_Test
 
             //Fullscreen
             //Dimensions = Screensize;
-            Dimensions = new Vector2(1366, 768);
+            Dimensions = new Vector2(1280, 720);
 
             //Zorgt ervoor dat de window in het midden van je beeldscherm begint
             Position = new Point((int)(Screensize.X - Dimensions.X) / 2, (int)(Screensize.Y - Dimensions.Y) / 2);

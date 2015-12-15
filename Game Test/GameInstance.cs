@@ -33,8 +33,8 @@ namespace Game_Test
             this.TargetElapsedTime = TimeSpan.FromSeconds(1.0f / 60.0f); //Verander de laatste float naar aantal frames per seconde
             this.Graphics.PreferredBackBufferWidth = (int)GameSettings.Instance.Dimensions.X;
             this.Graphics.PreferredBackBufferHeight = (int)GameSettings.Instance.Dimensions.Y;
-            if (!Graphics.IsFullScreen)
-                Graphics.ToggleFullScreen();
+            //if (!Graphics.IsFullScreen)
+                //Graphics.ToggleFullScreen();
             this.Graphics.ApplyChanges();
 
 

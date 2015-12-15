@@ -75,7 +75,7 @@
     <Compile Include="Screen%28s%29\CharCreationScreen.cs" />
     <Compile Include="Screen%28s%29\OptionsScreen.cs" />
     <Compile Include="PlayerCharacter\Perks.cs" />
-    <Compile Include="PlayerCharacter\Player.cs" />
+    <Compile Include="PlayerCharacter\Playerstats.cs" />
     <Compile Include="DrawBaseClasses\Image.cs" />
     <Compile Include="GameInstance.cs" />
     <Compile Include="GameManager%28s%29\InputManager.cs" />

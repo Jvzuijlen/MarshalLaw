@@ -24,7 +24,7 @@ namespace Game_Test
         }
 
 
-        List<string> Resolutions;
+        List<string> Resolutions = new List<string>();
 
         public void Create_Lists()
         {
@@ -51,6 +51,17 @@ namespace Game_Test
 
             }
             return null;
+        }
+
+        public string GetString(int ID, int index)
+        {
+            switch(ID)
+            {
+                case 1:
+                    return Resolutions[index];
+                    break;
+            }
+            return "error";
         }
     }
 }

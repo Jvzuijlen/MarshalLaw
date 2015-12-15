@@ -50,6 +50,8 @@ namespace Game_Test
                                scale: new Vector2(GameSettings.Instance.Dimensions.X / 1920f, GameSettings.Instance.Dimensions.Y / 1080f));
 
             //Maak menu aan en zet op midde van scherm
+            Vector2 scale = new Vector2(GameSettings.Instance.Dimensions.X / 1920, GameSettings.Instance.Dimensions.Y / 1080);
+
             #region
             for (int i = 0; i < text.Length; i++)
             {
@@ -57,7 +59,7 @@ namespace Game_Test
                 menuItems[i].LoadContent();
                 menuLenght.Y += menuItems[i].imageselected.SourceRect.Height;
             }
-            menuPosition.Y = poster.Position.Y + ((poster.SourceRect.Height - menuLenght.Y) / 2);
+            menuPosition.Y = poster.Position.Y + (((poster.SourceRect.Height) - menuLenght.Y) / 2);
 
             int temp = 0;
             for (int i = 0; i < text.Length; i++)
@@ -166,6 +168,8 @@ namespace Game_Test
 
         public void LoadContent()
         {
+            Vector2 scale = new Vector2(GameSettings.Instance.Dimensions.X / 1920, GameSettings.Instance.Dimensions.Y / 1080);
+
             imageselected.LoadContent( 0, (int)Position.Y, true, new Vector2(GameSettings.Instance.Dimensions.X / 1920f, GameSettings.Instance.Dimensions.Y / 1080f));
             imageunselected.LoadContent( 0, (int)Position.Y, true, new Vector2(GameSettings.Instance.Dimensions.X / 1920f, GameSettings.Instance.Dimensions.Y / 1080f));
         }
@@ -200,6 +204,7 @@ namespace Game_Test
 
         public void SetPosition()
         {
+            
             imageselected.Position =  new Vector2(imageselected.Position.X, Position.Y);
             imageunselected.Position = new Vector2(imageunselected.Position.X, Position.Y);
         }
