@@ -15,7 +15,7 @@ namespace Game_Test
         private Image arrow_left, arrow_right;
         private cText itemtitle;
         public cText itemsetting;
-        int fieldID;
+        public int fieldID;
         public int currentIndex;
         public int maxIndex;
         float tempPosition;

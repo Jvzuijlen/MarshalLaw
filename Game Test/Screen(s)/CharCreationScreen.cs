@@ -29,25 +29,24 @@ namespace Game_Test
         {
             charCreatin_member = new CharCreation_Members();
 
-            numitems1 = charCreatin_member.GetList(10).Count;
+            numitems1 = charCreatin_member.GetList(10, 2).Count;
             numitems2 = 1;
             numitems3 = 1;
 
-            fields[0] = new Control1_Field( 0, numFields, "Character", numitems1);
+            fields[0] = new Control1_Field( 0, numFields, "Character", numitems3);
             fields[1] = new Control1_Field( 1, numFields, "Attributes", numitems2);
-            fields[2] = new Control1_Field( 2, numFields, "Appearance", numitems3);
+            fields[2] = new Control1_Field( 2, numFields, "Appearance", numitems1);
 
             control = new Control1(numFields, numitems1);
-
 
             for (int i = 0; i < numitems1; i++)
             {
                 items1[i] = new Control1_Item(
                     itemID:i,
-                    itemname: charCreatin_member.GetList(10)[i], 
+                    itemname: charCreatin_member.GetList(10, 2)[i], 
                     itemsetting: charCreatin_member.GetString(i, 0),
-                    fieldID: 0,
-                    maxindex: charCreatin_member.GetList(i).Count
+                    fieldID: 2,
+                    maxindex: charCreatin_member.GetList(i, 2).Count
                     );
             }
         }
@@ -94,9 +93,12 @@ namespace Game_Test
         {
             base.Update(gameTime);
 
+            control.CurrentNumberControlItems = fields[control.CurrentActiveField].maxItems;
+
             control.Update(gameTime);
 
-            items1[control.CurrentActiveItem].itemsetting.Text = charCreatin_member.GetString(control.CurrentActiveItem, items1[control.CurrentActiveItem].currentIndex);
+            if(control.CurrentActiveItem != 10)
+                items1[control.CurrentActiveItem].itemsetting.Text = charCreatin_member.GetString(control.CurrentActiveItem, items1[control.CurrentActiveItem].currentIndex);
 
             foreach (var control_field in fields)
             {
@@ -116,8 +118,12 @@ namespace Game_Test
             }
             if (control.currentSelectedMainControl == Control1.selection.fieldactive)
             {
-                items1[control.CurrentActiveItem].IsSelected = true;
-                items1[control.CurrentActiveItem].Update(gameTime);
+                if (control.CurrentActiveItem != 10)
+                {
+                    items1[control.CurrentActiveItem].IsSelected = true;
+                    items1[control.CurrentActiveItem].Update(gameTime);
+                }
+
             }
 
             //When the Escape key has been pressed exit the game
@@ -138,16 +144,27 @@ namespace Game_Test
                 control_field.Draw(spriteBatch);
             }
 
-            switch (control.CurrentActiveField)
+            foreach (var item in items1)
             {
-                case 0:
-                    foreach (var item in items1)
-                    {
-                        if (item != null)
-                            item.Draw(spriteBatch);
-                    }
-                    break;
+                if (item != null)
+                    if(item.fieldID == control.CurrentActiveField)
+                        item.Draw(spriteBatch);
             }
+
+            foreach (var item in items2)
+            {
+                if (item != null)
+                    if (item.fieldID == control.CurrentActiveField)
+                        item.Draw(spriteBatch);
+            }
+
+            foreach (var item in items3)
+            {
+                if (item != null)
+                    if (item.fieldID == control.CurrentActiveField)
+                        item.Draw(spriteBatch);
+            }
+
         }
     }
 }

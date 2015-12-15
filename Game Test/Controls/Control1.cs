@@ -19,14 +19,14 @@ namespace Game_Test
         };
 
         int numberControlFields;
-        int numberControlItems;
+        public int CurrentNumberControlItems;
         public int CurrentActiveField;
         public int CurrentActiveItem;
         public selection currentSelectedMainControl;
         public selection currentSelectedItemControl;
         public bool LeftItemSelected;
 
-        public Control1(int numFields, int numItems)
+        public Control1(int numFields, int currentNumItems)
         {
 
             #region "Create Instances of all the Images"
@@ -42,7 +42,7 @@ namespace Game_Test
             #endregion
 
             this.numberControlFields = numFields;
-            this.numberControlItems = numItems;
+            this.CurrentNumberControlItems = currentNumItems;
             currentSelectedMainControl = selection.buttonmiddle;
             currentSelectedItemControl = selection.arrow_left;
 
@@ -134,6 +134,12 @@ namespace Game_Test
         public virtual void Update(GameTime gameTime)
         {
             background.Update(gameTime);
+
+            if (currentSelectedMainControl != selection.fieldactive)
+            {
+                currentSelectedItemControl = selection.arrow_left;
+                CurrentActiveItem = 0;
+            }   
             
             #region "Seleced Update"
             switch (currentSelectedMainControl)
@@ -168,6 +174,10 @@ namespace Game_Test
                         currentSelectedItemControl = selection.arrow_left;
                     else if (currentSelectedItemControl == selection.arrow_left)
                         currentSelectedMainControl = selection.buttonup;
+                    else if (currentSelectedItemControl == selection.buttonleft)
+                        currentSelectedMainControl = selection.buttondown;
+                    else if (currentSelectedItemControl == selection.buttonright)
+                        currentSelectedItemControl = selection.buttonleft;
                 }
                 if (InputManager.Instance.KeyPressed(Keys.Right))
                 {
@@ -175,18 +185,37 @@ namespace Game_Test
                         currentSelectedItemControl = selection.arrow_left;
                     else if (currentSelectedItemControl == selection.arrow_left)
                         currentSelectedItemControl = selection.arrow_right;
+                    else if (currentSelectedItemControl == selection.buttonleft)
+                        currentSelectedItemControl = selection.buttonright;
                 }
                 if (InputManager.Instance.KeyPressed(Keys.Down))
                 {
-                    CurrentActiveItem++;
-                    if (CurrentActiveItem == numberControlItems)
-                        CurrentActiveItem = 0;
+                    if (CurrentActiveItem + 1 >= CurrentNumberControlItems)
+                    {
+                        currentSelectedItemControl = selection.buttonleft;
+                        CurrentActiveItem = 10;
+                    }
+                    else
+                    {
+                        CurrentActiveItem++;
+                        if (currentSelectedItemControl == selection.buttonleft)
+                            currentSelectedItemControl = selection.arrow_left;
+                        if (currentSelectedItemControl == selection.buttonright)
+                            currentSelectedItemControl = selection.arrow_right;
+                    }
                 }
                 if (InputManager.Instance.KeyPressed(Keys.Up))
                 {
-                    CurrentActiveItem--;
-                    if (CurrentActiveItem == -1)
-                        CurrentActiveItem = numberControlItems - 1;
+                    if (CurrentActiveItem == 10)
+                    {
+                        CurrentActiveItem = CurrentNumberControlItems - 1;
+                        if (currentSelectedItemControl == selection.buttonleft)
+                            currentSelectedItemControl = selection.arrow_left;
+                        if (currentSelectedItemControl == selection.buttonright)
+                            currentSelectedItemControl = selection.arrow_right;
+                    }
+                    else
+                        CurrentActiveItem--;
                 }
             }
             else
@@ -257,6 +286,17 @@ namespace Game_Test
             }
 
             mainbuttonmiddle.Draw(spriteBatch);
+
+            if(currentSelectedItemControl == selection.buttonleft && currentSelectedMainControl == selection.fieldactive)
+                buttonleft.Color = Color.White;
+            else
+                buttonleft.Color = Color.Black;
+
+            if (currentSelectedItemControl == selection.buttonright && currentSelectedMainControl == selection.fieldactive)
+                buttonright.Color = Color.White;
+            else
+                buttonright.Color = Color.Black;
+
 
             buttonleft.DrawString(spriteBatch);
             buttonright.DrawString(spriteBatch);

@@ -15,6 +15,7 @@ namespace Game_Test
         private int FieldID;
         public Vector2 Dimensions;
         private int maxFields;
+        public int maxItems;
         public bool IsActive { get; set; }
 
         public cText Title { get { return title; } }
@@ -31,6 +32,7 @@ namespace Game_Test
             this.title = new cText(title, "DryGood");
             this.FieldID = FieldID;
             this.maxFields = maxFields;
+            this.maxItems = numItems;
             this.status = 0;
             IsActive = false;
         }

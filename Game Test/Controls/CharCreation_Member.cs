@@ -47,6 +47,7 @@ namespace Game_Test
 
         public void Create_Lists()
         {
+            #region "FieldID 1"
             string[] stringAppearance = { "Gender", "Skincolor", "Head", "Belt", "Pants" };
 
             string[] stringSkincolors = { "Light", "Tanned", "Tanned2", "Dark", "Dark2" };
@@ -80,35 +81,106 @@ namespace Game_Test
             {
                 pants.Add(stringPants[i]);
             }
+            #endregion
+
+            #region "FieldID 2"
+
+            #endregion
         }
 
-        public List<string> GetList(int ID)
+        public List<string> GetList(int itemID, int fieldID)
         {
-            switch(ID)
+            switch(fieldID)
             {
-                case 0:
-                    return gender;
+                #region "Field 1"
                 case 1:
-                    return skincolors;
-                case 2:
-                    return head;
-                case 3:
-                    return belt;
-                case 4:
-                    return pants;
-                case 5:
+                    switch (itemID)
+                    {
+                        case 0:
+                            return null;
+                        case 1:
+                            return null;
+                        case 2:
+                            return null;
+                        case 3:
+                            return null;
+                        case 4:
+                            return null;
+                        case 5:
+                            return null;
+                        case 6:
+                            return null;
+                        case 7:
+                            return null;
+                        case 8:
+                            return null;
+                        case 9:
+                            return null;
+                        case 10:
+                            return null;
+                    }
                     return null;
-                case 6:
-                    return null;
-                case 7:
-                    return null;
-                case 8:
-                    return null;
-                case 9:
-                    return null;
-                case 10:
-                    return appearance;
+                #endregion
 
+                #region "Field 2"
+                case 2:
+                    switch (itemID)
+                    {
+                        case 0:
+                            return gender;
+                        case 1:
+                            return skincolors;
+                        case 2:
+                            return head;
+                        case 3:
+                            return belt;
+                        case 4:
+                            return pants;
+                        case 5:
+                            return null;
+                        case 6:
+                            return null;
+                        case 7:
+                            return null;
+                        case 8:
+                            return null;
+                        case 9:
+                            return null;
+                        case 10:
+                            return appearance;
+                    }
+                    return null;
+                #endregion
+
+                #region "Field 3"
+                case 3:
+                    switch (itemID)
+                    {
+                        case 0:
+                            return null;
+                        case 1:
+                            return null;
+                        case 2:
+                            return null;
+                        case 3:
+                            return null;
+                        case 4:
+                            return null;
+                        case 5:
+                            return null;
+                        case 6:
+                            return null;
+                        case 7:
+                            return null;
+                        case 8:
+                            return null;
+                        case 9:
+                            return null;
+                        case 10:
+                            return null;
+                    }
+                    return null;
+                    #endregion
             }
             return null;
         }
