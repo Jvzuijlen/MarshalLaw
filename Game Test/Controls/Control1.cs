@@ -15,7 +15,7 @@ namespace Game_Test
 
         public enum selection
         {
-            buttonup, buttonmiddle, buttondown, fieldactive, itemtitle, arrow_left, arrow_right, buttonleft, buttonright
+            buttonup, buttonmiddle, buttondown, fieldactive, arrow_left, arrow_right, buttonleft, buttonright
         };
 
         int numberControlFields;
@@ -44,7 +44,7 @@ namespace Game_Test
             this.numberControlFields = numFields;
             this.numberControlItems = numItems;
             currentSelectedMainControl = selection.buttonmiddle;
-            currentSelectedItemControl = selection.itemtitle;
+            currentSelectedItemControl = selection.arrow_left;
 
 
             int[] Fields = new int[numFields];
@@ -105,6 +105,14 @@ namespace Game_Test
             buttonleft.LoadContent();
             buttonright.LoadContent();
 
+            buttonleft.Scale = textScale;
+            buttonright.Scale = textScale;
+
+            float x_scale = (GameSettings.Instance.Dimensions.X / 1920);
+
+            buttonleft.Position = new Vector2(610 * x_scale, 800 * x_scale);
+            buttonright.Position = new Vector2(1360 * x_scale, 800 * x_scale);
+
 
         }
         public virtual void UnloadContent()
@@ -156,19 +164,15 @@ namespace Game_Test
             {
                 if (InputManager.Instance.KeyPressed(Keys.Left))
                 {
-                    if (currentSelectedItemControl == selection.itemtitle)
-                        currentSelectedMainControl = selection.buttonup;
-                    else if (currentSelectedItemControl == selection.arrow_right)
+                    if (currentSelectedItemControl == selection.arrow_right)
                         currentSelectedItemControl = selection.arrow_left;
                     else if (currentSelectedItemControl == selection.arrow_left)
-                        currentSelectedItemControl = selection.itemtitle;
+                        currentSelectedMainControl = selection.buttonup;
                 }
                 if (InputManager.Instance.KeyPressed(Keys.Right))
                 {
-                    if (currentSelectedItemControl == selection.itemtitle)
+                    if (currentSelectedItemControl == selection.arrow_right)
                         currentSelectedItemControl = selection.arrow_left;
-                    else if (currentSelectedItemControl == selection.arrow_right)
-                        currentSelectedItemControl = selection.itemtitle;
                     else if (currentSelectedItemControl == selection.arrow_left)
                         currentSelectedItemControl = selection.arrow_right;
                 }

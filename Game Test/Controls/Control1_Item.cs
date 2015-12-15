@@ -29,7 +29,7 @@ namespace Game_Test
 
         public enum selection
         {
-            title, arrowleft, arrowright
+            arrowleft, arrowright
         }
 
         public selection currentSelected;
@@ -45,7 +45,7 @@ namespace Game_Test
             arrow_left.Color = Color.Black;
             arrow_right.Color = Color.Black;
             fadeeffect = new FadeEffect(1.5f, 1.0f, 0.3f);
-            currentSelected = selection.title;
+            currentSelected = selection.arrowleft;
         }
 
         public void LoadContent()
@@ -173,9 +173,6 @@ namespace Game_Test
                 arrow_right.Alpha = temp;
                 switch (currentSelected)
                 {
-                    case selection.title:
-                        itemtitle.Color = Color.White;
-                        break;
                     case selection.arrowleft:
                         arrow_left.Color = Color.White;
                         break;
@@ -206,7 +203,7 @@ namespace Game_Test
 
         public void ResetSelected()
         {
-            currentSelected = selection.title;
+            currentSelected = selection.arrowleft;
         }
 
         public void SetSelected(int selected)
@@ -214,12 +211,9 @@ namespace Game_Test
             switch(selected)
             {
                 case 4:
-                    currentSelected = selection.title;
-                    break;
-                case 5:
                     currentSelected = selection.arrowleft;
                     break;
-                case 6:
+                case 5:
                     currentSelected = selection.arrowright;
                     break;
             }
