@@ -8,38 +8,95 @@ namespace Game_Test
     class Player
     {
         //Fields
-        private string Name;
-        private bool Gender;
-        private int TotalHP;
-        private int TotalEnergy;
-        private int TotalStamina;
-        private int Gold;
-        private int XP;
-        private int Lvl;
-        private List<Perks> PlayerPerks;
-        private List<Items> Inventory;
+        private string name;
+        private bool gender;
+        private int totalHP;
+        private int totalEnergy;
+        private int totalStamina;
 
-        private int CurrentHP;
-        private int CurrentEnergy;
-        private int CurrentStamina;
+        private int gold;
+        private int xP;
+        private int lvl;
+        private int currentHP;
+        private int currentEnergy;
+        private int currentStamina;
+
+        private List<Perks> playerPerks;
+        private List<Items> inventory;
+
+        //properties
+        public string Name {  get { return this.name; } }
+        public bool Gender { get { return this.gender; } }
+        public int TotalHP { get { return this.totalHP; } }
+        public int TotalEnergy { get { return this.totalEnergy; } }
+        public int TotalStamina { get { return this.totalStamina; } }
+
+        public int Gold { get { return this.gold; } set { this.gold = value; } }
+        public int XP { get { return this.xP; } set { this.xP = value; } }
+        public int Lvl { get { return this.lvl; } set { this.lvl = value; } }
+        public int CurrentHP { get { return this.currentHP; } set { this.currentHP = value; } }
+        public int CurrentEnergy { get { return this.currentEnergy; } set { this.currentEnergy = value; } }
+        public int CurrentStamina { get { return this.currentStamina; } set { this.currentStamina = value; } }
 
         //Constructor
         public Player(string name, bool gender, Perks startperk)
         {
-            this.Name = name;
-            this.Gender = gender;
-            this.TotalHP = 1; //Default Value
-            this.TotalEnergy = 1; //Default Value
-            this.TotalStamina = 1; //Default Value
-            this.Gold = 1; //Default Value
-            this.XP = 0; //Default Value
-            this.Lvl = 1; //Default Value
-            this.PlayerPerks = new List<Perks> {startperk };
-            this.Inventory = new List<Items> { };
+            this.name = name;
+            this.gender = gender;
+            this.totalHP = 1; //Default Value
+            this.totalEnergy = 1; //Default Value
+            this.totalStamina = 1; //Default Value
+            this.gold = 1; //Default Value
+            this.xP = 0; //Default Value
+            this.lvl = 1; //Default Value
+            this.playerPerks = new List<Perks> {startperk };
+            this.inventory = new List<Items> { };
 
-            this.CurrentHP = this.TotalHP;
-            this.CurrentEnergy = this.TotalEnergy;
-            this.CurrentStamina = this.TotalStamina;
+            this.currentHP = this.totalHP;
+            this.currentEnergy = this.totalEnergy;
+            this.currentStamina = this.totalStamina;
+        }
+
+        //methods
+        public Items InventoryItem(int index)
+        {
+            return inventory[index];
+        }
+
+        public List<Items> Inventory()
+        {
+            return inventory;
+        }
+
+        public Perks PlayerPerk(int index)
+        {
+            return playerPerks[index];
+        }
+
+        public List<Perks> PlayerPerks()
+        {
+            return playerPerks;
+        }
+
+
+        public void XPcheck()
+        {
+            if (xP - lvl*100 == 100)
+            {
+                LevelUp();
+            }
+        }
+
+        private void LevelUp()
+        {
+            totalEnergy++;
+            totalHP++;
+            totalStamina++;
+            lvl++;
+            if (lvl % 2 == 0)
+            {
+                //Choose Perk
+            }
         }
 
     }

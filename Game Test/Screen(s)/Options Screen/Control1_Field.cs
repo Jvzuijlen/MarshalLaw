@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,22 +15,23 @@ namespace Game_Test
         private int FieldID;
         public Vector2 Dimensions;
         static int nextFieldID = 0;
-        
+        public bool IsActive { get; set; }
 
         public cText Title { get { return title; } }
         public int Status { get { return status; } set { status = value; } }
+
+
 
         /// <summary>
         /// Contructor for a Control Item
         /// </summary>
         /// <param name="">The title of the Item</param>
-        /// <param name="">Each control needs its own ID</param>
-        /// <param name="">This wil be the starting status</param>
-        public Control1_Field(string title)
+        public Control1_Field(string title, int numItems)
         {
             this.title = new cText(title, "DryGood");
             FieldID = nextFieldID++;
             this.status = 0;
+            IsActive = false;
         }
 
         public void LoadContent()
@@ -65,16 +67,35 @@ namespace Game_Test
             switch (status)
             {
                 case 1:
-                    title.Position = new Vector2((160 + x_position) * scale, 230 * scale);
+                    title.Position = new Vector2((160 + x_position) * scale, 225 * scale);
                     break;
                 case 2:
                     title.Position = new Vector2((155 + x_position) * scale, 350 * scale);
                     break;
                 case 3:
 
-                    title.Position = new Vector2((160 + x_position) * scale, 485 * scale);
+                    title.Position = new Vector2((160 + x_position) * scale, 475 * scale);
                     break;
             }
+        }
+
+
+        public void SetStatus(int currentActive)
+        {
+            if (currentActive == FieldID)
+                status = 2;
+            else if (currentActive - 1 == FieldID)
+                status = 1;
+            else if (currentActive - 2 == FieldID)
+                status = 0;
+            else if (currentActive + 1 == FieldID)
+                status = 3;
+            else if (currentActive + 2 == FieldID)
+                status = 4;
+            if (FieldID == 0 && currentActive == nextFieldID - 1)
+                status = 3;
+            if (FieldID == nextFieldID - 1 && currentActive == 0)
+                status = 1;
         }
     }
 }

@@ -14,11 +14,27 @@ namespace Game_Test
         //Fields
         public float Alpha;
         public string Text, FontName, Path;
-        public Vector2 Position, Scale;
+        public Vector2 Position;
         public Rectangle SourceRect;
+        private Vector2 scale;
+        public Color Color { get; set; }
+
+        public Vector2 Scale
+        {
+            get
+            {
+                return scale;
+            }
+            set
+            {
+                scale = value;
+            }
+        }
+
         //Vector2 origin;
         ContentManager content;
         SpriteFont font;
+        Vector2 dimensions = Vector2.Zero;
 
         public cText(string Text, string fontname)
         {
@@ -35,9 +51,10 @@ namespace Game_Test
                     break;
             }
             this.Position = Vector2.Zero;
-            this.Scale = Vector2.One;
+            this.scale = Vector2.One;
             this.Alpha = 1.0f;
             this.SourceRect = Rectangle.Empty;
+            this.Color = Color.Black;
         }
 
         public void LoadContent()
@@ -56,11 +73,35 @@ namespace Game_Test
             }
 
             //Create a rectangle wich other classes can work with
-            if (SourceRect == Rectangle.Empty)
-                SourceRect = new Rectangle(0, 0, (int)dimensions.X, (int)dimensions.Y);
+            SourceRect = new Rectangle(0, 0, (int)(dimensions.X * scale.X), (int)(dimensions.Y * scale.Y));
 
-            this.Scale.X = (GameSettings.Instance.Dimensions.X / 1920);
-            this.Scale.Y = (GameSettings.Instance.Dimensions.Y / 1080);
+            this.scale.X = (GameSettings.Instance.Dimensions.X / 1920);
+            this.scale.Y = (GameSettings.Instance.Dimensions.Y / 1080);
+        }
+
+        public void LoadContent(Vector2 position)
+        {
+            //Load the content for the text
+            content = new ContentManager(ScreenManager.Instance.Content.ServiceProvider, "Content");
+            font = content.Load<SpriteFont>(FontName);
+
+            
+
+            //Make sure the text class has the dimensions from the font
+            if (Text != string.Empty)
+            {
+                dimensions.X += font.MeasureString(Text).X;
+                dimensions.Y += font.MeasureString(Text).Y;
+            }
+
+            //Create a rectangle wich other classes can work with
+
+            this.scale.X = (GameSettings.Instance.Dimensions.X / 1920);
+            this.scale.Y = (GameSettings.Instance.Dimensions.Y / 1080);
+
+            SourceRect = new Rectangle(0, 0, (int)(dimensions.X * scale.X), (int)(dimensions.Y * scale.Y));
+
+            Position = position;
         }
 
         public void UnloadContent()
@@ -71,11 +112,12 @@ namespace Game_Test
         public void Update(GameTime gameTime)
         {
             //To be Added
+            
         }
 
         public void DrawString(SpriteBatch spriteBatch)
         {
-            spriteBatch.DrawString(font, Text, Position, Color.Black * Alpha, 0.0f, Vector2.Zero, Scale, SpriteEffects.None, 0.0f);
+            spriteBatch.DrawString(font, Text, Position, Color * Alpha, 0.0f, Vector2.Zero, scale, SpriteEffects.None, 0.0f);
         }
     }
 }

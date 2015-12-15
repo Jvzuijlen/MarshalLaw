@@ -13,24 +13,31 @@ namespace Game_Test
     {
         Control1 control;
         static int numFields = 5;
+        static int numItems = 9;
         Control1_Field[] fields = new Control1_Field[numFields];
-
+        Control1_Item[] items = new Control1_Item[numItems];
 
         //Contructor
         public OptionsScreen()
         {
 
-            fields[0] = new Control1_Field("Test1");
-            fields[1] = new Control1_Field("Test2");
-            fields[2] = new Control1_Field("Test3");
-            fields[3] = new Control1_Field("Test4");
-            fields[4] = new Control1_Field("Test5");
+            fields[0] = new Control1_Field("Test1", numItems);
+            fields[1] = new Control1_Field("Test2", numItems);
+            fields[2] = new Control1_Field("Test3", numItems);
+            fields[3] = new Control1_Field("Test4", numItems);
+            fields[4] = new Control1_Field("Test5", numItems);
 
-            control = new Control1(numFields);
+            control = new Control1(numFields, numItems);
 
-            fields[1].Status = 1;
-            fields[2].Status = 2;
-            fields[3].Status = 3;
+            items[0] = new Control1_Item("Test1","Test1", 2);
+            items[1] = new Control1_Item("Test2", "Test2", 2);
+            items[2] = new Control1_Item("Test3", "Test3", 2);
+            items[3] = new Control1_Item("Test4", "Test4", 2);
+            items[4] = new Control1_Item("Test5", "Test5", 2);
+            items[5] = new Control1_Item("Test6", "Test6", 2);
+            items[6] = new Control1_Item("Test7", "Test7", 2);
+            items[7] = new Control1_Item("Test8", "Test8", 2);
+            items[8] = new Control1_Item("Test9", "Test9", 2);
         }
 
 
@@ -42,6 +49,11 @@ namespace Game_Test
             foreach (var control_field in fields)
             {
                 control_field.LoadContent();
+            }
+
+            foreach (var item in items)
+            {
+                item.LoadContent();
             }
 
         }
@@ -56,6 +68,12 @@ namespace Game_Test
             {
                 control_field.UnloadContent();
             }
+
+            foreach (var item in items)
+            {
+                item.UnloadContent();
+            }
+
         }
 
         public override void Update(GameTime gameTime)
@@ -66,22 +84,22 @@ namespace Game_Test
 
             foreach (var control_field in fields)
             {
-                control_field.Update(gameTime);
                 control_field.Status = -1;
+                control_field.SetStatus(control.CurrentActiveField);
+                control_field.Update(gameTime);
             }
 
-
-            if(control.CurrentActiveItem - 2 >= 0)
-                fields[control.CurrentActiveItem - 2].Status = 0;
-            else
-            if (control.CurrentActiveItem - 1 >= 0)
-                fields[control.CurrentActiveItem-1].Status = 1;
-            if (control.CurrentActiveItem >= 0 && control.CurrentActiveItem < numFields)
-                fields[control.CurrentActiveItem].Status = 2;
-            if (control.CurrentActiveItem + 1 < numFields)
-                fields[control.CurrentActiveItem+1].Status = 3;
-            if (control.CurrentActiveItem + 2 < numFields)
-                fields[control.CurrentActiveItem + 2].Status = 4;
+            foreach (var item in items)
+            {
+                item.IsSelected = false;
+                item.SetSelected((int)control.currentSelectedItemControl);
+                item.Update(gameTime);
+            }
+            if(control.currentSelectedMainControl == Control1.selection.fieldactive)
+            {
+                items[control.CurrentActiveItem].IsSelected = true;
+                items[control.CurrentActiveItem].Update(gameTime);
+            }
 
             //When the Escape key has been pressed exit the game
             if (InputManager.Instance.KeyPressed(Keys.Escape))
@@ -99,6 +117,16 @@ namespace Game_Test
             foreach (var control_field in fields)
             {
                 control_field.Draw(spriteBatch);
+            }
+
+            switch (control.CurrentActiveField)
+            {
+                case 2:
+                    foreach (var item in items)
+                    {
+                        item.Draw(spriteBatch);
+                    }
+                    break;
             }
         }
     }
