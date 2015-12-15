@@ -50,7 +50,7 @@ namespace Game_Test
         private ScreenManager()
         {
             //CurrentScreen begint met het SplashScreen
-            currentscreen = new Test();
+            currentscreen = new MenuScreen();
             IsTransitioning = false;
         }
 
