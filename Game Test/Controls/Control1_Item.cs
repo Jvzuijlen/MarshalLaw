@@ -54,49 +54,8 @@ namespace Game_Test
             imageScale = new Vector2(GameSettings.Instance.Dimensions.X / 2732f, GameSettings.Instance.Dimensions.Y / 1536f);
 
             #region "Position the Text on the Y axis"
-            textPos_Y = 400;
-            imagePos_Y = 420;
-            switch (ItemID)
-            {
-                case 0:
-                    break;
-                case 1:
-                    textPos_Y += 110;
-                    imagePos_Y += 110;
-                    break;
-                case 2:
-                    textPos_Y += 220;
-                    imagePos_Y += 220;
-                    break;
-                case 3:
-                    textPos_Y += 330;
-                    imagePos_Y += 330;
-                    break;
-                case 4:
-                    textPos_Y += 440;
-                    imagePos_Y += 440;
-                    break;
-                case 5:
-                    textPos_Y += 550;
-                    imagePos_Y += 550;
-                    break;
-                case 6:
-                    textPos_Y += 660;
-                    imagePos_Y += 660;
-                    break;
-                case 7:
-                    textPos_Y += 770;
-                    imagePos_Y += 770;
-                    break;
-                case 8:
-                    textPos_Y += 880;
-                    imagePos_Y += 880;
-                    break;
-                case 9:
-                    textPos_Y += 990;
-                    imagePos_Y += 990;
-                    break;
-            }
+            textPos_Y = 400 + ItemID*110;
+            imagePos_Y = 420 + ItemID*110;
 
             textPos_Y = textPos_Y * (GameSettings.Instance.Dimensions.Y / 1920);
             imagePos_Y = imagePos_Y * (GameSettings.Instance.Dimensions.Y / 1920);
