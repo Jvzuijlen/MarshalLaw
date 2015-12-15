@@ -68,8 +68,8 @@ namespace Game_Test
 
             Position = new Vector2(pos_X, pos_Y);
 
-            if (SourceRect == Rectangle.Empty)
-                SourceRect = new Rectangle((int)Position.X, (int)Position.Y, (int)(dimensions.X * (GameSettings.Instance.Dimensions.X / 2732f)), (int)(dimensions.Y * (GameSettings.Instance.Dimensions.Y / 1536f)));
+            SourceRect = new Rectangle((int)Position.X, (int)Position.Y, (int)(dimensions.X), (int)(dimensions.Y));
+
             this.Scale = scale;
 
             //SourceRect.Width = SourceRect.Width * 

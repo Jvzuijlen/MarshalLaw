@@ -57,14 +57,8 @@ namespace Game_Test
             Vector2 dimensions = Vector2.Zero;
             Position = new Vector2(pos_X, pos_Y);
 
-            if (Texture != null)
-            {
-                dimensions.X += Texture.Width;
-                dimensions.Y += Texture.Height;
-
-                dimensions.X = scale.X * dimensions.X;
-                dimensions.Y = scale.Y * dimensions.Y;
-            }
+            dimensions.X = scale.X * dimensions.X;
+            dimensions.Y = scale.Y * dimensions.Y;
 
             //When the Position is 0 and the Texture dimensions are smaller then the window and
             //the image is supposed to be centered it will center the image
@@ -80,8 +74,8 @@ namespace Game_Test
 
             Position = new Vector2(pos_X, pos_Y);
 
-            if (SourceRect == Rectangle.Empty)
-                SourceRect = new Rectangle((int)Position.X, (int)Position.Y, (int)(dimensions.X * (GameSettings.Instance.Dimensions.X / 2732f)), (int)(dimensions.Y * (GameSettings.Instance.Dimensions.Y / 1536f)));
+            SourceRect = new Rectangle((int)Position.X, (int)Position.Y, (int)(dimensions.X), (int)(dimensions.Y));
+
             Scale = scale;
         }
 

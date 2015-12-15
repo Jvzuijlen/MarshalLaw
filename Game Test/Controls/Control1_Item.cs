@@ -98,7 +98,7 @@ namespace Game_Test
 
             arrow_left.Position = new Vector2(tempPosition, arrow_left.Position.Y);
 
-            tempPosition += (arrow_left.SourceRect.Width / imageScale.X) + (10 * x_scale);
+            tempPosition += (arrow_left.SourceRect.Width) + (10 * x_scale);
 
             itemsetting.Position = new Vector2(tempPosition, textPos_Y);
 

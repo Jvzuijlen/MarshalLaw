@@ -62,22 +62,21 @@ namespace Game_Test
         public void SetTitlePosition()
         {
             //The scale is nessecary because if the window gets resized the position changes aswell.
-            float scale = GameSettings.Instance.Dimensions.X / 1366;
+           Vector2 scale = new Vector2(GameSettings.Instance.Dimensions.X / 1366, GameSettings.Instance.Dimensions.Y / 768);
             //The middle x coordiantes get calculated here, it takes the width of the text and the width of the control bar,
             //and divides those by 2 to calculate the middle
-            float x_position = (((375 - 170) - title.GetTextSize(title.Text).X) / 2);
+            float x_position = (((205 * scale.X) - title.GetTextSize(title.Text).X) / 2);
 
             switch (status)
             {
                 case 1:
-                    title.Position = new Vector2((175 + x_position) * scale, 230 * scale);
+                    title.Position = new Vector2((177 * scale.X) + x_position, 231 * scale.Y);
                     break;
                 case 2:
-                    title.Position = new Vector2((170 + x_position) * scale, 355 * scale);
+                    title.Position = new Vector2((177 * scale.X) + x_position, 356 * scale.Y);
                     break;
                 case 3:
-
-                    title.Position = new Vector2((175 + x_position) * scale, 480 * scale);
+                    title.Position = new Vector2((177 * scale.X) + x_position, 481 * scale.Y);
                     break;
             }
         }
