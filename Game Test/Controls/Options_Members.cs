@@ -47,7 +47,6 @@ namespace Game_Test
             {
                 case 1:
                     return Resolutions;
-                    break;
 
             }
             return null;
@@ -59,7 +58,6 @@ namespace Game_Test
             {
                 case 1:
                     return Resolutions[index];
-                    break;
             }
             return "error";
         }

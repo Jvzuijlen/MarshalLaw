@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Game_Test
 {
-    class Items
+    public class Items
     {
     }
 }
