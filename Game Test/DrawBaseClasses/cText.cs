@@ -18,6 +18,7 @@ namespace Game_Test
         public Rectangle SourceRect;
         private Vector2 scale;
         public Color Color { get; set; }
+        //Vector2 dimensions;
 
         public Vector2 Scale
         {
@@ -63,13 +64,13 @@ namespace Game_Test
             content = new ContentManager(ScreenManager.Instance.Content.ServiceProvider, "Content");
             font = content.Load<SpriteFont>(FontName);
 
-            Vector2 dimensions = Vector2.Zero;
+            dimensions = Vector2.Zero;
 
             //Make sure the text class has the dimensions from the font
             if(Text != string.Empty)
             {
-                dimensions.X += font.MeasureString(Text).X;
-                dimensions.Y += font.MeasureString(Text).Y;
+                dimensions.X = font.MeasureString(Text).X;
+                dimensions.Y = font.MeasureString(Text).Y;
             }
 
             //Create a rectangle wich other classes can work with
@@ -90,8 +91,8 @@ namespace Game_Test
             //Make sure the text class has the dimensions from the font
             if (Text != string.Empty)
             {
-                dimensions.X += font.MeasureString(Text).X;
-                dimensions.Y += font.MeasureString(Text).Y;
+                dimensions.X = font.MeasureString(Text).X;
+                dimensions.Y = font.MeasureString(Text).Y;
             }
 
             //Create a rectangle wich other classes can work with
@@ -111,13 +112,23 @@ namespace Game_Test
 
         public void Update(GameTime gameTime)
         {
-            //To be Added
-            
+            dimensions.X = font.MeasureString(Text).X;
+            dimensions.Y = font.MeasureString(Text).Y;
+            SourceRect = new Rectangle((int)Position.X, (int)Position.Y, (int)(dimensions.X * scale.X), (int)(dimensions.Y * scale.Y));
         }
 
         public void DrawString(SpriteBatch spriteBatch)
         {
             spriteBatch.DrawString(font, Text, Position, Color * Alpha, 0.0f, Vector2.Zero, scale, SpriteEffects.None, 0.0f);
+        }
+
+        public Vector2 GetTextSize(string text)
+        {
+            Vector2 temp;
+            temp.X = font.MeasureString(Text).X * scale.X;
+            temp.Y = font.MeasureString(Text).Y * scale.Y;
+
+            return temp;
         }
     }
 }

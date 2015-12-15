@@ -14,7 +14,7 @@ namespace Game_Test
         private cText title;
         private int FieldID;
         public Vector2 Dimensions;
-        static int nextFieldID = 0;
+        private int maxFields;
         public bool IsActive { get; set; }
 
         public cText Title { get { return title; } }
@@ -26,10 +26,11 @@ namespace Game_Test
         /// Contructor for a Control Item
         /// </summary>
         /// <param name="">The title of the Item</param>
-        public Control1_Field(string title, int numItems)
+        public Control1_Field(int FieldID, int maxFields, string title, int numItems)
         {
             this.title = new cText(title, "DryGood");
-            FieldID = nextFieldID++;
+            this.FieldID = FieldID;
+            this.maxFields = maxFields;
             this.status = 0;
             IsActive = false;
         }
@@ -64,19 +65,19 @@ namespace Game_Test
             float scale = GameSettings.Instance.Dimensions.X / 1366;
             //The middle x coordiantes get calculated here, it takes the width of the text and the width of the control bar,
             //and divides those by 2 to calculate the middle
-            float x_position = (((240) - (title.SourceRect.Width / 2)) / 2);
+            float x_position = (((375 - 170) - title.GetTextSize(title.Text).X) / 2);
 
             switch (status)
             {
                 case 1:
-                    title.Position = new Vector2((160 + x_position) * scale, 230 * scale);
+                    title.Position = new Vector2((175 + x_position) * scale, 230 * scale);
                     break;
                 case 2:
-                    title.Position = new Vector2((155 + x_position) * scale, 355 * scale);
+                    title.Position = new Vector2((170 + x_position) * scale, 355 * scale);
                     break;
                 case 3:
 
-                    title.Position = new Vector2((160 + x_position) * scale, 480 * scale);
+                    title.Position = new Vector2((175 + x_position) * scale, 480 * scale);
                     break;
             }
         }
@@ -94,9 +95,9 @@ namespace Game_Test
                 status = 3;
             else if (currentActive + 2 == FieldID)
                 status = 4;
-            if (FieldID == 0 && currentActive == nextFieldID - 1)
+            if (FieldID == 0 && currentActive == maxFields - 1)
                 status = 3;
-            if (FieldID == nextFieldID - 1 && currentActive == 0)
+            if (FieldID == maxFields - 1 && currentActive == 0)
                 status = 1;
         }
     }

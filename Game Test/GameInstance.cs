@@ -77,8 +77,8 @@ namespace Game_Test
         {
             if (GameSettings.Instance.ScreenDimChanged)
                 SceenReload();
+            if (ExitGame == true)
             //if (Keyboard.GetState().IsKeyDown(Keys.Escape) || ExitGame == true)
-            if (Keyboard.GetState().IsKeyDown(Keys.Escape) || ExitGame == true)
                 Exit();
 
             ScreenManager.Instance.Update(gameTime);
@@ -104,14 +104,19 @@ namespace Game_Test
 
         public void SceenReload()
         {
+            
             this.Graphics.PreferredBackBufferWidth = (int)GameSettings.Instance.Dimensions.X;
             this.Graphics.PreferredBackBufferHeight = (int)GameSettings.Instance.Dimensions.Y;
             this.Graphics.ApplyChanges();
+
+            
 
             this.Window.Position = new Point(
                                                         x: (int)(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width - GameSettings.Instance.Dimensions.X) / 2,
                                                         y: (int)(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height - GameSettings.Instance.Dimensions.Y) / 2);
             GameSettings.Instance.ScreenDimChanged = false;
+            ScreenManager.Instance.ChangeScreen("OptionsScreen");
+
         }
     }
 }

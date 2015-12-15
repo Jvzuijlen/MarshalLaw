@@ -48,7 +48,7 @@ namespace Game_Test
 
 
             int[] Fields = new int[numFields];
-            CurrentActiveField = 2;
+            CurrentActiveField = 0;
 
         }
 

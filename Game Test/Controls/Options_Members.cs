@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,13 +19,15 @@ namespace Game_Test
             switch(action)
             {
                 case Actions.changeResolution:
-
+                    GameSettings.Instance.Dimensions = new Vector2(Displaymodes[index].Width, Displaymodes[index].Height);
+                    GameSettings.Instance.ScreenDimChanged = true;
                     break;
             }
         }
 
 
         List<string> Resolutions = new List<string>();
+        List<DisplayMode> Displaymodes = new List<DisplayMode>();
 
         public void Create_Lists()
         {
@@ -32,10 +35,21 @@ namespace Game_Test
             foreach (DisplayMode mode in GraphicsAdapter.DefaultAdapter.SupportedDisplayModes)
             {
                 string temp;
-                if (mode.AspectRatio >= 1.7f && mode.AspectRatio <= 1.8f)
+                if (mode.AspectRatio >= 1.6f && mode.AspectRatio <= 1.9f)
                 {
                     temp = mode.Width.ToString() + "x" + mode.Height;
-                    Resolutions.Add(temp);
+
+                    bool check = false;
+                    foreach (string item in Resolutions)
+                    {
+                        if (item == temp)
+                            check = true;
+                    }
+                    if (!check)
+                    {
+                        Resolutions.Add(temp);
+                        Displaymodes.Add(mode);
+                    }
                 }
             }
             #endregion
@@ -47,7 +61,6 @@ namespace Game_Test
             {
                 case 1:
                     return Resolutions;
-                    break;
 
             }
             return null;
@@ -59,7 +72,6 @@ namespace Game_Test
             {
                 case 1:
                     return Resolutions[index];
-                    break;
             }
             return "error";
         }

@@ -10,13 +10,15 @@ namespace Game_Test
 {
     public class Control1_Item
     {
-        public int ItemID { get; set; }
+        public int ItemID { get; private set; }
         public Vector2 Dimensions;
-        static int nextItemID = 0;
         private Image arrow_left, arrow_right;
         private cText itemtitle;
-        private cText itemsetting;
+        public cText itemsetting;
         int fieldID;
+        public int currentIndex;
+        public int maxIndex;
+        float tempPosition;
 
         FadeEffect fadeeffect;
         Vector2 textScale;
@@ -34,10 +36,10 @@ namespace Game_Test
 
         public selection currentSelected;
 
-        public Control1_Item(string itemname, string itemsetting, int fieldID)
+        public Control1_Item(int itemID, string itemname, string itemsetting, int fieldID, int maxindex)
         {
             this.fieldID = fieldID;
-            ItemID = nextItemID++;
+            ItemID = itemID;
             this.itemtitle = new cText(itemname + ":", "DryGood");
             this.itemsetting = new cText(itemsetting, "DryGood");
             arrow_left = new Image("OptionsScreen/arrow_left");
@@ -46,6 +48,8 @@ namespace Game_Test
             arrow_right.Color = Color.Black;
             fadeeffect = new FadeEffect(1.5f, 1.0f, 0.3f);
             currentSelected = selection.arrowleft;
+            currentIndex = 0;
+            this.maxIndex = maxindex;
         }
 
         public void LoadContent()
@@ -86,7 +90,7 @@ namespace Game_Test
             x_scale = (GameSettings.Instance.Dimensions.X / 1920);
 
 
-            float tempPosition = 610 * x_scale;
+            tempPosition = 610 * x_scale;
 
             itemtitle.Position = new Vector2(tempPosition, textPos_Y);
 
@@ -98,11 +102,9 @@ namespace Game_Test
 
             itemsetting.Position = new Vector2(tempPosition, textPos_Y);
 
-            tempPosition += (itemsetting.SourceRect.Width * textScale.X) + (10 * x_scale);
+            arrow_right.Position = new Vector2(tempPosition + ((itemsetting.SourceRect.Width * textScale.X) + (10 * x_scale)), arrow_right.Position.Y);
 
-            arrow_right.Position = new Vector2(tempPosition, arrow_right.Position.Y);
-
-        } 
+        }
 
         public void UnloadContent()
         {
@@ -114,10 +116,13 @@ namespace Game_Test
 
         public void Update(GameTime gameTime)
         {
+
             itemtitle.Update(gameTime);
             itemsetting.Update(gameTime);
             arrow_left.Update(gameTime);
             arrow_right.Update(gameTime);
+
+            arrow_right.Position = new Vector2(tempPosition + ((itemsetting.GetTextSize(itemsetting.Text).X) + (10 * x_scale)), arrow_right.Position.Y);
 
             itemtitle.Color = Color.Black;
             arrow_left.Color = Color.Black;
@@ -139,6 +144,22 @@ namespace Game_Test
                         arrow_right.Color = Color.White;
                         break;
                 }
+
+                if (InputManager.Instance.KeyPressed(Keys.Enter))
+                {
+                    if (currentSelected == selection.arrowleft)
+                    {
+                        currentIndex--;
+                        if (currentIndex < 0)
+                            currentIndex = maxIndex - 1;
+                    }
+                    if (currentSelected == selection.arrowright)
+                    {
+                        currentIndex++;
+                        if (currentIndex >= maxIndex)
+                            currentIndex = 0;
+                    }
+                }
             }
             else
             {
@@ -150,6 +171,7 @@ namespace Game_Test
                 arrow_left.Color = Color.Black;
                 arrow_right.Color = Color.Black;
             }
+
         }
 
         public void Draw(SpriteBatch spriteBatch)

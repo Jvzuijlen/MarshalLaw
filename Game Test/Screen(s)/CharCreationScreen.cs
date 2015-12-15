@@ -20,16 +20,16 @@ namespace Game_Test
         public CharCreationScreen()
         {
 
-            fields[0] = new Control1_Field("Character", numItems);
-            fields[1] = new Control1_Field("Attributes", numItems);
-            fields[2] = new Control1_Field("Appearance", numItems);
+            fields[0] = new Control1_Field( 0, numFields, "Character", numItems);
+            fields[1] = new Control1_Field( 1, numFields, "Attributes", numItems);
+            fields[2] = new Control1_Field( 2, numFields, "Appearance", numItems);
 
             control = new Control1(numFields, numItems);
 
-            items[0] = new Control1_Item("Name", "Test1", 2);
-            items[1] = new Control1_Item("Starting Perk", "Test2", 2);
-            items[2] = new Control1_Item("Head", "Test3", 2);
-            items[3] = new Control1_Item("Body", "Test4", 2);
+            items[0] = new Control1_Item( 0, "Name", "Test1", 0, 1);
+            items[1] = new Control1_Item( 1, "Starting Perk", "Test2", 0, 1);
+            items[2] = new Control1_Item( 2, "Head", "Test3", 0, 1);
+            items[3] = new Control1_Item( 3, "Test4", "Test4", 0, 1);
         }
 
 
@@ -96,7 +96,7 @@ namespace Game_Test
             //When the Escape key has been pressed exit the game
             if (InputManager.Instance.KeyPressed(Keys.Escape))
             {
-                ScreenManager.Instance.ChangeScreen("CharCreationScreen");
+                ScreenManager.Instance.ChangeScreen("MenuScreen");
             }
         }
 
@@ -113,7 +113,7 @@ namespace Game_Test
 
             switch (control.CurrentActiveField)
             {
-                case 2:
+                case 0:
                     foreach (var item in items)
                     {
                         item.Draw(spriteBatch);

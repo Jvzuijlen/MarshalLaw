@@ -61,7 +61,7 @@ namespace Game_Test
             }
             menuPosition.Y = poster.Position.Y + (((poster.SourceRect.Height) - menuLenght.Y) / 2);
 
-            int temp = 0;
+            float temp = 0;
             for (int i = 0; i < text.Length; i++)
             {
                 if (i > 0)
@@ -71,6 +71,7 @@ namespace Game_Test
                 }
                 else
                     menuItems[i].Position.Y = menuPosition.Y;
+
                 menuItems[i].SetPosition();
             }
             #endregion
@@ -175,8 +176,8 @@ namespace Game_Test
         {
             Vector2 scale = new Vector2(GameSettings.Instance.Dimensions.X / 1920, GameSettings.Instance.Dimensions.Y / 1080);
 
-            imageselected.LoadContent( 0, (int)Position.Y, true, new Vector2(GameSettings.Instance.Dimensions.X / 1920f, GameSettings.Instance.Dimensions.Y / 1080f));
-            imageunselected.LoadContent( 0, (int)Position.Y, true, new Vector2(GameSettings.Instance.Dimensions.X / 1920f, GameSettings.Instance.Dimensions.Y / 1080f));
+            imageselected.LoadContent( 0, (int)Position.Y, true, scale);
+            imageunselected.LoadContent( 0, (int)Position.Y, true, scale);
         }
 
         public void UnloadContent()

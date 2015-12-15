@@ -13,8 +13,8 @@ namespace Game_Test
     {
         Control1 control;
         Options_Members option_member;
-        static int numFields = 5;
-        static int numItems = 9;
+        static int numFields = 3;
+        static int numItems = 3;
         Control1_Field[] fields = new Control1_Field[numFields];
         Control1_Item[] items = new Control1_Item[numItems];
 
@@ -24,23 +24,15 @@ namespace Game_Test
             option_member = new Options_Members();
             option_member.Create_Lists();
 
-            fields[0] = new Control1_Field("Video", numItems);
-            fields[1] = new Control1_Field("Test2", numItems);
-            fields[2] = new Control1_Field("Test3", numItems);
-            fields[3] = new Control1_Field("Test4", numItems);
-            fields[4] = new Control1_Field("Test5", numItems);
+            fields[0] = new Control1_Field( 0, numFields,  "Video", numItems);
+            fields[1] = new Control1_Field( 1, numFields,  "Audio", numItems);
+            fields[2] = new Control1_Field( 2, numFields,  "Controls", numItems);
 
             control = new Control1(numFields, numItems);
 
-            items[0] = new Control1_Item("Resolution", option_member.GetString(1, 0), 2);
-            items[1] = new Control1_Item("Test2", "Test2", 2);
-            items[2] = new Control1_Item("Test3", "Test3", 2);
-            items[3] = new Control1_Item("Test4", "Test4", 2);
-            items[4] = new Control1_Item("Test5", "Test5", 2);
-            items[5] = new Control1_Item("Test6", "Test6", 2);
-            items[6] = new Control1_Item("Test7", "Test7", 2);
-            items[7] = new Control1_Item("Test8", "Test8", 2);
-            items[8] = new Control1_Item("Test9", "Test9", 2);
+            items[0] = new Control1_Item( 0, "Resolution", option_member.GetString(1, 0), 3, option_member.GetList(1).Count);
+            items[1] = new Control1_Item( 1, "Test2", "Test2", 3, 1);
+            items[2] = new Control1_Item( 2, "Test3", "Test3", 3, 1);
         }
 
 
@@ -85,6 +77,9 @@ namespace Game_Test
 
             control.Update(gameTime);
 
+            //
+            items[control.CurrentActiveItem].itemsetting.Text = option_member.GetString(1, items[control.CurrentActiveItem].currentIndex);
+
             foreach (var control_field in fields)
             {
                 control_field.Status = -1;
@@ -109,6 +104,11 @@ namespace Game_Test
             {
                 ScreenManager.Instance.ChangeScreen("MenuScreen");
             }
+
+            if (InputManager.Instance.KeyPressed(Keys.I))
+            {
+                //option_member.ExcuteAction(Options_Members.Actions.changeResolution, items[control.CurrentActiveItem].currentIndex);
+            }
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -124,7 +124,7 @@ namespace Game_Test
 
             switch (control.CurrentActiveField)
             {
-                case 2:
+                case 0:
                     foreach (var item in items)
                     {
                         item.Draw(spriteBatch);
