@@ -72,6 +72,7 @@
     <Compile Include="Controls\Control1_Field.cs" />
     <Compile Include="GameObjects\Items.cs" />
     <Compile Include="GameSettings.cs" />
+    <Compile Include="Screen%28s%29\CharCreationScreen.cs" />
     <Compile Include="Screen%28s%29\OptionsScreen.cs" />
     <Compile Include="PlayerCharacter\Perks.cs" />
     <Compile Include="PlayerCharacter\Player.cs" />
@@ -121,9 +122,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Screen%28s%29\CharCreation\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
