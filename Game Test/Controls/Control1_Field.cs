@@ -37,6 +37,8 @@ namespace Game_Test
         public void LoadContent()
         {
             title.LoadContent();
+            Vector2 textScale = new Vector2(GameSettings.Instance.Dimensions.X / (3200 / 1.2f), GameSettings.Instance.Dimensions.Y / (1800 / 1.2f));
+            title.Scale = textScale;
         }
 
         public void UnloadContent()
