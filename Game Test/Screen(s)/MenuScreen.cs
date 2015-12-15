@@ -128,6 +128,11 @@ namespace Game_Test
                 menuItems[currentSelected].Selected = true;
             }
 
+            if (menuItems[currentSelected].ItemID == 0 && InputManager.Instance.KeyPressed(Keys.Enter))
+            {
+                ScreenManager.Instance.ChangeScreen("CharCreationScreen");
+            }
+
             //If the Exit button is selected and Enter has been pressed exit the game
             if (menuItems[currentSelected].ItemID == 1 && InputManager.Instance.KeyPressed(Keys.Enter))
             {

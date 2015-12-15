@@ -37,7 +37,7 @@ namespace Game_Test
         public void LoadContent()
         {
             title.LoadContent();
-            Vector2 textScale = new Vector2(GameSettings.Instance.Dimensions.X / (3200 / 1.2f), GameSettings.Instance.Dimensions.Y / (1800 / 1.2f));
+            Vector2 textScale = new Vector2(GameSettings.Instance.Dimensions.X / (3200 / 1.25f), GameSettings.Instance.Dimensions.Y / (1800 / 1.25f));
             title.Scale = textScale;
         }
 
@@ -64,19 +64,19 @@ namespace Game_Test
             float scale = GameSettings.Instance.Dimensions.X / 1366;
             //The middle x coordiantes get calculated here, it takes the width of the text and the width of the control bar,
             //and divides those by 2 to calculate the middle
-            float x_position = (((375 - 170) - (title.SourceRect.Width / 2)) / 2);
+            float x_position = (((240) - (title.SourceRect.Width / 2)) / 2);
 
             switch (status)
             {
                 case 1:
-                    title.Position = new Vector2((160 + x_position) * scale, 225 * scale);
+                    title.Position = new Vector2((160 + x_position) * scale, 230 * scale);
                     break;
                 case 2:
-                    title.Position = new Vector2((155 + x_position) * scale, 350 * scale);
+                    title.Position = new Vector2((155 + x_position) * scale, 355 * scale);
                     break;
                 case 3:
 
-                    title.Position = new Vector2((160 + x_position) * scale, 475 * scale);
+                    title.Position = new Vector2((160 + x_position) * scale, 480 * scale);
                     break;
             }
         }
