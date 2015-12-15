@@ -57,7 +57,6 @@ namespace Game_Test
         public void LoadContent(ContentManager Content)
         {
             this.Content = new ContentManager(Content.ServiceProvider, "Content");
-
             currentscreen.LoadContent();
 
             if (fade == null)

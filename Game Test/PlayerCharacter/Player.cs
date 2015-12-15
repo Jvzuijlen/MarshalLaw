@@ -13,15 +13,21 @@ namespace Game_Test
     {
         Playerstats player;
 
-        private int scale; //Scales up the movementspeed
+        private float SpeedScale; //Scales up the movementspeed
 
-        private int sprSheetX;
+        private float sprSheetX;
         private int MaxSheetX;
 
-        float MoveScale;
+        private float mHor, mVer;
+        private string direction;
+        private bool moveActive;
+
+        //Slow down animation speed
+        private const float Interval = 0.25f;
 
         private enum Movestate
         {
+            none,
             up = 8,
             left = 9,
             down = 10,
@@ -41,11 +47,13 @@ namespace Game_Test
             sprSheetX = 0;
             MaxSheetX = 6;
 
-            MoveScale = 2.0f;
+            mHor = 0.0f;
+            mVer = 0.0f;
+            direction = "down";
             
             sprite = new SprSheetImage("OptionsScreen/light");
             
-            scale = 10;
+            SpeedScale = 2.5f;
         }
 
         public void LoadContent(int X, int Y)
@@ -63,24 +71,41 @@ namespace Game_Test
             //Check if keys are pressed
             if (InputManager.Instance.KeyDown(Keys.Up))
             {
-                Move(0f, -1f, "up");
+                moveActive = true;
+                direction = "up";
+                mVer = -1;
             }
-            else if (InputManager.Instance.KeyDown(Keys.Left))
+            if (InputManager.Instance.KeyDown(Keys.Down))
             {
-                Move(-1f, 0f, "left");
+                moveActive = true;
+                direction = "down";
+                mVer = 1;
             }
-            else if (InputManager.Instance.KeyDown(Keys.Down))
+            if (InputManager.Instance.KeyDown(Keys.Left))
             {
-                Move(0f, 1f, "down");
+                moveActive = true;
+                direction = "left";
+                mHor = -1;
             }
-            else if (InputManager.Instance.KeyDown(Keys.Right))
+            if (InputManager.Instance.KeyDown(Keys.Right))
             {
-                Move(1f, 0f, "right");
+                moveActive = true;
+                direction = "right";
+                mHor = 1;
             }
 
             //Check if keys are released
-            else if (InputManager.Instance.KeyReleased(Keys.Up) || InputManager.Instance.KeyReleased(Keys.Left) || InputManager.Instance.KeyReleased(Keys.Down) || InputManager.Instance.KeyReleased(Keys.Right))
+            if (InputManager.Instance.KeyReleased(Keys.Up) || InputManager.Instance.KeyReleased(Keys.Left) || InputManager.Instance.KeyReleased(Keys.Down) || InputManager.Instance.KeyReleased(Keys.Right))
+            {
+                moveActive = false;
+                sprSheetY = Movestate.none;
                 sprite.SprSheetX = 0;
+                mHor = 0;
+                mVer = 0;
+            }
+            else if (moveActive)
+                Move(mHor, mVer, direction, gameTime);
+
             sprite.Update(gameTime);
         }
 
@@ -89,45 +114,45 @@ namespace Game_Test
             sprite.Draw(spriteBatch);
         }
 
-        public void Move(float dirX, float dirY, string direction)
+        private void Move(float dirX, float dirY, string direction, GameTime gameTime)
         {
             //Scale the movement
-            dirX /= MoveScale;
-            dirY /= MoveScale;
+            dirX *= SpeedScale;
+            dirY *= SpeedScale;
 
             //change sprSheetX and sprSheetY based on previous movement direction
             switch (direction)
             {
                 case "up":
                     if (sprSheetY == Movestate.up)
-                        sprSheetX++;
+                        sprSheetX += (float)gameTime.ElapsedGameTime.TotalMilliseconds / gameTime.ElapsedGameTime.Milliseconds * Interval;
                     else
-                    {
+                    { 
                         sprSheetY = Movestate.up;
-                        sprSheetX = 0;
-                    }
-                    break;
-                case "left":
-                    if (sprSheetY == Movestate.left)
-                        sprSheetX++;
-                    else
-                    {
-                        sprSheetY = Movestate.left;
                         sprSheetX = 0;
                     }
                     break;
                 case "down":
                     if (sprSheetY == Movestate.down)
-                        sprSheetX++;
+                        sprSheetX += (float)gameTime.ElapsedGameTime.TotalMilliseconds / gameTime.ElapsedGameTime.Milliseconds * Interval;
                     else
                     {
                         sprSheetY = Movestate.down;
                         sprSheetX = 0;
                     }
                     break;
+                case "left":
+                    if (sprSheetY == Movestate.left)
+                        sprSheetX += (float)gameTime.ElapsedGameTime.TotalMilliseconds / gameTime.ElapsedGameTime.Milliseconds * Interval;
+                    else
+                    {
+                        sprSheetY = Movestate.left;
+                        sprSheetX = 0;
+                    }
+                    break;
                 case "right":
                     if (sprSheetY == Movestate.right)
-                        sprSheetX++;
+                        sprSheetX += (float)gameTime.ElapsedGameTime.TotalMilliseconds / gameTime.ElapsedGameTime.Milliseconds * Interval;
                     else
                     {
                         sprSheetY = Movestate.right;
@@ -140,9 +165,9 @@ namespace Game_Test
             if (sprSheetX > MaxSheetX)
                 sprSheetX = 0;
 
-            //
-            sprite.Position = new Vector2(sprite.Position.X + dirX * scale, sprite.Position.Y + dirY * scale);
-            sprite.SprSheetX = sprSheetX;
+            if (sprite.Position.X + dirX >= 0 && sprite.Position.X + dirX <= GameSettings.Instance.Dimensions.X - 64 && sprite.Position.Y + dirY >= 0 && sprite.Position.Y + dirY <= GameSettings.Instance.Dimensions.Y - 64)
+                sprite.Position = new Vector2(sprite.Position.X + dirX, sprite.Position.Y + dirY); //Set new position
+            sprite.SprSheetX = (int)sprSheetX;
             sprite.SprSheetY = (int)sprSheetY;
         }
     }

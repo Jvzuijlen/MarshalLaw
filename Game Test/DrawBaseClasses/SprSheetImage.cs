@@ -12,7 +12,6 @@ namespace Game_Test
     public class SprSheetImage
     {
         //Fields
-        private float Alpha;
         private string Path;
         private const int ImageSize = 64;
         public Vector2 Position { get; set; }
@@ -27,20 +26,18 @@ namespace Game_Test
 
         private Rectangle SourceRect, Source;
         private Texture2D Texture;
-        private bool IsInvisible;
 
         ContentManager content;
 
         public SprSheetImage(string path)
         {
-            this.Path = path;
-            this.Position = Vector2.Zero;
-            this.Alpha = 1.0f;
-            this.SourceRect = Rectangle.Empty;
+            Path = path;
+            Position = Vector2.Zero;
+            SourceRect = Rectangle.Empty;
             SprSheetX = 0;
             SprSheetY = 10;
             Source = new Rectangle(SprSheetX * ImageSize, SprSheetY * ImageSize, ImageSize, ImageSize);
-            this.Color = Color.White;
+            Color = Color.White;
         }
 
         /// <summary>
@@ -85,7 +82,7 @@ namespace Game_Test
 
             if (SourceRect == Rectangle.Empty)
                 SourceRect = new Rectangle((int)Position.X, (int)Position.Y, (int)(dimensions.X * (GameSettings.Instance.Dimensions.X / 2732f)), (int)(dimensions.Y * (GameSettings.Instance.Dimensions.Y / 1536f)));
-            this.Scale = scale;
+            Scale = scale;
         }
 
         public void UnloadContent()
