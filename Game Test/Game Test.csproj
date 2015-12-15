@@ -70,8 +70,10 @@
     <Compile Include="Controls\Options_Members.cs" />
     <Compile Include="Controls\Control1_Item.cs" />
     <Compile Include="Controls\Control1_Field.cs" />
+    <Compile Include="DrawBaseClasses\SprSheetImage.cs" />
     <Compile Include="GameObjects\Items.cs" />
     <Compile Include="GameSettings.cs" />
+    <Compile Include="PlayerCharacter\Player.cs" />
     <Compile Include="Screen%28s%29\CharCreationScreen.cs" />
     <Compile Include="Screen%28s%29\OptionsScreen.cs" />
     <Compile Include="PlayerCharacter\Perks.cs" />
@@ -87,6 +89,7 @@
     <Compile Include="DrawBaseClasses\cText.cs" />
     <Compile Include="Screen%28s%29\SplashScreen.cs" />
     <Compile Include="Controls\Control1.cs" />
+    <Compile Include="Screen%28s%29\Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">

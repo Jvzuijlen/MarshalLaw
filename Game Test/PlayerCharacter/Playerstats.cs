@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Game_Test
 {
-    class Playerstats
+    public class Playerstats
     {
         //Fields
         private string name;
@@ -39,7 +39,7 @@ namespace Game_Test
         public int CurrentStamina { get { return this.currentStamina; } set { this.currentStamina = value; } }
 
         //Constructor
-        public Playerstats(string name, bool gender, Perks startperk)
+        public Playerstats(string name, bool gender, Perks startperk, int X, int Y)
         {
             this.name = name;
             this.gender = gender;
@@ -98,6 +98,5 @@ namespace Game_Test
                 //Choose Perk
             }
         }
-
     }
 }
