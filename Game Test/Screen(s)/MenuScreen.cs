@@ -16,9 +16,17 @@ namespace Game_Test
         Vector2 menuPosition;
         int currentSelected;
         string[] text = { "Start", "Options", "Exit"};
+        MapLoader mapLoader;
+        cText testText;
 
     public MenuScreen()
         {
+            
+            mapLoader = new MapLoader();
+            
+            testText = new cText(mapLoader.LoadMap("testmap"), "DryGood_12");
+
+
             //Create the Images for the Menuscreen
             background = new Image("TitleScreen/background");
             sign = new Image("TitleScreen/woodsign_marshal_law");
@@ -42,6 +50,9 @@ namespace Game_Test
         public override void LoadContent()
         {
             base.LoadContent();
+
+            testText.LoadContent();
+
             background.LoadContent(0, 0, true, new Vector2( GameSettings.Instance.Dimensions.X / 2732f, GameSettings.Instance.Dimensions.Y / 1536f));
             sign.LoadContent(0, 0, false, new Vector2(GameSettings.Instance.Dimensions.X / 2732f, GameSettings.Instance.Dimensions.Y / 1536f));
             poster.LoadContent(pos_X: 0,
@@ -80,6 +91,8 @@ namespace Game_Test
         public override void UnloadContent()
         {
             base.UnloadContent();
+
+            testText.UnloadContent();
 
             for (int i = 0; i < text.Length; i++)
             {
@@ -146,6 +159,8 @@ namespace Game_Test
                 GameInstance.ExitGame = true;
             }
 
+            testText.Update(gameTime);
+
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -159,6 +174,8 @@ namespace Game_Test
             {
                 menuItems[i].Draw(spriteBatch);
             }
+
+            testText.DrawString(spriteBatch);
         }
     }
 

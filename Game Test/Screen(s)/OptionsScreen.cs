@@ -13,8 +13,8 @@ namespace Game_Test
     {
         Control1 control;
         Options_Members option_member;
-        static int numFields = 3;
-        static int numItems = 3;
+        static int numFields = 1;
+        static int numItems = 1;
         Control1_Field[] fields = new Control1_Field[numFields];
         Control1_Item[] items = new Control1_Item[numItems];
 
@@ -25,14 +25,10 @@ namespace Game_Test
             option_member.Create_Lists();
 
             fields[0] = new Control1_Field( 0, numFields,  "Video", numItems);
-            fields[1] = new Control1_Field( 1, numFields,  "Audio", numItems);
-            fields[2] = new Control1_Field( 2, numFields,  "Controls", numItems);
 
             control = new Control1(numFields, numItems);
 
             items[0] = new Control1_Item( 0, "Resolution", option_member.GetString(1, 0), 3, option_member.GetList(1).Count);
-            items[1] = new Control1_Item( 1, "Test2", "Test2", 3, 1);
-            items[2] = new Control1_Item( 2, "Test3", "Test3", 3, 1);
         }
 
 
@@ -75,10 +71,12 @@ namespace Game_Test
         {
             base.Update(gameTime);
 
+            control.CurrentNumberControlItems = fields[control.CurrentActiveField].maxItems;
+
             control.Update(gameTime);
 
-            //
-            items[control.CurrentActiveItem].itemsetting.Text = option_member.GetString(1, items[control.CurrentActiveItem].currentIndex);
+            if (control.CurrentActiveItem != 10)
+                items[control.CurrentActiveItem].itemsetting.Text = option_member.GetString(1, items[control.CurrentActiveItem].currentIndex);
 
             foreach (var control_field in fields)
             {

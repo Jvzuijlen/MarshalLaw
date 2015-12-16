@@ -50,6 +50,9 @@ namespace Game_Test
                 case "DryGood":
                     this.FontName = "SpriteFonts/DryGood/DryGood";
                     break;
+                case "DryGood_12":
+                    this.FontName = "SpriteFonts/DryGood/DryGood_12";
+                    break;
             }
             this.Position = Vector2.Zero;
             this.scale = Vector2.One;
