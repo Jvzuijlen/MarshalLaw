@@ -40,6 +40,17 @@ namespace Game_Test
             Color = Color.White;
         }
 
+        public SprSheetImage(string path, int sprSheetX, int sprSheetY)
+        {
+            Path = path;
+            Position = Vector2.Zero;
+            SourceRect = Rectangle.Empty;
+            this.SprSheetX = sprSheetX;
+            this.SprSheetY = sprSheetY;
+            Source = new Rectangle(SprSheetX * ImageSize, SprSheetY * ImageSize, ImageSize, ImageSize);
+            Color = Color.White;
+        }
+
         /// <summary>
         /// Load the content for the Image
         /// </summary>

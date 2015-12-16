@@ -380,6 +380,9 @@
 /processorParam:TextureFormat=Color
 /build:OptionsScreen/light.png
 
-#begin testmap.txt
-/copy:testmap.txt
+#begin Maps/testmap.txt
+/copy:Maps/testmap.txt
+
+#begin Maps/testmap2.txt
+/copy:Maps/testmap2.txt
 

@@ -37,10 +37,10 @@ namespace Game_Test
             layers = new List<Layer>();
         }
 
-        public String LoadMap(string filename)
+        public string LoadMap(string filename)
         {
 
-            var path = @"Content\" + filename + ".txt";
+            var path = @"Content\Maps\" + filename + ".txt";
 
             String line = "";
             StreamReader sr = new StreamReader(path);
@@ -132,53 +132,57 @@ namespace Game_Test
                     case state.layer:
                         #region "Read Layer"
 
-                        if (firstLayer && buffer == "[layer]")
+                        if (firstLayer == true)
                         {
                             firstLayer = false;
                         }
                         else 
                         {
-                            sr.ReadLine();
+                            buffer = sr.ReadLine();
                         }
 
                         buffer = sr.ReadLine();
+
                         buffer = buffer.Remove(0, 5);
+
 
                         Layer tempLayer = new Layer(buffer, mapDimensions);
 
-                        sr.ReadLine();
+                        buffer = sr.ReadLine();
                         bool check = false;
+
+
 
                         for (int y = 0; y < mapDimensions.Y; y++)
                         {
-                            for (int x = 0; x < mapDimensions.X; x++)
-                            {
-                                string temp_tileid = "";
-                                do
-                                {
-                                    buffer = "";
-                                    buffer += (char)sr.Read();
-                                    if (x == mapDimensions.X - 1 && y == mapDimensions.Y - 1)
-                                    {
-                                        sr.Read();
-                                        sr.Read();
-                                        check = true;
-                                        temp_tileid += buffer;
-                                    }
-                                    else if (buffer != ",")
-                                    {
-                                        temp_tileid += buffer;
-                                    }
-                                } while (buffer != "," && check == false);
+                            int x = 0;
+                            buffer = sr.ReadLine();
+                            char[] tempChararray = { ',' };
+                            string[] tile_ids = buffer.Split(tempChararray, count: (int)mapDimensions.X);
 
-                                if (temp_tileid.Contains("\r\n"))
+                            while (x < mapDimensions.X)
+                            { 
+                                if (x == mapDimensions.X - 1 && y != mapDimensions.Y - 1)
                                 {
-                                    temp_tileid = temp_tileid.Remove(0, 2);
+                                    tile_ids[x] = tile_ids[x].Remove(tile_ids[x].IndexOf(','));
                                 }
 
-                                tempLayer.AddTile(x, y, Convert.ToInt32(temp_tileid));
+                                if (tile_ids[x].Contains("\r\n"))
+                                {
+                                    tile_ids[x] = tile_ids[x].Remove(0, 2);
+                                }
+
+                                int temp_tileID = Convert.ToInt32(tile_ids[x]);
+
+                                tempLayer.AddTile(x, y, temp_tileID);
+                                x++;
 
                             }
+
+                            
+
+
+
                         }
                         //Lege regel nog effe lezen zodat de pointer verzet wordt
                         sr.ReadLine();
@@ -188,12 +192,27 @@ namespace Game_Test
 
                         if (sr.EndOfStream)
                         {
-                            return "End of Stream";
+                           return "Load Complete";
                         }
                         #endregion
                         break;
                 }
             }
+        }
+
+        public List<Layer> GetLayers()
+        {
+            return layers;
+        }
+
+        public Vector2 GetMapDimensions()
+        {
+            return mapDimensions;
+        }
+
+        public int GetNumLayers()
+        {
+            return numberOfLayers;
         }
     }
     
