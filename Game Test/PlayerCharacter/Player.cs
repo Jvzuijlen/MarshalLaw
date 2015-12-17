@@ -53,7 +53,7 @@ namespace Game_Test
             
             sprite = new SprSheetImage("OptionsScreen/light");
             
-            SpeedScale = 2.5f;
+            SpeedScale = 3.0f;
         }
 
         public void LoadContent(int X, int Y)

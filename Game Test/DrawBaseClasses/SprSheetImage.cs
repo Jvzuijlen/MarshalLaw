@@ -108,7 +108,7 @@ namespace Game_Test
             //spriteBatch.Draw(Texture, SourceRect, Color.White * Alpha);
 
             //Draw the Image
-            spriteBatch.Draw(Texture, Position, Source, Color.White, 0, new Vector2(0, 0), Scale, SpriteEffects.None, 0.5f);
+            spriteBatch.Draw(Texture, Position, Source, Color.White, 0, new Vector2(0, 0), 0.75f, SpriteEffects.None, 0.5f);
             //spriteBatch.Draw(Texture, Position, Color.White);
             //spriteBatch.Draw(Texture, Position, SourceRect, Color.White, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0.0f);
             //spriteBatch.Draw(Texture, Position, null, Color * Alpha, 0.0f, Vector2.Zero, Scale, SpriteEffects.None, 0.0f);

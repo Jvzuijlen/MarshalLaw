@@ -383,9 +383,6 @@
 #begin Maps/testmap.txt
 /copy:Maps/testmap.txt
 
-#begin Maps/testmap2.txt
-/copy:Maps/testmap2.txt
-
 #begin SpriteSheets/terrain.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -396,4 +393,21 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:TextureFormat=Color
 /build:SpriteSheets/terrain.png
+
+#begin Maps/testmap2.txt
+/copy:Maps/testmap2.txt
+
+#begin SpriteSheets/plant repack.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:TextureFormat=Color
+/build:SpriteSheets/plant repack.png
+
+#begin Maps/testmap3.txt
+/copy:Maps/testmap3.txt
 

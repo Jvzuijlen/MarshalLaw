@@ -14,6 +14,7 @@ namespace Game_Test
         string orientation;
 
         List<Layer> layers;
+        List<string> spritesheets;
 
         int numberOfLayers;
 
@@ -24,7 +25,7 @@ namespace Game_Test
 
         enum headerstate
         {
-            header, width, height, tilewidth, tileheight, orientation, tileset
+            header, width, height, tilewidth, tileheight, orientation, tileset, tilsetsheet
         }
 
         state currentState;
@@ -35,6 +36,7 @@ namespace Game_Test
         {
             firstLayer = true;
             layers = new List<Layer>();
+            spritesheets = new List<string>();
         }
 
         public string LoadMap(string filename)
@@ -121,10 +123,27 @@ namespace Game_Test
                                 break;
                             case headerstate.tileset:
                                 buffer = sr.ReadLine();
-                                if (buffer == "[layer]")
+                                if (buffer == "[tilesets]")
+                                {
+                                    currentHeaderState++;
+                                }
+                                break;
+                            case headerstate.tilsetsheet:
+                                buffer = sr.ReadLine();
+
+                                if (buffer == "")
                                 {
                                     currentState++;
+                                    break;
                                 }
+
+                                int pngPos = buffer.IndexOf(".png");
+                                int lastDashPos = buffer.LastIndexOf('/');
+
+                                buffer = buffer.Substring(lastDashPos + 1, pngPos - lastDashPos - 1);
+
+                                spritesheets.Add(buffer);
+
                                 break;
                         }
                         #endregion
@@ -132,14 +151,7 @@ namespace Game_Test
                     case state.layer:
                         #region "Read Layer"
 
-                        if (firstLayer == true)
-                        {
-                            firstLayer = false;
-                        }
-                        else 
-                        {
-                            buffer = sr.ReadLine();
-                        }
+                        buffer = sr.ReadLine();
 
                         buffer = sr.ReadLine();
 
@@ -178,11 +190,6 @@ namespace Game_Test
                                 x++;
 
                             }
-
-                            
-
-
-
                         }
                         //Lege regel nog effe lezen zodat de pointer verzet wordt
                         sr.ReadLine();
@@ -213,6 +220,11 @@ namespace Game_Test
         public int GetNumLayers()
         {
             return numberOfLayers;
+        }
+
+        public List<string> GetSpritesheetList()
+        {
+            return spritesheets;
         }
     }
     
