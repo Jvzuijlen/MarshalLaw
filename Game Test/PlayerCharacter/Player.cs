@@ -11,7 +11,7 @@ namespace Game_Test
 {
     public class Player
     {
-        Playerstats player;
+        //Playerstats player;
 
         private float SpeedScale; //Scales up the movementspeed
 

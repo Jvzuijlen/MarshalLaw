@@ -30,11 +30,9 @@ namespace Game_Test
 
         state currentState;
         headerstate currentHeaderState;
-        bool firstLayer;
 
         public MapLoader()
         {
-            firstLayer = true;
             layers = new List<Layer>();
             spritesheets = new List<string>();
         }
@@ -44,10 +42,8 @@ namespace Game_Test
 
             var path = @"Content\Maps\" + filename + ".txt";
 
-            String line = "";
             StreamReader sr = new StreamReader(path);
 
-            string text = "";
             String buffer = "";
 
             while (true)
@@ -161,9 +157,6 @@ namespace Game_Test
                         Layer tempLayer = new Layer(buffer, mapDimensions);
 
                         buffer = sr.ReadLine();
-                        bool check = false;
-
-
 
                         for (int y = 0; y < mapDimensions.Y; y++)
                         {
@@ -225,6 +218,11 @@ namespace Game_Test
         public List<string> GetSpritesheetList()
         {
             return spritesheets;
+        }
+
+        public string GetOrientation()
+        {
+            return orientation;
         }
     }
     

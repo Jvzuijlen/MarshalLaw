@@ -10,8 +10,8 @@ namespace Game_Test
     public class Map
     {
         //Fields
-        Vector2 tileDimensions;
-        string orientation;
+        //Vector2 tileDimensions;
+        //string orientation;
         MapLoader mapLoader = new MapLoader();
         public List<Layer> Layers = new List<Layer>();
         List<string> spriteSheets = new List<string>();
