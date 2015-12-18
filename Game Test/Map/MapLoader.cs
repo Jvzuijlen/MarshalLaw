@@ -133,15 +133,13 @@ namespace Game_Test
                                     break;
                                 }
 
-                                if (buffer == "")
-                                {
-                                    int pngPos = buffer.IndexOf(".png");
-                                    int lastDashPos = buffer.LastIndexOf('/');
+                                int pngPos = buffer.IndexOf(".png");
+                                int lastDashPos = buffer.LastIndexOf('/');
 
-                                    buffer = buffer.Substring(lastDashPos + 1, pngPos - lastDashPos - 1);
+                                buffer = buffer.Substring(lastDashPos + 1, pngPos - lastDashPos - 1);
 
-                                    spritesheets.Add(buffer);
-                                }
+                                spritesheets.Add(buffer);
+
                                 break;
                         }
                         #endregion
