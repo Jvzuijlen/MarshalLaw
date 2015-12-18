@@ -16,7 +16,7 @@ namespace Game_Test
         public List<Layer> Layers = new List<Layer>();
         List<string> spriteSheets = new List<string>();
 
-
+        Player player;
 
         //Property's
         public Vector2 mapDimensions { get; private set; }
@@ -31,6 +31,8 @@ namespace Game_Test
             NumberLayers = mapLoader.GetNumLayers();
             spriteSheets = mapLoader.GetSpritesheetList();
 
+            player = new Player();
+
             foreach (var layer in Layers)
             {
                 layer.GiveSpriteSheetList(spriteSheets);
@@ -40,6 +42,8 @@ namespace Game_Test
 
         public virtual void LoadContent()
         {
+            player.LoadContent(10, 0);
+
             foreach (var layer in Layers)
             {
                 layer.LoadContent();
@@ -48,6 +52,8 @@ namespace Game_Test
 
         public virtual void UnloadContent()
         {
+            player.UnloadContent();
+
             foreach (var layer in Layers)
             {
                 layer.UnloadContent();
@@ -56,10 +62,12 @@ namespace Game_Test
 
         public virtual void Update(GameTime gameTime)
         {
-            foreach (var layer in Layers)
-            {
-                layer.Update(gameTime);
-            }
+            player.Update(gameTime);
+
+            //foreach (var layer in Layers)
+            //{
+                //layer.Update(gameTime);
+            //}
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)
@@ -70,7 +78,17 @@ namespace Game_Test
                 {
                     for (int l = 0; l < Layers.Count; l++)
                     {
-                        Layers[l].DrawTile(spriteBatch, x, y);
+                        if (l > 1)
+                        {
+                            player.Draw(spriteBatch);
+                            Layers[l].DrawTile(spriteBatch, x, y);
+                        }
+                        else
+                        {
+                            Layers[l].DrawTile(spriteBatch, x, y);
+                        }
+                        
+
                     }
                 }
             }

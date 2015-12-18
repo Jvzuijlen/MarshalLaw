@@ -59,10 +59,10 @@ namespace Game_Test
 
         public void Update(GameTime gameTime)
         {
-            foreach (var tile in tiles)
-            {
-                tile.Update(gameTime);
-            }
+            //foreach (var tile in tiles)
+            //{
+                //tile.Update(gameTime);
+            //}
         }
 
         public void DrawTile(SpriteBatch spriteBatch, int x, int y)
