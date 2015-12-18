@@ -78,17 +78,7 @@ namespace Game_Test
                 {
                     for (int l = 0; l < Layers.Count; l++)
                     {
-                        if (l > 1)
-                        {
-                            player.Draw(spriteBatch);
-                            Layers[l].DrawTile(spriteBatch, x, y);
-                        }
-                        else
-                        {
-                            Layers[l].DrawTile(spriteBatch, x, y);
-                        }
-                        
-
+                        Layers[l].DrawTile(spriteBatch, x, y);
                     }
                 }
             }

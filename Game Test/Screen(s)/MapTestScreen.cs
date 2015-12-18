@@ -62,7 +62,7 @@ namespace Game_Test
             base.Draw(spriteBatch);
 
             map.Draw(spriteBatch);
-            //player.Draw(spriteBatch);
+            player.Draw(spriteBatch);
         }
     }
 }
