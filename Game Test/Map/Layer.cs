@@ -70,6 +70,7 @@ namespace Game_Test
         public void DrawTile(SpriteBatch spriteBatch, int x, int y)
         {
             int tile_scale = 24;
+            float tilescale_x = GameSettings.Instance.Dimensions.X / 80, tilescale_y = GameSettings.Instance.Dimensions.Y / 60;
 
             if (tiles[x, y].TileID != 0)
             {
@@ -78,7 +79,7 @@ namespace Game_Test
                 Vector2 tileOnSheetPosition = SetTileOnSheetPosition(tiles[x, y].TileID);
                 Rectangle Source = new Rectangle((int)tileOnSheetPosition.X * 32, (int)tileOnSheetPosition.Y * 32, 32, 32);
 
-                spriteBatch.Draw(textures[spriteSheets.IndexOf(tiles[x, y].TextureName)], new Vector2(x * tile_scale, y * tile_scale), Source, Color.White, 0, new Vector2(0, 0), 0.75f, SpriteEffects.None, 0.5f);
+                spriteBatch.Draw(textures[spriteSheets.IndexOf(tiles[x, y].TextureName)], new Vector2(x * tilescale_x, y * tilescale_y), Source, Color.White, 0, new Vector2(0, 0), 0.75f, SpriteEffects.None, 0.5f);
             }
         }
 

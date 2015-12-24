@@ -27,6 +27,7 @@ namespace Game_Test
 
         //Collisionlayer
         Layer layer;
+        private int mapwidth, mapheight;
 
         private enum Movestate
         {
@@ -57,6 +58,9 @@ namespace Game_Test
             sprite = new SprSheetImage("OptionsScreen/light");
             
             SpeedScale = 3.0f;
+
+            mapwidth = 80;
+            mapheight = 60;
         }
 
         public void LoadContent(int X, int Y)
@@ -168,11 +172,13 @@ namespace Game_Test
             if (sprSheetX > MaxSheetX)
                 sprSheetX = 0;
 
+            float tilescale_x = GameSettings.Instance.Dimensions.X / mapwidth, tilescale_y = GameSettings.Instance.Dimensions.Y / mapheight;
+
             if (!(
-                CheckCollision(new Vector2(sprite.Position.X + dirX, sprite.Position.Y + dirY)) &&
-                CheckCollision(new Vector2(sprite.Position.X + 64 + dirX, sprite.Position.Y  + dirY)) &&
-                CheckCollision(new Vector2(sprite.Position.X + dirX, sprite.Position.Y + 64 + dirY)) &&
-                CheckCollision(new Vector2(sprite.Position.X + 64 + dirX, sprite.Position.Y + 64 + dirY))
+                CheckCollision(new Vector2(sprite.Position.X + dirX, sprite.Position.Y + dirY)) ||
+                CheckCollision(new Vector2(sprite.Position.X + tilescale_x * 2 + dirX, sprite.Position.Y  + dirY)) ||
+                CheckCollision(new Vector2(sprite.Position.X + dirX, sprite.Position.Y + tilescale_y * 2 + dirY)) ||
+                CheckCollision(new Vector2(sprite.Position.X + tilescale_x * 2 + dirX, sprite.Position.Y + tilescale_y * 2 + dirY))
                 ))
 
             /*if (sprite.Position.X + dirX >= 0 &&
@@ -190,7 +196,7 @@ namespace Game_Test
 
         private bool CheckCollision(Vector2 position)
         {
-            float tilescale_x = GameSettings.Instance.Dimensions.X / 80, tilescale_y = GameSettings.Instance.Dimensions.Y / 60;
+            float tilescale_x = GameSettings.Instance.Dimensions.X / mapwidth, tilescale_y = GameSettings.Instance.Dimensions.Y / mapheight;
 
             int x = (int)(position.X / tilescale_x);
             int y = (int)(position.Y / tilescale_y);
