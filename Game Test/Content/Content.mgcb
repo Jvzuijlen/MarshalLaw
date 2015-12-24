@@ -423,3 +423,6 @@
 #begin Maps/Collisiontest4.txt
 /copy:Maps/Collisiontest4.txt
 
+#begin Maps/Collisiontest5.txt
+/copy:Maps/Collisiontest5.txt
+
