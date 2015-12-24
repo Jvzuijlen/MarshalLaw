@@ -80,9 +80,9 @@ namespace Game_Test
             }
         }
 
-        public virtual void GiveSpriteSheetList(List<string> spritesheets)
+        public virtual void GiveSpriteSheetList(List<string> spriteSheets)
         {
-            this.spriteSheets = spritesheets;
+            this.spriteSheets = spriteSheets;
         }
 
         public string GetTileSheet(int tileID)

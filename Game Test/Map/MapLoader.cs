@@ -44,7 +44,7 @@ namespace Game_Test
 
             StreamReader sr = new StreamReader(path);
 
-            String buffer = "";
+            string buffer = "";
 
             while (true)
             {

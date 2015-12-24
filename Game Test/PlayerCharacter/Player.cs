@@ -69,25 +69,25 @@ namespace Game_Test
         public void Update(GameTime gameTime)
         {
             //Check if keys are pressed
-            if (InputManager.Instance.KeyDown(Keys.Up))
+            if (InputManager.Instance.KeyDown(Keys.W))
             {
                 moveActive = true;
                 direction = "up";
                 mVer = -1;
             }
-            if (InputManager.Instance.KeyDown(Keys.Down))
+            if (InputManager.Instance.KeyDown(Keys.S))
             {
                 moveActive = true;
                 direction = "down";
                 mVer = 1;
             }
-            if (InputManager.Instance.KeyDown(Keys.Left))
+            if (InputManager.Instance.KeyDown(Keys.A))
             {
                 moveActive = true;
                 direction = "left";
                 mHor = -1;
             }
-            if (InputManager.Instance.KeyDown(Keys.Right))
+            if (InputManager.Instance.KeyDown(Keys.D))
             {
                 moveActive = true;
                 direction = "right";
@@ -95,7 +95,7 @@ namespace Game_Test
             }
 
             //Check if keys are released
-            if (InputManager.Instance.KeyReleased(Keys.Up) || InputManager.Instance.KeyReleased(Keys.Left) || InputManager.Instance.KeyReleased(Keys.Down) || InputManager.Instance.KeyReleased(Keys.Right))
+            if (InputManager.Instance.KeyReleased(Keys.W) || InputManager.Instance.KeyReleased(Keys.A) || InputManager.Instance.KeyReleased(Keys.S) || InputManager.Instance.KeyReleased(Keys.D))
             {
                 moveActive = false;
                 sprSheetY = Movestate.none;
@@ -165,8 +165,13 @@ namespace Game_Test
             if (sprSheetX > MaxSheetX)
                 sprSheetX = 0;
 
-            if (sprite.Position.X + dirX >= 0 && sprite.Position.X + dirX <= GameSettings.Instance.Dimensions.X - 64 && sprite.Position.Y + dirY >= 0 && sprite.Position.Y + dirY <= GameSettings.Instance.Dimensions.Y - 64)
+            if (sprite.Position.X + dirX >= 0 &&
+                sprite.Position.X + dirX <= GameSettings.Instance.Dimensions.X - 64 &&
+                sprite.Position.Y + dirY >= 0 &&
+                sprite.Position.Y + dirY <= GameSettings.Instance.Dimensions.Y - 64)
+            {
                 sprite.Position = new Vector2(sprite.Position.X + dirX, sprite.Position.Y + dirY); //Set new position
+            }
             sprite.SprSheetX = (int)sprSheetX;
             sprite.SprSheetY = (int)sprSheetY;
         }

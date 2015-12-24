@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace Game_Test
 {
@@ -39,6 +40,11 @@ namespace Game_Test
             base.Update(gameTime);
 
             player.Update(gameTime);
+
+            if (InputManager.Instance.KeyPressed(Keys.Escape))
+            {
+                ScreenManager.Instance.ChangeScreen("MenuScreen");
+            }
         }
 
         public override void Draw(SpriteBatch spriteBatch)
