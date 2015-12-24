@@ -15,13 +15,11 @@ namespace Game_Test
 
         Texture2D Texture;
         string Path = "SpriteSheets/terrain";
-        Player player;
 
         public MapTestScreen()
         {
 
-            map = new Map("testmap2");
-            player = new Player();
+            map = new Map("Collisiontest");
         }
 
         public override void LoadContent()
@@ -32,7 +30,6 @@ namespace Game_Test
 
                 Texture = content.Load<Texture2D>(Path);
             map.LoadContent();
-            player.LoadContent(0, 0);
         }
 
         public override void UnloadContent()
@@ -40,7 +37,6 @@ namespace Game_Test
             base.UnloadContent();
 
             map.UnloadContent();
-            player.UnloadContent();
         }
 
         public override void Update(GameTime gameTime)
@@ -48,7 +44,6 @@ namespace Game_Test
             base.Update(gameTime);
 
             map.Update(gameTime);
-            player.Update(gameTime);
 
             //When the Escape key has been pressed exit the game
             if (InputManager.Instance.KeyPressed(Keys.Escape))
@@ -62,7 +57,6 @@ namespace Game_Test
             base.Draw(spriteBatch);
 
             map.Draw(spriteBatch);
-            player.Draw(spriteBatch);
         }
     }
 }

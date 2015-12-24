@@ -32,6 +32,7 @@ namespace Game_Test
             spriteSheets = mapLoader.GetSpritesheetList();
 
             player = new Player();
+            GetCollisionLayer();
 
             foreach (var layer in Layers)
             {
@@ -42,7 +43,7 @@ namespace Game_Test
 
         public virtual void LoadContent()
         {
-            player.LoadContent(10, 0);
+            player.LoadContent(32, 32);
 
             foreach (var layer in Layers)
             {
@@ -63,7 +64,6 @@ namespace Game_Test
         public virtual void Update(GameTime gameTime)
         {
             player.Update(gameTime);
-
             //foreach (var layer in Layers)
             //{
                 //layer.Update(gameTime);
@@ -78,8 +78,21 @@ namespace Game_Test
                 {
                     for (int l = 0; l < Layers.Count; l++)
                     {
-                        Layers[l].DrawTile(spriteBatch, x, y);
+                        if (Layers[l].Layername != "Collision")
+                            Layers[l].DrawTile(spriteBatch, x, y);
                     }
+                }
+            }
+            player.Draw(spriteBatch);
+        }
+
+        public void GetCollisionLayer()
+        {
+            for (int l = 0; l < Layers.Count; l++)
+            {
+                if (Layers[l].Layername == "Collision")
+                {
+                    player.SendLayer(Layers[l]);
                 }
             }
         }

@@ -25,6 +25,9 @@ namespace Game_Test
         //Slow down animation speed
         private const float Interval = 0.25f;
 
+        //Collisionlayer
+        Layer layer;
+
         private enum Movestate
         {
             none,
@@ -165,15 +168,40 @@ namespace Game_Test
             if (sprSheetX > MaxSheetX)
                 sprSheetX = 0;
 
-            if (sprite.Position.X + dirX >= 0 &&
+            if (!(
+                CheckCollision(new Vector2(sprite.Position.X + dirX, sprite.Position.Y + dirY)) &&
+                CheckCollision(new Vector2(sprite.Position.X + 64 + dirX, sprite.Position.Y  + dirY)) &&
+                CheckCollision(new Vector2(sprite.Position.X + dirX, sprite.Position.Y + 64 + dirY)) &&
+                CheckCollision(new Vector2(sprite.Position.X + 64 + dirX, sprite.Position.Y + 64 + dirY))
+                ))
+
+            /*if (sprite.Position.X + dirX >= 0 &&
                 sprite.Position.X + dirX <= GameSettings.Instance.Dimensions.X - 64 &&
                 sprite.Position.Y + dirY >= 0 &&
-                sprite.Position.Y + dirY <= GameSettings.Instance.Dimensions.Y - 64)
+                sprite.Position.Y + dirY <= GameSettings.Instance.Dimensions.Y - 64)*/
             {
                 sprite.Position = new Vector2(sprite.Position.X + dirX, sprite.Position.Y + dirY); //Set new position
             }
             sprite.SprSheetX = (int)sprSheetX;
             sprite.SprSheetY = (int)sprSheetY;
+        }
+
+        private bool CheckCollision(Vector2 position)
+        {
+            float tilescale_x = GameSettings.Instance.Dimensions.X / 80, tilescale_y = GameSettings.Instance.Dimensions.Y / 60;
+
+            int x = (int)(position.X / tilescale_x);
+            int y = (int)(position.Y / tilescale_y);
+            int TileID = layer.getTileID(x, y);
+            if (TileID != 0)
+                return true;
+            else
+                return false;
+        }
+
+        public void SendLayer(Layer layer)
+        {
+            this.layer = layer;
         }
     }
 }

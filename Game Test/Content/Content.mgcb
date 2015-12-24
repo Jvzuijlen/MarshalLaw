@@ -411,3 +411,6 @@
 #begin Maps/testmap2.txt
 /copy:Maps/testmap2.txt
 
+#begin Maps/Collisiontest.txt
+/copy:Maps/Collisiontest.txt
+

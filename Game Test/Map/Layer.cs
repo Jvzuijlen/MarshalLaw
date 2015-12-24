@@ -20,6 +20,8 @@ namespace Game_Test
 
         ContentManager content;
 
+        public string Layername { get { return layerName; } }
+
         public Layer(string layerName, Vector2 mapDimensions)
         {
             this.layerName = layerName;
@@ -76,7 +78,7 @@ namespace Game_Test
                 Vector2 tileOnSheetPosition = SetTileOnSheetPosition(tiles[x, y].TileID);
                 Rectangle Source = new Rectangle((int)tileOnSheetPosition.X * 32, (int)tileOnSheetPosition.Y * 32, 32, 32);
 
-                spriteBatch.Draw(textures[spriteSheets.IndexOf(tiles[x, y].TextureName)], new Vector2((int)x * tile_scale, (int)y * tile_scale), Source, Color.White, 0, new Vector2(0, 0), 0.75f, SpriteEffects.None, 0.5f);
+                spriteBatch.Draw(textures[spriteSheets.IndexOf(tiles[x, y].TextureName)], new Vector2(x * tile_scale, y * tile_scale), Source, Color.White, 0, new Vector2(0, 0), 0.75f, SpriteEffects.None, 0.5f);
             }
         }
 
@@ -138,6 +140,11 @@ namespace Game_Test
             }
 
             return new Vector2(0, 1);
+        }
+        
+        public int getTileID(int x, int y)
+        {
+            return tiles[x, y].TileID;
         }
     }
 }
