@@ -182,6 +182,8 @@ namespace Game_Test
             {
                 sprite.Position = new Vector2(sprite.Position.X + dirX, sprite.Position.Y + dirY); //Set new position
             }
+
+
             sprite.SprSheetX = (int)sprSheetX;
             sprite.SprSheetY = (int)sprSheetY;
         }
