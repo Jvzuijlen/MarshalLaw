@@ -414,3 +414,12 @@
 #begin Maps/Collisiontest.txt
 /copy:Maps/Collisiontest.txt
 
+#begin Maps/Collisiontest2.txt
+/copy:Maps/Collisiontest2.txt
+
+#begin Maps/Collisiontest3.txt
+/copy:Maps/Collisiontest3.txt
+
+#begin Maps/Collisiontest4.txt
+/copy:Maps/Collisiontest4.txt
+

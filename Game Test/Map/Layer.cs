@@ -22,7 +22,7 @@ namespace Game_Test
 
         public string Layername { get { return layerName; } }
 
-        public Layer(string layerName, Vector2 mapDimensions)
+        public Layer(string layerName, Vector2 mapDimensions, int widht, int height)
         {
             this.layerName = layerName;
             tiles = new Tile[(int)mapDimensions.X,(int)mapDimensions.Y];
@@ -69,8 +69,7 @@ namespace Game_Test
 
         public void DrawTile(SpriteBatch spriteBatch, int x, int y)
         {
-            int tile_scale = 24;
-            float tilescale_x = GameSettings.Instance.Dimensions.X / 80, tilescale_y = GameSettings.Instance.Dimensions.Y / 60;
+            float tilescale_x = GameSettings.Instance.Tilescale.X, tilescale_y = GameSettings.Instance.Tilescale.Y;
 
             if (tiles[x, y].TileID != 0)
             {

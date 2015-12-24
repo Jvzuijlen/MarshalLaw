@@ -14,6 +14,7 @@ namespace Game_Test
         //Fields
         private string Path;
         private const int ImageSize = 64;
+
         public Vector2 Position { get; set; }
 
         public Vector2 Scale { get; set; }

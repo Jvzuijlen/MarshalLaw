@@ -27,7 +27,6 @@ namespace Game_Test
 
         //Collisionlayer
         Layer layer;
-        private int mapwidth, mapheight;
 
         private enum Movestate
         {
@@ -57,15 +56,12 @@ namespace Game_Test
             
             sprite = new SprSheetImage("OptionsScreen/light");
             
-            SpeedScale = 3.0f;
-
-            mapwidth = 80;
-            mapheight = 60;
+            SpeedScale = 1.5f;
         }
 
         public void LoadContent(int X, int Y)
         {
-            sprite.LoadContent(X, Y, false, Vector2.One);
+            sprite.LoadContent(X, Y, false, new Vector2(64 / (GameSettings.Instance.Tilescale.X * 2), 64 / (GameSettings.Instance.Tilescale.Y * 2)));
         }
 
         public void UnloadContent()
@@ -124,8 +120,8 @@ namespace Game_Test
         private void Move(float dirX, float dirY, string direction, GameTime gameTime)
         {
             //Scale the movement
-            dirX *= SpeedScale;
-            dirY *= SpeedScale;
+            dirX *= SpeedScale * (32 / GameSettings.Instance.Tilescale.X);
+            dirY *= SpeedScale * (32 / GameSettings.Instance.Tilescale.X);
 
             //change sprSheetX and sprSheetY based on previous movement direction
             switch (direction)
@@ -171,14 +167,9 @@ namespace Game_Test
             //Reset X at the final animation frame
             if (sprSheetX > MaxSheetX)
                 sprSheetX = 0;
-
-            float tilescale_x = GameSettings.Instance.Dimensions.X / mapwidth, tilescale_y = GameSettings.Instance.Dimensions.Y / mapheight;
-
+            
             if (!(
-                CheckCollision(new Vector2(sprite.Position.X + dirX, sprite.Position.Y + dirY)) ||
-                CheckCollision(new Vector2(sprite.Position.X + tilescale_x * 2 + dirX, sprite.Position.Y  + dirY)) ||
-                CheckCollision(new Vector2(sprite.Position.X + dirX, sprite.Position.Y + tilescale_y * 2 + dirY)) ||
-                CheckCollision(new Vector2(sprite.Position.X + tilescale_x * 2 + dirX, sprite.Position.Y + tilescale_y * 2 + dirY))
+                CheckCollision(new Vector2(sprite.Position.X + dirX, sprite.Position.Y + dirY))
                 ))
 
             /*if (sprite.Position.X + dirX >= 0 &&
@@ -196,15 +187,32 @@ namespace Game_Test
 
         private bool CheckCollision(Vector2 position)
         {
-            float tilescale_x = GameSettings.Instance.Dimensions.X / mapwidth, tilescale_y = GameSettings.Instance.Dimensions.Y / mapheight;
+            float tilescale_x = GameSettings.Instance.Tilescale.X, tilescale_y = GameSettings.Instance.Tilescale.Y;
 
-            int x = (int)(position.X / tilescale_x);
-            int y = (int)(position.Y / tilescale_y);
-            int TileID = layer.getTileID(x, y);
-            if (TileID != 0)
-                return true;
-            else
-                return false;
+            int x1 = (int)(position.X / tilescale_x),
+            y1 = (int)(position.Y / tilescale_y),
+            x2 = (int)((position.X + 2 * tilescale_x) / tilescale_x),
+            y2 = (int)((position.Y + 2 * tilescale_y) / tilescale_y);
+
+            Rectangle playerRect = new Rectangle(new Point((int)position.X, (int)position.Y), new Point(2 * (int)tilescale_x, 2 * (int)tilescale_y));
+
+            int TileID;
+
+            for (int i = y1; i < y2 + 1; i++)
+            {
+                for (int j = x1; j < x2 + 1; j++)
+                {
+                    TileID = layer.getTileID(j, i);
+                    Rectangle rect;
+                    if (TileID != 0)
+                    {
+                        rect = new Rectangle(j * (int)tilescale_x, i * (int)tilescale_y, (int)tilescale_x, (int)tilescale_y);
+                        if (rect.Intersects(playerRect))
+                            return true;
+                    }
+                }
+            }
+            return false;
         }
 
         public void SendLayer(Layer layer)
