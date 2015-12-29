@@ -426,9 +426,6 @@
 #begin Maps/Collisiontest5.txt
 /copy:Maps/Collisiontest5.txt
 
-#begin Maps/Collisiontest6.txt
-/copy:Maps/Collisiontest6.txt
-
 #begin SpriteSheets/base_out_atlas.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -439,4 +436,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:TextureFormat=Color
 /build:SpriteSheets/base_out_atlas.png
+
+#begin Maps/Collisiontest6.txt
+/copy:Maps/Collisiontest6.txt
 

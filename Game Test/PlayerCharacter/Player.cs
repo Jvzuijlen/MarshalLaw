@@ -225,7 +225,7 @@ namespace Game_Test
             x2 = (int)((position.X + 2 * tilescale_x) / tilescale_x),
             y2 = (int)((position.Y + 2 * tilescale_y) / tilescale_y);
 
-            Rectangle playerRect = new Rectangle(new Point((int)(position.X) + 12, (int)(position.Y + 10)), new Point((int)tilescale_x, (int)(tilescale_y)));
+            Rectangle playerRect = new Rectangle(new Point((int)(position.X) + 12, (int)(position.Y + 10)), new Point((int)tilescale_x, (int)(tilescale_y + 12)));
 
             int TileID;
 
