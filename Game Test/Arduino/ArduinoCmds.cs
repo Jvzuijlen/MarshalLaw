@@ -16,12 +16,17 @@ namespace Game_Test
             CurrentPort = port;
         }
 
-        public void Save()
+        public void AllowControls()
         {
-            SendCommand(64);
+            Write(32);
         }
 
-        private void SendCommand(int CmdByte)
+        public void Save()
+        {
+            Write(64);
+        }
+
+        private void Write(int CmdByte)
         {
             byte[] buffer = new byte[2];
             buffer[0] = Convert.ToByte(16);
