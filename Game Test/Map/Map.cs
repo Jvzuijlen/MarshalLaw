@@ -48,6 +48,8 @@ namespace Game_Test
             }
 
             int temp = 0;
+
+            player.SetLayernumber(NumberLayers - layer_player_num);
             GetLayer("Collision", temp++);
 
             for (int l = layer_player_num; l < Layers.Count - 1; l++)

@@ -177,7 +177,8 @@ namespace Game_Test
                 sprite.Position.Y + dirY >= 0 &&
                 sprite.Position.Y + dirY <= GameSettings.Instance.Dimensions.Y - 64)*/
             {
-                ChangeAlpha(new Vector2(sprite.Position.X + dirX, sprite.Position.Y + dirY));
+                for (int l = 1; l < layer.Length; l++)
+                    ChangeAlpha(new Vector2(sprite.Position.X + dirX, sprite.Position.Y + dirY), l);
                 sprite.Position = new Vector2(sprite.Position.X + dirX, sprite.Position.Y + dirY); //Set new position
             }
 
@@ -216,7 +217,7 @@ namespace Game_Test
             return false;
         }
 
-        private void ChangeAlpha(Vector2 position)
+        private void ChangeAlpha(Vector2 position, int number)
         {
             float tilescale_x = GameSettings.Instance.Tilescale.X, tilescale_y = GameSettings.Instance.Tilescale.Y;
 
@@ -233,15 +234,15 @@ namespace Game_Test
             {
                 for (int j = x1; j < x2 + 1; j++)
                 {
-                    TileID = layer[1].getTileID(j, i);
+                    TileID = layer[number].getTileID(j, i);
                     Rectangle rect;
                     if (TileID != 0)
                     {
                         rect = new Rectangle(j * (int)tilescale_x, i * (int)tilescale_y, (int)tilescale_x, (int)tilescale_y);
                         if (rect.Intersects(playerRect))
-                            layer[1].ChangeTileAlpha(j, i, 0.5f);
-                        else if (layer[1].GetTileAlpha(j, i) != 1.0f)
-                            layer[1].ChangeTileAlpha(j, i, 1.0f);
+                            layer[number].ChangeTileAlpha(j, i, 0.5f);
+                        else if (layer[number].GetTileAlpha(j, i) != 1.0f)
+                            layer[number].ChangeTileAlpha(j, i, 1.0f);
                     }
                 }
             }
@@ -249,12 +250,12 @@ namespace Game_Test
 
         public void SendLayer(Layer layer, int number, int numlayers)
         {
-            if (this.layer == null)
-            {
-                this.layer = new Layer[numlayers];
-            }
-
             this.layer[number] = layer;
+        }
+
+        public void SetLayernumber(int number)
+        {
+            layer = new Layer[number];
         }
     }
 }
