@@ -46,5 +46,9 @@ namespace Game_Test
         { 
         }
 
+        public void SetAlpha(float alpha)
+        {
+            Alpha = alpha;
+        }
     }
 }

@@ -146,5 +146,10 @@ namespace Game_Test
         {
             return tiles[x, y].TileID;
         }
+
+        public void ChangeTileAlpha(int x, int y)
+        {
+            tiles[x, y].SetAlpha(0.5f);
+        }
     }
 }
