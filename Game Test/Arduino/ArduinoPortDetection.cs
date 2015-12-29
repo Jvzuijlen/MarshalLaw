@@ -22,6 +22,10 @@ namespace Game_Test
             {
                 portFound = true;
             }
+            else
+            {
+                portFound = false;
+            }
         }
 
         private void SetComPort()
@@ -48,15 +52,14 @@ namespace Game_Test
             try
             {
                 //The below setting are for the Hello handshake
-                byte[] buffer = new byte[5];
+                byte[] buffer = new byte[2];
                 buffer[0] = Convert.ToByte(16);
                 buffer[1] = Convert.ToByte(128);
 
                 int intReturnASCII = 0;
-                char charReturnValue = (Char)intReturnASCII;
 
                 currentPort.Open();
-                currentPort.Write(buffer, 0, 1);
+                currentPort.Write(buffer, 0, 2);
                 Thread.Sleep(1000);
 
                 int count = currentPort.BytesToRead;
@@ -64,7 +67,7 @@ namespace Game_Test
                 while (count > 0)
                 {
                     intReturnASCII = currentPort.ReadByte();
-                    returnMessage = returnMessage + Convert.ToChar(intReturnASCII);
+                    returnMessage += Convert.ToChar(intReturnASCII);
                     count--;
                 }
                 currentPort.Close();
