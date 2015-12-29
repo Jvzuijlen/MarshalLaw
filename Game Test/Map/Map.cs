@@ -32,7 +32,8 @@ namespace Game_Test
             spriteSheets = mapLoader.GetSpritesheetList();
 
             player = new Player();
-            GetCollisionLayer();
+            GetLayer("Collision", 0);
+            GetLayer("Tree", 1);
 
             foreach (var layer in Layers)
             {
@@ -86,13 +87,13 @@ namespace Game_Test
             player.Draw(spriteBatch);
         }
 
-        public void GetCollisionLayer()
+        public void GetLayer(string Name, int number)
         {
             for (int l = 0; l < Layers.Count; l++)
             {
-                if (Layers[l].Layername == "Collision")
+                if (Layers[l].Layername == Name)
                 {
-                    player.SendLayer(Layers[l]);
+                    player.SendLayer(Layers[l], number);
                 }
             }
         }

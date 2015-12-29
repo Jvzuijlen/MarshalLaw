@@ -13,16 +13,19 @@ namespace Game_Test
         public int TileID { get; private set; }
 
         public float Scale { get; set; }
+
         public Rectangle Source { get; set; }
 
         public Vector2 TileOnSheetPosition { get; private set; }
 
         public string TextureName{ get; private set; }
 
+        public float Alpha { get; private set; }
+
         public Tile(int tileID)
         {
             this.TileID = tileID;
-            
+            Alpha = 1.0f;
         }
 
         public void LoadContent(string texturename)
