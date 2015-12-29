@@ -16,11 +16,9 @@ namespace Game_Test
         private float SpeedScale; //Scales up the movementspeed
 
         private float sprSheetX;
-        private int MaxSheetX;
 
         private float mHor, mVer;
         private Vector2 direction;
-        private bool moveActive;
 
         //Slow down animation speed
         private const float Interval = 0.25f;
@@ -28,27 +26,71 @@ namespace Game_Test
         //Collisionlayer and Tree layer(s)
         Layer[] layer;
 
-        private enum Movestate
+        /// <summary>
+        /// Spell: 0-3:
+        /// Spear: 4-7
+        /// Walk: 8-11
+        /// Slash: 12-15
+        /// Shoot: 16-19
+        /// </summary>
+        private enum Action
         {
-            none,
-            up = 8,
-            left = 9,
-            down = 10,
-            right = 11
+            SpellUp,
+            SpellLeft,
+            SpellDown,
+            SpellRight,
+            SpearUp,
+            SpearLeft,
+            SpearDown,
+            SpearRight,
+            WalkUp,
+            WalkLeft,
+            WalkDown,
+            WalkRight,
+            SlashUp,
+            SlashLeft,
+            SlashDown,
+            SlashRight,
+            ShootUp,
+            ShootLeft,
+            ShootDown,
+            ShootRight,
+            None
         };
+        Action sprSheetY;
 
-        Movestate sprSheetY;
+        private enum ActionState
+        {
+            None,
+            Spell = 7,
+            Thrust = 8,
+            Walk = 9,
+            Slash = 6,
+            Shoot = 13
+        };
+        ActionState State;
+
+        private enum LookDirection
+        {
+            Up,
+            left,
+            Down,
+            Right
+        };
+        LookDirection lookDirection;
 
         private SprSheetImage sprite;
+
+        private Weapon weapon;
 
         public Player()
         {
             //TODO add playerstats
             //this.player = player;
-
-            sprSheetY = Movestate.down;
+            State = ActionState.None;
+            lookDirection = LookDirection.Down;
+            sprSheetY = Action.WalkDown;
             sprSheetX = 0;
-            MaxSheetX = 6;
 
             mHor = 0.0f;
             mVer = 0.0f;
@@ -57,65 +99,128 @@ namespace Game_Test
             sprite = new SprSheetImage("OptionsScreen/light");
             
             SpeedScale = 1.5f;
+
+            weapon = new Weapon();
         }
 
         public void LoadContent(int X, int Y)
         {
             sprite.LoadContent(X, Y, false, new Vector2(64 / (GameSettings.Instance.Tilescale.X * 2), 64 / (GameSettings.Instance.Tilescale.Y * 2)));
+            weapon.LoadContent(X, Y);
         }
 
         public void UnloadContent()
         {
             sprite.UnloadContent();
+            weapon.UnloadContent();
         }
 
         public void Update(GameTime gameTime)
         {
             //Check if keys are pressed
-            if (InputManager.Instance.KeyDown(Keys.W))
+            if (InputManager.Instance.KeyDown(Keys.Space))
+                if (State != ActionState.Thrust)
+                    State = ActionState.Thrust;
+            else
             {
-                moveActive = true;
-                direction.Y = -1;
-                mVer = -1;
-            }
-            if (InputManager.Instance.KeyDown(Keys.S))
-            {
-                moveActive = true;
-                direction.Y = 1;
-                mVer = 1;
-            }
-            if (InputManager.Instance.KeyDown(Keys.A))
-            {
-                moveActive = true;
-                direction.X = -1;
-                mHor = -1;
-            }
-            if (InputManager.Instance.KeyDown(Keys.D))
-            {
-                moveActive = true;
-                direction.X = 1;
-                mHor = 1;
+                if (InputManager.Instance.KeyDown(Keys.W))
+                {
+                    State = ActionState.Walk;
+                    lookDirection = LookDirection.Up;
+                    direction.Y = -1;
+                    mVer = -1;
+                }
+                if (InputManager.Instance.KeyDown(Keys.S))
+                {
+                    State = ActionState.Walk;
+                    lookDirection = LookDirection.Down;
+                    direction.Y = 1;
+                    mVer = 1;
+                }
+                if (InputManager.Instance.KeyDown(Keys.A))
+                {
+                    State = ActionState.Walk;
+                    lookDirection = LookDirection.left;
+                    direction.X = -1;
+                    mHor = -1;
+                }
+                if (InputManager.Instance.KeyDown(Keys.D))
+                {
+                    State = ActionState.Walk;
+                    lookDirection = LookDirection.Right;
+                    direction.X = 1;
+                    mHor = 1;
+                }
             }
 
             //Check if keys are released
-            if (InputManager.Instance.KeyReleased(Keys.W) || InputManager.Instance.KeyReleased(Keys.A) || InputManager.Instance.KeyReleased(Keys.S) || InputManager.Instance.KeyReleased(Keys.D))
+            if (InputManager.Instance.KeyReleased(Keys.W) || InputManager.Instance.KeyReleased(Keys.A) || InputManager.Instance.KeyReleased(Keys.S) || InputManager.Instance.KeyReleased(Keys.D) || InputManager.Instance.KeyReleased(Keys.Space))
             {
-                moveActive = false;
-                sprSheetY = Movestate.none;
+                State = ActionState.None;
+                sprSheetY = Action.None;
                 sprite.SprSheetX = 0;
                 mHor = 0;
                 mVer = 0;
                 direction = new Vector2(0, 0);
             }
-            else if (moveActive)
+            else if (State == ActionState.Walk)
                 Move(mHor, mVer, direction, gameTime);
+            else if (State == ActionState.Thrust)
+                Attack(gameTime);
 
             sprite.Update(gameTime);
+            weapon.Update(gameTime);
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            weapon.Draw(spriteBatch);
             sprite.Draw(spriteBatch);
+        }
+
+        private void Attack(GameTime gameTime)
+        {
+            switch (lookDirection)
+            {
+                case LookDirection.Up:
+                    if (sprSheetY == Action.SpearUp)
+                        UpdateAnimationFrame(gameTime);
+                    else if (direction.X == 0)
+                    {
+                        sprSheetY = Action.SpearUp;
+                        sprSheetX = 0;
+                    }
+                    break;
+                case LookDirection.left:
+                    if (sprSheetY == Action.SpearLeft)
+                        UpdateAnimationFrame(gameTime);
+                    else if (direction.X == 0)
+                    {
+                        sprSheetY = Action.SpearLeft;
+                        sprSheetX = 0;
+                    }
+                    break;
+                case LookDirection.Down:
+                    if (sprSheetY == Action.SpearDown)
+                        UpdateAnimationFrame(gameTime);
+                    else if (direction.X == 0)
+                    {
+                        sprSheetY = Action.SpearDown;
+                        sprSheetX = 0;
+                    }
+                    break;
+                case LookDirection.Right:
+                    if (sprSheetY == Action.SpearRight)
+                        UpdateAnimationFrame(gameTime);
+                    else if (direction.X == 0)
+                    {
+                        sprSheetY = Action.SpearRight;
+                        sprSheetX = 0;
+                    }
+                    break;
+            }
+
+            SetAnimationFrame();
         }
 
         private void Move(float dirX, float dirY, Vector2 direction, GameTime gameTime)
@@ -130,11 +235,11 @@ namespace Game_Test
             //change sprSheetX and sprSheetY based on previous movement direction
             if (direction.Y == -1)//up
             {
-                if (sprSheetY == Movestate.up)
-                    sprSheetX += (float)gameTime.ElapsedGameTime.TotalMilliseconds / gameTime.ElapsedGameTime.Milliseconds * Interval;
+                if (sprSheetY == Action.WalkUp)
+                    UpdateAnimationFrame(gameTime);
                 else if (direction.X == 0)
                 {
-                    sprSheetY = Movestate.up;
+                    sprSheetY = Action.WalkUp;
                     sprSheetX = 0;
                 }
                 if (CollisionY)
@@ -142,11 +247,11 @@ namespace Game_Test
             }
             if (direction.Y == 1)//down
             {
-                if (sprSheetY == Movestate.down)
-                    sprSheetX += (float)gameTime.ElapsedGameTime.TotalMilliseconds / gameTime.ElapsedGameTime.Milliseconds * Interval;
+                if (sprSheetY == Action.WalkDown)
+                    UpdateAnimationFrame(gameTime);
                 else if(direction.X == 0)
                 {
-                    sprSheetY = Movestate.down;
+                    sprSheetY = Action.WalkDown;
                     sprSheetX = 0;
                 }
                 if (CollisionY)
@@ -154,11 +259,11 @@ namespace Game_Test
             }
             if (direction.X == -1)//left
             {
-                if (sprSheetY == Movestate.left)
-                    sprSheetX += (float)gameTime.ElapsedGameTime.TotalMilliseconds / gameTime.ElapsedGameTime.Milliseconds * Interval;
+                if (sprSheetY == Action.WalkLeft)
+                    UpdateAnimationFrame(gameTime);
                 else
                 {
-                    sprSheetY = Movestate.left;
+                    sprSheetY = Action.WalkLeft;
                     sprSheetX = 0;
                 }
                 if (CollisionX)
@@ -166,27 +271,23 @@ namespace Game_Test
             }
             if (direction.X == 1)//right
             {
-                if (sprSheetY == Movestate.right)
-                    sprSheetX += (float)gameTime.ElapsedGameTime.TotalMilliseconds / gameTime.ElapsedGameTime.Milliseconds * Interval;
+                if (sprSheetY == Action.WalkRight)
+                    UpdateAnimationFrame(gameTime);
                 else
                 {
-                    sprSheetY = Movestate.right;
+                    sprSheetY = Action.WalkRight;
                     sprSheetX = 0;
                 }
                 if (CollisionX)
                     dirX = 0;
             }
-
-            //Reset X at the final animation frame
-            if (sprSheetX > MaxSheetX)
-                sprSheetX = 0;
-           
+            
             for (int l = 1; l < layer.Length; l++)
                 ChangeAlpha(new Vector2(sprite.Position.X + dirX, sprite.Position.Y + dirY), l);
             sprite.Position = new Vector2(sprite.Position.X + dirX, sprite.Position.Y + dirY); //Set new position
+            weapon.setPosition(new Vector2(weapon.getPosition().X + dirX, weapon.getPosition().Y + dirY)); //Move weapon with you
 
-            sprite.SprSheetX = (int)sprSheetX;
-            sprite.SprSheetY = (int)sprSheetY;
+            SetAnimationFrame();
         }
 
         private bool CheckCollision(Vector2 PositionNew, Vector2 PositionOld, int direction)
@@ -268,6 +369,24 @@ namespace Game_Test
         public void SetLayernumber(int number)
         {
             layer = new Layer[number];
+        }
+
+        private void UpdateAnimationFrame(GameTime gameTime)
+        {
+            sprSheetX += (float)gameTime.ElapsedGameTime.TotalMilliseconds / gameTime.ElapsedGameTime.Milliseconds * Interval;
+
+            //Reset X at the final animation frame
+            if ((int)sprSheetX >= (int)State)
+                sprSheetX = 0;
+        }
+
+        private void SetAnimationFrame()
+        {
+            sprite.SprSheetX = (int)sprSheetX;
+            sprite.SprSheetY = (int)sprSheetY;
+
+            weapon.SprSheetX = (int)sprSheetX;
+            weapon.SprSheetY = (int)sprSheetY;
         }
     }
 }
