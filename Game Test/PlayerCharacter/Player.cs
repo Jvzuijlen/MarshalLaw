@@ -26,7 +26,7 @@ namespace Game_Test
         private const float Interval = 0.25f;
 
         //Collisionlayer and Tree layer(s)
-        Layer[] layer = new Layer[2];
+        Layer[] layer;
 
         private enum Movestate
         {
@@ -247,8 +247,13 @@ namespace Game_Test
             }
         }
 
-        public void SendLayer(Layer layer, int number)
+        public void SendLayer(Layer layer, int number, int numlayers)
         {
+            if (this.layer == null)
+            {
+                this.layer = new Layer[numlayers];
+            }
+
             this.layer[number] = layer;
         }
     }
