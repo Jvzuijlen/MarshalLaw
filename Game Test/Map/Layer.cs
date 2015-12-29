@@ -138,6 +138,23 @@ namespace Game_Test
                     }
                 }
             }
+            else if (tileID > 653 && tileID <= 1676)
+            {
+                int temp_tileID = 1;
+                Vector2 tileSheetDimension = new Vector2(31, 31);
+                for (int y = 0; y < tileSheetDimension.Y; y++)
+                {
+                    for (int x = 0; x < tileSheetDimension.X; x++)
+                    {
+                        if (tileID - 653 == temp_tileID)
+                        {
+                            return new Vector2(x, y);
+                        }
+                        else
+                            temp_tileID++;
+                    }
+                }
+            }
 
             return new Vector2(0, 1);
         }

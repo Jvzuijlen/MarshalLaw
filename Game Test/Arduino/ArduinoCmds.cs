@@ -18,12 +18,17 @@ namespace Game_Test
 
         public void Save()
         {
-            byte[] buffer = new byte[5];
+            SendCommand(64);
+        }
+
+        private void SendCommand(int CmdByte)
+        {
+            byte[] buffer = new byte[2];
             buffer[0] = Convert.ToByte(16);
-            buffer[1] = Convert.ToByte(64);
+            buffer[1] = Convert.ToByte(CmdByte);
 
             CurrentPort.Open();
-            CurrentPort.Write(buffer, 0, 1);
+            CurrentPort.Write(buffer, 0, 2);
             Thread.Sleep(1000);
             CurrentPort.Close();
         }
