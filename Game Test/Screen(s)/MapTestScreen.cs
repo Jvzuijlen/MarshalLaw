@@ -16,10 +16,12 @@ namespace Game_Test
         Texture2D Texture;
         string Path = "SpriteSheets/terrain";
 
+        private bool background = false;
+
         public MapTestScreen()
         {
 
-            map = new Map("collisiontest5");
+            map = new Map("collisiontest6");
         }
 
         public override void LoadContent()
@@ -55,7 +57,8 @@ namespace Game_Test
         public override void Draw(SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);
-
+            
+            map.DrawBackground(spriteBatch);
             map.Draw(spriteBatch);
         }
     }

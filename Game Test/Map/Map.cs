@@ -18,6 +18,8 @@ namespace Game_Test
 
         Player player;
 
+        private bool PlayerActive;
+
         //Property's
         public Vector2 mapDimensions { get; private set; }
         public int NumberLayers { get; private set; }
@@ -77,14 +79,31 @@ namespace Game_Test
             {
                 for (int x = 0; x < mapDimensions.X; x++)
                 {
-                    for (int l = 0; l < Layers.Count; l++)
+                    for (int l = 1; l < Layers.Count; l++)
                     {
-                        if (Layers[l].Layername != "Collision")
+                        if (Layers[l].Layername != "Collision" && Layers[l].Layername != "Player")
                             Layers[l].DrawTile(spriteBatch, x, y);
+                        if (Layers[l].Layername == "Player" && PlayerActive == false)
+                        {
+                            player.Draw(spriteBatch);
+                            PlayerActive = true;
+                        }
                     }
                 }
             }
-            player.Draw(spriteBatch);
+            //player.Draw(spriteBatch);
+            PlayerActive = false;
+        }
+
+        public void DrawBackground(SpriteBatch spriteBatch)
+        {
+            for (int y = 0; y < mapDimensions.Y; y++)
+            {
+                for (int x = 0; x < mapDimensions.X; x++)
+                {
+                    Layers[0].DrawTile(spriteBatch, x, y);
+                }
+            }
         }
 
         public void GetLayer(string Name, int number)

@@ -78,7 +78,7 @@ namespace Game_Test
                 Vector2 tileOnSheetPosition = SetTileOnSheetPosition(tiles[x, y].TileID);
                 Rectangle Source = new Rectangle((int)tileOnSheetPosition.X * 32, (int)tileOnSheetPosition.Y * 32, 32, 32);
 
-                spriteBatch.Draw(textures[spriteSheets.IndexOf(tiles[x, y].TextureName)], new Vector2(x * tilescale_x, y * tilescale_y), Source, Color.White, 0, new Vector2(0, 0), 0.75f, SpriteEffects.None, 0.5f);
+                spriteBatch.Draw(textures[spriteSheets.IndexOf(tiles[x, y].TextureName)], new Vector2(x * tilescale_x, y * tilescale_y), Source, Color.White * tiles[x, y].Alpha, 0, new Vector2(0, 0), 0.75f, SpriteEffects.None, 0.5f);
             }
         }
 
@@ -147,9 +147,14 @@ namespace Game_Test
             return tiles[x, y].TileID;
         }
 
-        public void ChangeTileAlpha(int x, int y)
+        public void ChangeTileAlpha(int x, int y, float alpha)
         {
-            tiles[x, y].SetAlpha(0.5f);
+            tiles[x, y].SetAlpha(alpha);
+        }
+
+        public float GetTileAlpha(int x, int y)
+        {
+            return tiles[x, y].Alpha;
         }
     }
 }

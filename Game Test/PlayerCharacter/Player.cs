@@ -177,6 +177,7 @@ namespace Game_Test
                 sprite.Position.Y + dirY >= 0 &&
                 sprite.Position.Y + dirY <= GameSettings.Instance.Dimensions.Y - 64)*/
             {
+                ChangeAlpha(new Vector2(sprite.Position.X + dirX, sprite.Position.Y + dirY));
                 sprite.Position = new Vector2(sprite.Position.X + dirX, sprite.Position.Y + dirY); //Set new position
             }
 
@@ -224,7 +225,7 @@ namespace Game_Test
             x2 = (int)((position.X + 2 * tilescale_x) / tilescale_x),
             y2 = (int)((position.Y + 2 * tilescale_y) / tilescale_y);
 
-            Rectangle playerRect = new Rectangle(new Point((int)(position.X) + 12, (int)(position.Y + tilescale_y)), new Point((int)tilescale_x, (int)(tilescale_y)));
+            Rectangle playerRect = new Rectangle(new Point((int)(position.X) + 12, (int)(position.Y + 10)), new Point((int)tilescale_x, (int)(tilescale_y)));
 
             int TileID;
 
@@ -238,7 +239,9 @@ namespace Game_Test
                     {
                         rect = new Rectangle(j * (int)tilescale_x, i * (int)tilescale_y, (int)tilescale_x, (int)tilescale_y);
                         if (rect.Intersects(playerRect))
-                            layer[1].ChangeTileAlpha(j, i);
+                            layer[1].ChangeTileAlpha(j, i, 0.5f);
+                        else if (layer[1].GetTileAlpha(j, i) != 1.0f)
+                            layer[1].ChangeTileAlpha(j, i, 1.0f);
                     }
                 }
             }
