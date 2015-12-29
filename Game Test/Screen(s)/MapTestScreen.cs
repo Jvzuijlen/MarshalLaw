@@ -19,7 +19,7 @@ namespace Game_Test
         public MapTestScreen()
         {
 
-            map = new Map("Collisiontest5");
+            map = new Map("collisiontest5");
         }
 
         public override void LoadContent()

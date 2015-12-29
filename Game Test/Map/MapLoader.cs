@@ -156,7 +156,9 @@ namespace Game_Test
 
                         buffer = buffer.Remove(0, 5);
 
-                        GameSettings.Instance.Tilescale = new Vector2(GameSettings.Instance.Dimensions.X / mapDimensions.X , GameSettings.Instance.Dimensions.Y / mapDimensions.Y);
+                        //GameSettings.Instance.Tilescale = new Vector2(GameSettings.Instance.Dimensions.X / mapDimensions.X , GameSettings.Instance.Dimensions.Y / mapDimensions.Y);
+                        GameSettings.Instance.Tilescale = new Vector2(24, 24);
+
                         Layer tempLayer = new Layer(buffer, mapDimensions, (int)mapDimensions.X, (int)mapDimensions.Y);
 
                         buffer = sr.ReadLine();
