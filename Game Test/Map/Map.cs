@@ -35,7 +35,7 @@ namespace Game_Test
 
             player = new Player();
             GetLayer("Collision", 0);
-            GetLayer("Tree", 1);
+            GetLayer("Tree Top", 1);
 
             foreach (var layer in Layers)
             {
@@ -75,11 +75,19 @@ namespace Game_Test
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
+            int layer_player_num = 0;
+            for (int l = 0; l < Layers.Count; l++)
+            {
+                if (Layers[l].Layername == "Player")
+                {
+                    layer_player_num = l;
+                }
+            }
             for (int y = 0; y < mapDimensions.Y; y++)
             {
                 for (int x = 0; x < mapDimensions.X; x++)
                 {
-                    for (int l = 1; l < Layers.Count; l++)
+                    for (int l = layer_player_num; l < Layers.Count; l++)
                     {
                         if (Layers[l].Layername != "Collision" && Layers[l].Layername != "Player")
                             Layers[l].DrawTile(spriteBatch, x, y);
@@ -97,11 +105,22 @@ namespace Game_Test
 
         public void DrawBackground(SpriteBatch spriteBatch)
         {
+            int layer_player_num = 0;
+            for (int l = 0; l < Layers.Count; l++)
+            {
+                if (Layers[l].Layername == "Player")
+                {
+                    layer_player_num = l;
+                }
+            }
             for (int y = 0; y < mapDimensions.Y; y++)
             {
                 for (int x = 0; x < mapDimensions.X; x++)
                 {
-                    Layers[0].DrawTile(spriteBatch, x, y);
+                    for (int l = 0; l < layer_player_num; l++)
+                    {
+                            Layers[l].DrawTile(spriteBatch, x, y);
+                    }
                 }
             }
         }
