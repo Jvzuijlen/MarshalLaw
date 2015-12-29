@@ -26,7 +26,7 @@ namespace Game_Test
         private const float Interval = 0.25f;
 
         //Collisionlayer
-        Layer layer;
+        Layer[] layer;
 
         private enum Movestate
         {
@@ -194,7 +194,7 @@ namespace Game_Test
             x2 = (int)((position.X + 2 * tilescale_x) / tilescale_x),
             y2 = (int)((position.Y + 2 * tilescale_y) / tilescale_y);
 
-            Rectangle playerRect = new Rectangle(new Point((int)position.X + 12, (int)position.Y + 10), new Point(2 * (int)tilescale_x - 24, 2 * (int)tilescale_y - 10));
+            Rectangle playerRect = new Rectangle(new Point((int)(position.X) + 12, (int)(position.Y + tilescale_y)), new Point((int)tilescale_x, (int)(tilescale_y)));
 
             int TileID;
 
@@ -202,7 +202,7 @@ namespace Game_Test
             {
                 for (int j = x1; j < x2 + 1; j++)
                 {
-                    TileID = layer.getTileID(j, i);
+                    TileID = layer[0].getTileID(j, i);
                     Rectangle rect;
                     if (TileID != 0)
                     {
@@ -215,9 +215,38 @@ namespace Game_Test
             return false;
         }
 
-        public void SendLayer(Layer layer)
+        private void ChangeAlpha(Vector2 position)
         {
-            this.layer = layer;
+            float tilescale_x = GameSettings.Instance.Tilescale.X, tilescale_y = GameSettings.Instance.Tilescale.Y;
+
+            int x1 = (int)(position.X / tilescale_x),
+            y1 = (int)(position.Y / tilescale_y),
+            x2 = (int)((position.X + 2 * tilescale_x) / tilescale_x),
+            y2 = (int)((position.Y + 2 * tilescale_y) / tilescale_y);
+
+            Rectangle playerRect = new Rectangle(new Point((int)(position.X) + 12, (int)(position.Y + tilescale_y)), new Point((int)tilescale_x, (int)(tilescale_y)));
+
+            int TileID;
+
+            for (int i = y1; i < y2 + 1; i++)
+            {
+                for (int j = x1; j < x2 + 1; j++)
+                {
+                    TileID = layer[1].getTileID(j, i);
+                    Rectangle rect;
+                    if (TileID != 0)
+                    {
+                        rect = new Rectangle(j * (int)tilescale_x, i * (int)tilescale_y, (int)tilescale_x, (int)tilescale_y);
+                        /*if (rect.Intersects(playerRect))
+                            layer[1].*/
+                    }
+                }
+            }
+        }
+
+        public void SendLayer(Layer layer, int number)
+        {
+            this.layer[number] = layer;
         }
     }
 }
