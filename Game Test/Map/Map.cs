@@ -24,6 +24,8 @@ namespace Game_Test
         public Vector2 mapDimensions { get; private set; }
         public int NumberLayers { get; private set; }
 
+        int layer_player_num = 0;
+
         public Map(string mapName)
         {
             mapLoader.LoadMap(mapName);
@@ -33,9 +35,25 @@ namespace Game_Test
             NumberLayers = mapLoader.GetNumLayers();
             spriteSheets = mapLoader.GetSpritesheetList();
 
+
+
             player = new Player();
-            GetLayer("Collision", 0);
-            GetLayer("Tree Top", 1);
+
+            for (int l = 0; l < Layers.Count; l++)
+            {
+                if (Layers[l].Layername == "Player")
+                {
+                    layer_player_num = l;
+                }
+            }
+
+            int temp = 0;
+            GetLayer("Collision", temp++);
+
+            for (int l = layer_player_num; l < Layers.Count - 1; l++)
+            {
+                GetLayer(Layers[l].Layername, temp++);
+            }
 
             foreach (var layer in Layers)
             {
@@ -75,14 +93,6 @@ namespace Game_Test
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            int layer_player_num = 0;
-            for (int l = 0; l < Layers.Count; l++)
-            {
-                if (Layers[l].Layername == "Player")
-                {
-                    layer_player_num = l;
-                }
-            }
             for (int y = 0; y < mapDimensions.Y; y++)
             {
                 for (int x = 0; x < mapDimensions.X; x++)
@@ -105,14 +115,6 @@ namespace Game_Test
 
         public void DrawBackground(SpriteBatch spriteBatch)
         {
-            int layer_player_num = 0;
-            for (int l = 0; l < Layers.Count; l++)
-            {
-                if (Layers[l].Layername == "Player")
-                {
-                    layer_player_num = l;
-                }
-            }
             for (int y = 0; y < mapDimensions.Y; y++)
             {
                 for (int x = 0; x < mapDimensions.X; x++)
@@ -131,8 +133,7 @@ namespace Game_Test
             {
                 if (Layers[l].Layername == Name)
                 {
-                    player.SendLayer(Layers[l], number);
-                    
+                    player.SendLayer(Layers[l], number, NumberLayers - layer_player_num);
                 }
             }
         }
