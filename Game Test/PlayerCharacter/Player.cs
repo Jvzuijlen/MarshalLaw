@@ -25,8 +25,8 @@ namespace Game_Test
         //Slow down animation speed
         private const float Interval = 0.25f;
 
-        //Collisionlayer
-        Layer[] layer;
+        //Collisionlayer and Tree layer(s)
+        Layer[] layer = new Layer[2];
 
         private enum Movestate
         {
@@ -237,8 +237,8 @@ namespace Game_Test
                     if (TileID != 0)
                     {
                         rect = new Rectangle(j * (int)tilescale_x, i * (int)tilescale_y, (int)tilescale_x, (int)tilescale_y);
-                        /*if (rect.Intersects(playerRect))
-                            layer[1].*/
+                        if (rect.Intersects(playerRect))
+                            layer[1].ChangeTileAlpha(j, i);
                     }
                 }
             }

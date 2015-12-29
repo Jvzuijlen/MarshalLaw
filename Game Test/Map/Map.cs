@@ -94,6 +94,7 @@ namespace Game_Test
                 if (Layers[l].Layername == Name)
                 {
                     player.SendLayer(Layers[l], number);
+                    
                 }
             }
         }
