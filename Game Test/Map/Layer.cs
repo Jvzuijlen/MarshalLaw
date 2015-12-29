@@ -99,6 +99,10 @@ namespace Game_Test
             {
                 temp_int = 1;
             }
+            else if (tileID > 653 && tileID <= 1676)
+            {
+                temp_int = 2;
+            }
             return spriteSheets[temp_int];
         }
 
@@ -121,7 +125,7 @@ namespace Game_Test
                     }
                 }
             }
-            else if (tileID > 483 && tileID <= 653)
+            else if (tileID > 483 && tileID <= 652)
             {
                 int temp_tileID = 1;
                 Vector2 tileSheetDimension = new Vector2(13, 13);
@@ -138,15 +142,15 @@ namespace Game_Test
                     }
                 }
             }
-            else if (tileID > 653 && tileID <= 1676)
+            else if (tileID > 652 && tileID <= 1676)
             {
                 int temp_tileID = 1;
-                Vector2 tileSheetDimension = new Vector2(31, 31);
+                Vector2 tileSheetDimension = new Vector2(32, 32);
                 for (int y = 0; y < tileSheetDimension.Y; y++)
                 {
                     for (int x = 0; x < tileSheetDimension.X; x++)
                     {
-                        if (tileID - 653 == temp_tileID)
+                        if (tileID - 652 == temp_tileID)
                         {
                             return new Vector2(x, y);
                         }
@@ -155,7 +159,6 @@ namespace Game_Test
                     }
                 }
             }
-
             return new Vector2(0, 1);
         }
         
