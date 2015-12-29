@@ -19,7 +19,7 @@ namespace Game_Test
         private int MaxSheetX;
 
         private float mHor, mVer;
-        private string direction;
+        private Vector2 direction;
         private bool moveActive;
 
         //Slow down animation speed
@@ -52,7 +52,7 @@ namespace Game_Test
 
             mHor = 0.0f;
             mVer = 0.0f;
-            direction = "down";
+            direction = new Vector2(0, 1);
             
             sprite = new SprSheetImage("OptionsScreen/light");
             
@@ -75,25 +75,25 @@ namespace Game_Test
             if (InputManager.Instance.KeyDown(Keys.W))
             {
                 moveActive = true;
-                direction = "up";
+                direction.Y = -1;
                 mVer = -1;
             }
             if (InputManager.Instance.KeyDown(Keys.S))
             {
                 moveActive = true;
-                direction = "down";
+                direction.Y = 1;
                 mVer = 1;
             }
             if (InputManager.Instance.KeyDown(Keys.A))
             {
                 moveActive = true;
-                direction = "left";
+                direction.X = -1;
                 mHor = -1;
             }
             if (InputManager.Instance.KeyDown(Keys.D))
             {
                 moveActive = true;
-                direction = "right";
+                direction.X = 1;
                 mHor = 1;
             }
 
@@ -105,6 +105,7 @@ namespace Game_Test
                 sprite.SprSheetX = 0;
                 mHor = 0;
                 mVer = 0;
+                direction = new Vector2(0, 0);
             }
             else if (moveActive)
                 Move(mHor, mVer, direction, gameTime);
@@ -117,101 +118,112 @@ namespace Game_Test
             sprite.Draw(spriteBatch);
         }
 
-        private void Move(float dirX, float dirY, string direction, GameTime gameTime)
+        private void Move(float dirX, float dirY, Vector2 direction, GameTime gameTime)
         {
             //Scale the movement
             dirX *= SpeedScale * (32 / GameSettings.Instance.Tilescale.X);
             dirY *= SpeedScale * (32 / GameSettings.Instance.Tilescale.X);
 
+            bool CollisionY = CheckCollision(new Vector2(sprite.Position.X + dirX, sprite.Position.Y + dirY), sprite.Position, (int)direction.Y),
+            CollisionX = CheckCollision(new Vector2(sprite.Position.X + dirX, sprite.Position.Y + dirY), sprite.Position, (int)direction.X + 1);
+            
             //change sprSheetX and sprSheetY based on previous movement direction
-            switch (direction)
+            if (direction.Y == -1)//up
             {
-                case "up":
-                    if (sprSheetY == Movestate.up)
-                        sprSheetX += (float)gameTime.ElapsedGameTime.TotalMilliseconds / gameTime.ElapsedGameTime.Milliseconds * Interval;
-                    else
-                    { 
-                        sprSheetY = Movestate.up;
-                        sprSheetX = 0;
-                    }
-                    break;
-                case "down":
-                    if (sprSheetY == Movestate.down)
-                        sprSheetX += (float)gameTime.ElapsedGameTime.TotalMilliseconds / gameTime.ElapsedGameTime.Milliseconds * Interval;
-                    else
-                    {
-                        sprSheetY = Movestate.down;
-                        sprSheetX = 0;
-                    }
-                    break;
-                case "left":
-                    if (sprSheetY == Movestate.left)
-                        sprSheetX += (float)gameTime.ElapsedGameTime.TotalMilliseconds / gameTime.ElapsedGameTime.Milliseconds * Interval;
-                    else
-                    {
-                        sprSheetY = Movestate.left;
-                        sprSheetX = 0;
-                    }
-                    break;
-                case "right":
-                    if (sprSheetY == Movestate.right)
-                        sprSheetX += (float)gameTime.ElapsedGameTime.TotalMilliseconds / gameTime.ElapsedGameTime.Milliseconds * Interval;
-                    else
-                    {
-                        sprSheetY = Movestate.right;
-                        sprSheetX = 0;
-                    }
-                    break;
+                if (sprSheetY == Movestate.up)
+                    sprSheetX += (float)gameTime.ElapsedGameTime.TotalMilliseconds / gameTime.ElapsedGameTime.Milliseconds * Interval;
+                else if (direction.X == 0)
+                {
+                    sprSheetY = Movestate.up;
+                    sprSheetX = 0;
+                }
+                if (CollisionY)
+                    dirY = 0;
+            }
+            if (direction.Y == 1)//down
+            {
+                if (sprSheetY == Movestate.down)
+                    sprSheetX += (float)gameTime.ElapsedGameTime.TotalMilliseconds / gameTime.ElapsedGameTime.Milliseconds * Interval;
+                else if(direction.X == 0)
+                {
+                    sprSheetY = Movestate.down;
+                    sprSheetX = 0;
+                }
+                if (CollisionY)
+                    dirY = 0;
+            }
+            if (direction.X == -1)//left
+            {
+                if (sprSheetY == Movestate.left)
+                    sprSheetX += (float)gameTime.ElapsedGameTime.TotalMilliseconds / gameTime.ElapsedGameTime.Milliseconds * Interval;
+                else
+                {
+                    sprSheetY = Movestate.left;
+                    sprSheetX = 0;
+                }
+                if (CollisionX)
+                    dirX = 0;
+            }
+            if (direction.X == 1)//right
+            {
+                if (sprSheetY == Movestate.right)
+                    sprSheetX += (float)gameTime.ElapsedGameTime.TotalMilliseconds / gameTime.ElapsedGameTime.Milliseconds * Interval;
+                else
+                {
+                    sprSheetY = Movestate.right;
+                    sprSheetX = 0;
+                }
+                if (CollisionX)
+                    dirX = 0;
             }
 
             //Reset X at the final animation frame
             if (sprSheetX > MaxSheetX)
                 sprSheetX = 0;
-            
-            if (!(
-                CheckCollision(new Vector2(sprite.Position.X + dirX, sprite.Position.Y + dirY))
-                ))
-
-            /*if (sprite.Position.X + dirX >= 0 &&
-                sprite.Position.X + dirX <= GameSettings.Instance.Dimensions.X - 64 &&
-                sprite.Position.Y + dirY >= 0 &&
-                sprite.Position.Y + dirY <= GameSettings.Instance.Dimensions.Y - 64)*/
-            {
-                for (int l = 1; l < layer.Length; l++)
-                    ChangeAlpha(new Vector2(sprite.Position.X + dirX, sprite.Position.Y + dirY), l);
-                sprite.Position = new Vector2(sprite.Position.X + dirX, sprite.Position.Y + dirY); //Set new position
-            }
-
+           
+            for (int l = 1; l < layer.Length; l++)
+                ChangeAlpha(new Vector2(sprite.Position.X + dirX, sprite.Position.Y + dirY), l);
+            sprite.Position = new Vector2(sprite.Position.X + dirX, sprite.Position.Y + dirY); //Set new position
 
             sprite.SprSheetX = (int)sprSheetX;
             sprite.SprSheetY = (int)sprSheetY;
         }
 
-        private bool CheckCollision(Vector2 position)
+        private bool CheckCollision(Vector2 PositionNew, Vector2 PositionOld, int direction)
         {
             float tilescale_x = GameSettings.Instance.Tilescale.X, tilescale_y = GameSettings.Instance.Tilescale.Y;
+            
+            int x = (int)((PositionOld.X + tilescale_x) / tilescale_x),
+            y = (int)((PositionOld.Y + tilescale_y) / tilescale_y);
 
-            int x1 = (int)(position.X / tilescale_x),
-            y1 = (int)(position.Y / tilescale_y),
-            x2 = (int)((position.X + 2 * tilescale_x) / tilescale_x),
-            y2 = (int)((position.Y + 2 * tilescale_y) / tilescale_y);
+            switch (direction)
+            {
+                case -1://up
+                    y--;
+                    break;
+                case 1://down
+                    y++;
+                    break;
+                case 0://left
+                    x--;
+                    break;
+                case 2://right
+                    x++;
+                    break;
+            }
 
-            Rectangle playerRect = new Rectangle(new Point((int)(position.X) + 12, (int)(position.Y + tilescale_y)), new Point((int)tilescale_x, (int)(tilescale_y)));
+            Rectangle playerRect = new Rectangle(new Point((int)(PositionNew.X + 0.5 * tilescale_x), (int)(PositionNew.Y + tilescale_y)), new Point((int)tilescale_x, (int)(tilescale_y)));
 
             int TileID;
-
-            for (int i = y1; i < y2 + 1; i++)
+            
+            TileID = layer[0].getTileID(x, y);
+            Rectangle rect;
+            if (TileID != 0)
             {
-                for (int j = x1; j < x2 + 1; j++)
+                rect = new Rectangle(x * (int)tilescale_x, y * (int)tilescale_y, (int)tilescale_x, (int)tilescale_y);
+                if (rect.Intersects(playerRect))
                 {
-                    TileID = layer[0].getTileID(j, i);
-                    Rectangle rect;
-                    if (TileID != 0)
-                    {
-                        rect = new Rectangle(j * (int)tilescale_x, i * (int)tilescale_y, (int)tilescale_x, (int)tilescale_y);
-                        if (rect.Intersects(playerRect))
-                            return true;
-                    }
+                    return true;
                 }
             }
             return false;
