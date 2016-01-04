@@ -103,6 +103,10 @@ namespace Game_Test
                 enemy.PlayerLookDirection = player.lookDirection;
                 enemy.PlayerState = player.State;
                 enemy.Update(gameTime);
+
+                player.SendPosition(enemy.GetPosition());
+                player.EnemyLookDirection = enemy.lookDirection;
+                player.EnemyState = enemy.State;
             }
 
             //foreach (var layer in Layers)
@@ -171,6 +175,8 @@ namespace Game_Test
             Enemy enemy = new Enemy(500, 500);
             
             enemies.Add(enemy);
+
+            player.SetEnemies(enemies);
         }
     }
 }

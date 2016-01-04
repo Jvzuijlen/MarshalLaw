@@ -13,6 +13,8 @@ namespace Game_Test
     {
         //Playerstats player;
 
+        private Vector2 EnemyPosition;
+
         private float SpeedScale; //Scales up the movementspeed
 
         private float sprSheetX;
@@ -20,18 +22,26 @@ namespace Game_Test
         private Vector2 direction;
 
         //Slow down animation speed
-        private const float Interval = 0.25f;
+        private float Interval = 0.125f;
 
         //Collisionlayer and Tree layer(s)
         Layer[] layer;
         
-        public PlayerEnums.Action sprSheetY { get; set; }
+        private PlayerEnums.Action sprSheetY { get; set; }
         public PlayerEnums.ActionState State { get; set; }
+        public PlayerEnums.ActionState EnemyState { get; set; }
         public PlayerEnums.LookDirection lookDirection { get; set; }
+        public PlayerEnums.LookDirection EnemyLookDirection { get; set; }
+
+        private List<Enemy> enemies = new List<Enemy>();
         
         private SprSheetImage sprite;
 
         private Weapon weapon;
+
+        private bool knockback;
+        private double knockbacktimer;
+        private Vector2 knockbackdirection;
 
         public Player()
         {
@@ -65,12 +75,69 @@ namespace Game_Test
 
         public void Update(GameTime gameTime)
         {
+            Vector2 temp;
+            foreach (Enemy enemy in enemies)
+            {
+                temp = CheckHit();
+                if (temp.X == 1)
+                {
+                    //TODO
+                    //Lose health
+                    knockback = true;
+                    knockbacktimer = 0.2f;
+                    knockbackdirection.X = 0;
+                    sprSheetY = PlayerEnums.Action.Hit;
+                    sprSheetX = 4;
+                    knockbackdirection = temp;
+
+                    return;
+                }
+            }
+
+            #region Knockback
+            if (knockback)
+            {
+                SpeedScale = 2.0f;
+                switch ((int)knockbackdirection.Y)
+                {
+                    case 1:
+                        Move(direction = new Vector2(0, -1), gameTime);
+                        break;
+                    case 2:
+                        Move(direction = new Vector2(-1, 0), gameTime);
+                        break;
+                    case 3:
+                        Move(direction = new Vector2(0, 1), gameTime);
+                        break;
+                    case 4:
+                        Move(direction = new Vector2(1, 0), gameTime);
+                        break;
+                }
+
+                knockbacktimer -= gameTime.ElapsedGameTime.TotalSeconds;
+
+                if (knockbacktimer <= 0)
+                {
+                    knockback = false;
+                    knockbackdirection.Y = 0;
+                }
+                else
+                {
+                    SetAnimationFrame();
+                    sprite.Update(gameTime);
+                    weapon.Update(gameTime);
+                    return;
+                }
+            }
+            #endregion
+
             //Check if keys are pressed
             if (InputManager.Instance.KeyDown(Keys.Space))
             {
                 if (State != PlayerEnums.ActionState.Thrust)
                     State = PlayerEnums.ActionState.Thrust;
             }
+            #region Movement
             else
             {
                 if (InputManager.Instance.KeyDown(Keys.W))
@@ -98,8 +165,9 @@ namespace Game_Test
                     direction.X = 1;
                 }
             }
+            #endregion
 
-            //Check if keys are released
+            #region Keyreleased
             if ((InputManager.Instance.KeyReleased(Keys.W) || InputManager.Instance.KeyReleased(Keys.A) || InputManager.Instance.KeyReleased(Keys.S) || InputManager.Instance.KeyReleased(Keys.D)) && InputManager.Instance.KeyDown(Keys.Space) == false || InputManager.Instance.KeyReleased(Keys.Space))
             {
                 State = PlayerEnums.ActionState.None;
@@ -108,8 +176,9 @@ namespace Game_Test
                 sprite.SprSheetX = 0;
                 direction = new Vector2(0, 0);
             }
+            #endregion
             else if (State == PlayerEnums.ActionState.Walk)
-                Move(direction.X, direction.Y, direction, gameTime);
+                Move(direction, gameTime);
             else if (State == PlayerEnums.ActionState.Thrust)
                 Attack(gameTime);
 
@@ -163,8 +232,11 @@ namespace Game_Test
             }
         }
 
-        private void Move(float dirX, float dirY, Vector2 direction, GameTime gameTime)
+        private void Move(Vector2 direction, GameTime gameTime)
         {
+            float dirX = direction.X,
+            dirY = direction.Y;
+
             //Scale the movement
             dirX *= SpeedScale * (32 / GameSettings.Instance.Tilescale.X);
             dirY *= SpeedScale * (32 / GameSettings.Instance.Tilescale.X);
@@ -329,6 +401,55 @@ namespace Game_Test
         public Vector2 GetPosition()
         {
             return sprite.Position;
+        }
+
+        private Vector2 CheckHit()
+        {
+            Vector2 returnvalue = new Vector2(0, 0);
+            Rectangle Playerrect = new Rectangle(new Point((int)(sprite.Position.X + 0.5 * GameSettings.Instance.Tilescale.X), (int)(sprite.Position.Y + GameSettings.Instance.Tilescale.Y)), new Point((int)GameSettings.Instance.Tilescale.X, (int)(GameSettings.Instance.Tilescale.Y))),
+                Enemyrect = new Rectangle((int)(EnemyPosition.X + 0.5 * GameSettings.Instance.Tilescale.X), (int)(EnemyPosition.Y + GameSettings.Instance.Tilescale.Y), (int)GameSettings.Instance.Tilescale.X, (int)(GameSettings.Instance.Tilescale.Y));
+            if (EnemyState == PlayerEnums.ActionState.Thrust)
+            {
+                switch (EnemyLookDirection)
+                {
+                    case PlayerEnums.LookDirection.Up:
+                        Enemyrect.X = (int)GameSettings.Instance.Tilescale.X / 4;
+                        Enemyrect.Height = 2 * (int)GameSettings.Instance.Tilescale.Y / 4;
+                        if (Enemyrect.Intersects(Playerrect))
+                            returnvalue = new Vector2(1, 1);
+                        break;
+                    case PlayerEnums.LookDirection.left:
+                        Enemyrect.Y = (int)GameSettings.Instance.Tilescale.Y / 4;
+                        Enemyrect.Width = 2 * (int)GameSettings.Instance.Tilescale.X / 4;
+                        if (Enemyrect.Intersects(Playerrect))
+                            returnvalue = new Vector2(1, 2);
+                        break;
+                    case PlayerEnums.LookDirection.Down:
+                        Enemyrect.Height = 2 * (int)GameSettings.Instance.Tilescale.Y / 4;
+                        Enemyrect.Y = (int)(EnemyPosition.Y + (2 * GameSettings.Instance.Tilescale.Y - 0.5 * Playerrect.Height));
+                        if (Enemyrect.Intersects(Playerrect))
+                            returnvalue = new Vector2(1, 3);
+                        break;
+                    case PlayerEnums.LookDirection.Right:
+                        Enemyrect.Width = 2 * (int)GameSettings.Instance.Tilescale.X / 4;
+                        Enemyrect.X = (int)(EnemyPosition.X + (1.5 * GameSettings.Instance.Tilescale.X - 0.5 * Playerrect.Width));
+                        if (Enemyrect.Intersects(Playerrect))
+                            returnvalue = new Vector2(1, 4);
+                        break;
+                }
+            }
+            return returnvalue;
+        }
+
+        public void SendPosition(Vector2 position)
+        {
+            EnemyPosition = position;
+        }
+
+        public void SetEnemies(List<Enemy> enemies)
+        {
+            this.enemies.Clear();
+            this.enemies = enemies;            
         }
     }
 }
