@@ -119,8 +119,10 @@ namespace Game_Test
         {
             //Check if keys are pressed
             if (InputManager.Instance.KeyDown(Keys.Space))
+            {
                 if (State != ActionState.Thrust)
                     State = ActionState.Thrust;
+            }
             else
             {
                 if (InputManager.Instance.KeyDown(Keys.W))
@@ -154,10 +156,11 @@ namespace Game_Test
             }
 
             //Check if keys are released
-            if (InputManager.Instance.KeyReleased(Keys.W) || InputManager.Instance.KeyReleased(Keys.A) || InputManager.Instance.KeyReleased(Keys.S) || InputManager.Instance.KeyReleased(Keys.D) || InputManager.Instance.KeyReleased(Keys.Space))
+            if ((InputManager.Instance.KeyReleased(Keys.W) || InputManager.Instance.KeyReleased(Keys.A) || InputManager.Instance.KeyReleased(Keys.S) || InputManager.Instance.KeyReleased(Keys.D)) && InputManager.Instance.KeyDown(Keys.Space) == false || InputManager.Instance.KeyReleased(Keys.Space))
             {
                 State = ActionState.None;
                 sprSheetY = Action.None;
+                sprSheetX = 0;
                 sprite.SprSheetX = 0;
                 mHor = 0;
                 mVer = 0;
@@ -168,14 +171,15 @@ namespace Game_Test
             else if (State == ActionState.Thrust)
                 Attack(gameTime);
 
+            SetAnimationFrame();
             sprite.Update(gameTime);
             weapon.Update(gameTime);
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            weapon.Draw(spriteBatch);
             sprite.Draw(spriteBatch);
+            weapon.Draw(spriteBatch);
         }
 
         private void Attack(GameTime gameTime)
@@ -185,42 +189,36 @@ namespace Game_Test
                 case LookDirection.Up:
                     if (sprSheetY == Action.SpearUp)
                         UpdateAnimationFrame(gameTime);
-                    else if (direction.X == 0)
+                    else
                     {
                         sprSheetY = Action.SpearUp;
-                        sprSheetX = 0;
                     }
                     break;
                 case LookDirection.left:
                     if (sprSheetY == Action.SpearLeft)
                         UpdateAnimationFrame(gameTime);
-                    else if (direction.X == 0)
+                    else
                     {
                         sprSheetY = Action.SpearLeft;
-                        sprSheetX = 0;
                     }
                     break;
                 case LookDirection.Down:
                     if (sprSheetY == Action.SpearDown)
                         UpdateAnimationFrame(gameTime);
-                    else if (direction.X == 0)
+                    else
                     {
                         sprSheetY = Action.SpearDown;
-                        sprSheetX = 0;
                     }
                     break;
                 case LookDirection.Right:
                     if (sprSheetY == Action.SpearRight)
                         UpdateAnimationFrame(gameTime);
-                    else if (direction.X == 0)
+                    else
                     {
                         sprSheetY = Action.SpearRight;
-                        sprSheetX = 0;
                     }
                     break;
             }
-
-            SetAnimationFrame();
         }
 
         private void Move(float dirX, float dirY, Vector2 direction, GameTime gameTime)
@@ -240,7 +238,6 @@ namespace Game_Test
                 else if (direction.X == 0)
                 {
                     sprSheetY = Action.WalkUp;
-                    sprSheetX = 0;
                 }
                 if (CollisionY)
                     dirY = 0;
@@ -252,7 +249,6 @@ namespace Game_Test
                 else if(direction.X == 0)
                 {
                     sprSheetY = Action.WalkDown;
-                    sprSheetX = 0;
                 }
                 if (CollisionY)
                     dirY = 0;
@@ -264,7 +260,6 @@ namespace Game_Test
                 else
                 {
                     sprSheetY = Action.WalkLeft;
-                    sprSheetX = 0;
                 }
                 if (CollisionX)
                     dirX = 0;
@@ -276,7 +271,6 @@ namespace Game_Test
                 else
                 {
                     sprSheetY = Action.WalkRight;
-                    sprSheetX = 0;
                 }
                 if (CollisionX)
                     dirX = 0;
@@ -286,8 +280,6 @@ namespace Game_Test
                 ChangeAlpha(new Vector2(sprite.Position.X + dirX, sprite.Position.Y + dirY), l);
             sprite.Position = new Vector2(sprite.Position.X + dirX, sprite.Position.Y + dirY); //Set new position
             weapon.setPosition(new Vector2(weapon.getPosition().X + dirX, weapon.getPosition().Y + dirY)); //Move weapon with you
-
-            SetAnimationFrame();
         }
 
         private bool CheckCollision(Vector2 PositionNew, Vector2 PositionOld, int direction)
@@ -374,7 +366,7 @@ namespace Game_Test
         private void UpdateAnimationFrame(GameTime gameTime)
         {
             sprSheetX += (float)gameTime.ElapsedGameTime.TotalMilliseconds / gameTime.ElapsedGameTime.Milliseconds * Interval;
-
+            
             //Reset X at the final animation frame
             if ((int)sprSheetX >= (int)State)
                 sprSheetX = 0;
@@ -383,10 +375,13 @@ namespace Game_Test
         private void SetAnimationFrame()
         {
             sprite.SprSheetX = (int)sprSheetX;
-            sprite.SprSheetY = (int)sprSheetY;
-
             weapon.SprSheetX = (int)sprSheetX;
-            weapon.SprSheetY = (int)sprSheetY;
+
+            if (sprSheetY != Action.None)
+            {
+                sprite.SprSheetY = (int)sprSheetY;
+                weapon.SprSheetY = (int)sprSheetY;
+            }
         }
     }
 }
