@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Game_Test
 {
-    public class Player
+    public class Testenemy
     {
         //Playerstats player;
 
@@ -81,8 +81,11 @@ namespace Game_Test
         private SprSheetImage sprite;
 
         private Weapon weapon;
+        
+        int dir = 0;
+        double duration = 0;
 
-        public Player()
+        public Testenemy()
         {
             //TODO add playerstats
             //this.player = player;
@@ -90,11 +93,11 @@ namespace Game_Test
             lookDirection = LookDirection.Down;
             sprSheetY = Action.WalkDown;
             sprSheetX = 0;
-            
+
             direction = new Vector2(0, 1);
-            
-            sprite = new SprSheetImage("Character/light");
-            
+
+            sprite = new SprSheetImage("Character/red_orc");
+
             SpeedScale = 1.5f;
 
             weapon = new Weapon();
@@ -114,53 +117,68 @@ namespace Game_Test
 
         public void Update(GameTime gameTime)
         {
-            //Check if keys are pressed
-            if (InputManager.Instance.KeyDown(Keys.Space))
+            Random rnd = new Random(), rnd2 = new Random();
+
+            if (duration <= 0)
             {
-                if (State != ActionState.Thrust)
-                    State = ActionState.Thrust;
+                duration = rnd2.Next(1, 3);
+                dir = rnd.Next(9);
             }
             else
+                duration -= gameTime.ElapsedGameTime.TotalSeconds;
+
+            switch (dir)
             {
-                if (InputManager.Instance.KeyDown(Keys.W))
-                {
+                case 0://no movement
+                    State = ActionState.None;
+                    sprSheetY = Action.None;
+                    sprSheetX = 0;
+                    sprite.SprSheetX = 0;
+                    direction = new Vector2(0, 0);
+                    break;
+                case 1://up
                     State = ActionState.Walk;
                     lookDirection = LookDirection.Up;
-                    direction.Y = -1;
-                }
-                if (InputManager.Instance.KeyDown(Keys.S))
-                {
-                    State = ActionState.Walk;
-                    lookDirection = LookDirection.Down;
-                    direction.Y = 1;
-                }
-                if (InputManager.Instance.KeyDown(Keys.A))
-                {
+                    direction = new Vector2(0, -1);
+                    break;
+                case 2://left
                     State = ActionState.Walk;
                     lookDirection = LookDirection.left;
-                    direction.X = -1;
-                }
-                if (InputManager.Instance.KeyDown(Keys.D))
-                {
+                    direction = new Vector2(-1, 0);
+                    break;
+                case 3://down
+                    State = ActionState.Walk;
+                    lookDirection = LookDirection.Down;
+                    direction = new Vector2(0, 1);
+                    break;
+                case 4://right
                     State = ActionState.Walk;
                     lookDirection = LookDirection.Right;
-                    direction.X = 1;
-                }
+                    direction = new Vector2(1, 0);
+                    break;
+                case 5://left up
+                    State = ActionState.Walk;
+                    lookDirection = LookDirection.left;
+                    direction = new Vector2(-1, -1);
+                    break;
+                case 6://left down
+                    State = ActionState.Walk;
+                    lookDirection = LookDirection.left;
+                    direction = new Vector2(-1, 1);
+                    break;
+                case 7://right up
+                    State = ActionState.Walk;
+                    lookDirection = LookDirection.Right;
+                    direction = new Vector2(1, -1);
+                    break;
+                case 8://right down
+                    State = ActionState.Walk;
+                    lookDirection = LookDirection.Right;
+                    direction = new Vector2(1, 1);
+                    break;
             }
 
-            //Check if keys are released
-            if ((InputManager.Instance.KeyReleased(Keys.W) || InputManager.Instance.KeyReleased(Keys.A) || InputManager.Instance.KeyReleased(Keys.S) || InputManager.Instance.KeyReleased(Keys.D)) && InputManager.Instance.KeyDown(Keys.Space) == false || InputManager.Instance.KeyReleased(Keys.Space))
-            {
-                State = ActionState.None;
-                sprSheetY = Action.None;
-                sprSheetX = 0;
-                sprite.SprSheetX = 0;
-                direction = new Vector2(0, 0);
-            }
-            else if (State == ActionState.Walk)
-                Move(direction.X, direction.Y, direction, gameTime);
-            else if (State == ActionState.Thrust)
-                Attack(gameTime);
+            Move(direction.X, direction.Y, direction, gameTime);
 
             SetAnimationFrame();
             sprite.Update(gameTime);
@@ -220,7 +238,7 @@ namespace Game_Test
 
             bool CollisionY = CheckCollision(new Vector2(sprite.Position.X + dirX, sprite.Position.Y + dirY), sprite.Position, (int)direction.Y),
             CollisionX = CheckCollision(new Vector2(sprite.Position.X + dirX, sprite.Position.Y + dirY), sprite.Position, (int)direction.X + 1);
-            
+
             //change sprSheetX and sprSheetY based on previous movement direction
             if (direction.Y == -1)//up
             {
@@ -237,7 +255,7 @@ namespace Game_Test
             {
                 if (sprSheetY == Action.WalkDown)
                     UpdateAnimationFrame(gameTime);
-                else if(direction.X == 0)
+                else if (direction.X == 0)
                 {
                     sprSheetY = Action.WalkDown;
                 }
@@ -266,7 +284,7 @@ namespace Game_Test
                 if (CollisionX)
                     dirX = 0;
             }
-            
+
             for (int l = 1; l < layer.Length; l++)
                 ChangeAlpha(new Vector2(sprite.Position.X + dirX, sprite.Position.Y + dirY), l);
             sprite.Position = new Vector2(sprite.Position.X + dirX, sprite.Position.Y + dirY); //Set new position
@@ -276,7 +294,7 @@ namespace Game_Test
         private bool CheckCollision(Vector2 PositionNew, Vector2 PositionOld, int direction)
         {
             float tilescale_x = GameSettings.Instance.Tilescale.X, tilescale_y = GameSettings.Instance.Tilescale.Y;
-            
+
             int x = (int)((PositionOld.X + tilescale_x) / tilescale_x),
             y = (int)((PositionOld.Y + tilescale_y) / tilescale_y);
 
@@ -299,7 +317,7 @@ namespace Game_Test
             Rectangle playerRect = new Rectangle(new Point((int)(PositionNew.X + 0.5 * tilescale_x), (int)(PositionNew.Y + tilescale_y)), new Point((int)tilescale_x, (int)(tilescale_y)));
 
             int TileID;
-            
+
             TileID = layer[0].getTileID(x, y);
             Rectangle rect;
             if (TileID != 0)
@@ -357,12 +375,12 @@ namespace Game_Test
         private void UpdateAnimationFrame(GameTime gameTime)
         {
             sprSheetX += (float)gameTime.ElapsedGameTime.TotalMilliseconds / gameTime.ElapsedGameTime.Milliseconds * Interval;
-            
+
             //Reset X at the final animation frame
             if ((int)sprSheetX >= (int)State)
                 sprSheetX = 0;
         }
-        
+
         private void SetAnimationFrame()
         {
             sprite.SprSheetX = (int)sprSheetX;
