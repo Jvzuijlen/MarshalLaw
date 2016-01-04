@@ -18,7 +18,7 @@ namespace Game_Test
 
         Player player;
 
-        List<Testenemy> enemies;
+        List<Enemy> enemies;
 
         private bool PlayerActive;
 
@@ -50,7 +50,7 @@ namespace Game_Test
 
             int temp = 0;
 
-            foreach (Testenemy enemy in enemies)
+            foreach (Enemy enemy in enemies)
                 enemy.SetLayernumber(NumberLayers - layer_player_num);
             player.SetLayernumber(NumberLayers - layer_player_num);
             GetLayer("Collision", temp++);
@@ -72,7 +72,7 @@ namespace Game_Test
         {
             player.LoadContent(32, 32);
 
-            foreach (Testenemy enemy in enemies)
+            foreach (Enemy enemy in enemies)
                 enemy.LoadContent();
 
             foreach (var layer in Layers)
@@ -85,7 +85,7 @@ namespace Game_Test
         {
             player.UnloadContent();
 
-            foreach (Testenemy enemy in enemies)
+            foreach (Enemy enemy in enemies)
                 enemy.UnloadContent();
 
             foreach (var layer in Layers)
@@ -97,7 +97,7 @@ namespace Game_Test
         public virtual void Update(GameTime gameTime)
         {
             player.Update(gameTime);
-            foreach (Testenemy enemy in enemies)
+            foreach (Enemy enemy in enemies)
             {
                 enemy.SendPosition(player.GetPosition());
                 enemy.PlayerLookDirection = player.lookDirection;
@@ -123,10 +123,10 @@ namespace Game_Test
                             Layers[l].DrawTile(spriteBatch, x, y);
                         if (Layers[l].Layername == "Player" && PlayerActive == false)
                         {
-                            player.Draw(spriteBatch);
-
-                            foreach (Testenemy enemy in enemies)
+                            foreach (Enemy enemy in enemies)
                                 enemy.Draw(spriteBatch);
+
+                            player.Draw(spriteBatch);
 
                             PlayerActive = true;
                         }
@@ -158,7 +158,7 @@ namespace Game_Test
                 if (Layers[l].Layername == Name)
                 {
                     player.SendLayer(Layers[l], number);
-                    foreach (Testenemy enemy in enemies)
+                    foreach (Enemy enemy in enemies)
                         enemy.SendLayer(Layers[l], number);
                 }
             }
@@ -166,9 +166,9 @@ namespace Game_Test
 
         public void CreateEnemies()
         {
-            enemies = new List<Testenemy>();
+            enemies = new List<Enemy>();
 
-            Testenemy enemy = new Testenemy(500, 500);
+            Enemy enemy = new Enemy(500, 500);
             
             enemies.Add(enemy);
         }

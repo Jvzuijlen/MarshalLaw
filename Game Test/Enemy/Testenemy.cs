@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Game_Test
 {
-    public class Testenemy
+    public class Enemy
     {
         //Playerstats player;
 
@@ -42,16 +42,18 @@ namespace Game_Test
         private double knockbacktimer;
         private Vector2 knockbackdirection;
 
-        int dir = 0;
-        double duration = 0;
+        private int dir = 0;
+        private double duration = 0;
 
-        public Testenemy(int X, int Y)
+        private const int AggroDistance = 250;
+
+        public Enemy(int X, int Y)
         {
             //TODO add playerstats
             //this.player = player;
 
             Position = new Vector2(X, Y);
-
+            
             State = PlayerEnums.ActionState.None;
             PlayerState = PlayerEnums.ActionState.None;
             lookDirection = PlayerEnums.LookDirection.Down;
@@ -62,7 +64,7 @@ namespace Game_Test
 
             sprite = new SprSheetImage("Character/red_orc");
 
-            SpeedScale = 1.5f;
+            SpeedScale = 0.75f;
 
             weapon = new Weapon();
         }
@@ -97,6 +99,7 @@ namespace Game_Test
 
             if (knockback)
             {
+                SpeedScale = 2.0f;
                 switch ((int)knockbackdirection.Y)
                 {
                     case 1:
@@ -131,66 +134,121 @@ namespace Game_Test
 
             Random rnd = new Random(), rnd2 = new Random();
 
-            if (duration <= 0)
+            if (State == PlayerEnums.ActionState.Thrust)
             {
-                duration = rnd2.Next(1, 3);
-                dir = rnd.Next(9);
+
             }
             else
-                duration -= gameTime.ElapsedGameTime.TotalSeconds;
-
-            switch (dir)
             {
-                case 0://no movement
-                    State = PlayerEnums.ActionState.None;
-                    sprSheetY = PlayerEnums.Action.None;
-                    sprSheetX = 0;
-                    sprite.SprSheetX = 0;
-                    direction = new Vector2(0, 0);
-                    break;
-                case 1://up
-                    State = PlayerEnums.ActionState.Walk;
-                    lookDirection = PlayerEnums.LookDirection.Up;
-                    direction = new Vector2(0, -1);
-                    break;
-                case 2://left
-                    State = PlayerEnums.ActionState.Walk;
-                    lookDirection = PlayerEnums.LookDirection.left;
-                    direction = new Vector2(-1, 0);
-                    break;
-                case 3://down
-                    State = PlayerEnums.ActionState.Walk;
-                    lookDirection = PlayerEnums.LookDirection.Down;
-                    direction = new Vector2(0, 1);
-                    break;
-                case 4://right
-                    State = PlayerEnums.ActionState.Walk;
-                    lookDirection = PlayerEnums.LookDirection.Right;
-                    direction = new Vector2(1, 0);
-                    break;
-                case 5://left up
-                    State = PlayerEnums.ActionState.Walk;
-                    lookDirection = PlayerEnums.LookDirection.left;
-                    direction = new Vector2(-1, -1);
-                    break;
-                case 6://left down
-                    State = PlayerEnums.ActionState.Walk;
-                    lookDirection = PlayerEnums.LookDirection.left;
-                    direction = new Vector2(-1, 1);
-                    break;
-                case 7://right up
-                    State = PlayerEnums.ActionState.Walk;
-                    lookDirection = PlayerEnums.LookDirection.Right;
-                    direction = new Vector2(1, -1);
-                    break;
-                case 8://right down
-                    State = PlayerEnums.ActionState.Walk;
-                    lookDirection = PlayerEnums.LookDirection.Right;
-                    direction = new Vector2(1, 1);
-                    break;
-            }
+                #region Aggro
+                if (((sprite.Position.X - PlayerPosition.X < AggroDistance && sprite.Position.X - PlayerPosition.X > 0) ||
+                    (PlayerPosition.X - sprite.Position.X < AggroDistance && PlayerPosition.X - sprite.Position.X > 0)) &&
+                    ((sprite.Position.Y - PlayerPosition.Y < AggroDistance && sprite.Position.Y - PlayerPosition.Y > 0) ||
+                    (PlayerPosition.Y - sprite.Position.Y < AggroDistance && PlayerPosition.Y - sprite.Position.Y > 0)))
+                {
+                    SpeedScale = 1.0f;
+                    if (sprite.Position.Y - GameSettings.Instance.Tilescale.Y - PlayerPosition.Y > 0)
+                    {
+                        lookDirection = PlayerEnums.LookDirection.Up;
+                        State = PlayerEnums.ActionState.Walk;
+                        direction.Y = -1;
+                    }
+                    else if (sprite.Position.Y + GameSettings.Instance.Tilescale.Y - PlayerPosition.Y < 0)
+                    {
+                        lookDirection = PlayerEnums.LookDirection.Down;
+                        State = PlayerEnums.ActionState.Walk;
+                        direction.Y = 1;
+                    }
+                    else
+                        direction.Y = 0;
+                    if (sprite.Position.X - GameSettings.Instance.Tilescale.X - PlayerPosition.X > 0)
+                    {
+                        lookDirection = PlayerEnums.LookDirection.left;
+                        State = PlayerEnums.ActionState.Walk;
+                        direction.X = -1;
+                    }
+                    else if (sprite.Position.X + GameSettings.Instance.Tilescale.X - PlayerPosition.X < 0)
+                    {
+                        lookDirection = PlayerEnums.LookDirection.Right;
+                        State = PlayerEnums.ActionState.Walk;
+                        direction.X = 1;
+                    }
+                    else
+                        direction.X = 0;
 
-            //Move(direction, gameTime);
+                    if (direction.Y == 0 && direction.X == 0)
+                    {
+                        State = PlayerEnums.ActionState.Thrust;
+                        Attack(gameTime);
+                    }
+                }
+                #endregion
+                #region Random Movement
+                else
+                {
+                    SpeedScale = 0.75f;
+                    if (duration <= 0)
+                    {
+                        duration = rnd2.Next(1, 3);
+                        dir = rnd.Next(12);
+                    }
+                    else
+                        duration -= gameTime.ElapsedGameTime.TotalSeconds;
+
+                    switch (dir)
+                    {
+                        case 0://up
+                            State = PlayerEnums.ActionState.Walk;
+                            lookDirection = PlayerEnums.LookDirection.Up;
+                            direction = new Vector2(0, -1);
+                            break;
+                        case 1://left
+                            State = PlayerEnums.ActionState.Walk;
+                            lookDirection = PlayerEnums.LookDirection.left;
+                            direction = new Vector2(-1, 0);
+                            break;
+                        case 2://down
+                            State = PlayerEnums.ActionState.Walk;
+                            lookDirection = PlayerEnums.LookDirection.Down;
+                            direction = new Vector2(0, 1);
+                            break;
+                        case 3://right
+                            State = PlayerEnums.ActionState.Walk;
+                            lookDirection = PlayerEnums.LookDirection.Right;
+                            direction = new Vector2(1, 0);
+                            break;
+                        case 4://left up
+                            State = PlayerEnums.ActionState.Walk;
+                            lookDirection = PlayerEnums.LookDirection.left;
+                            direction = new Vector2(-1, -1);
+                            break;
+                        case 5://left down
+                            State = PlayerEnums.ActionState.Walk;
+                            lookDirection = PlayerEnums.LookDirection.left;
+                            direction = new Vector2(-1, 1);
+                            break;
+                        case 6://right up
+                            State = PlayerEnums.ActionState.Walk;
+                            lookDirection = PlayerEnums.LookDirection.Right;
+                            direction = new Vector2(1, -1);
+                            break;
+                        case 7://right down
+                            State = PlayerEnums.ActionState.Walk;
+                            lookDirection = PlayerEnums.LookDirection.Right;
+                            direction = new Vector2(1, 1);
+                            break;
+                        default://no movement
+                            State = PlayerEnums.ActionState.None;
+                            sprSheetY = PlayerEnums.Action.None;
+                            sprSheetX = 0;
+                            sprite.SprSheetX = 0;
+                            direction = new Vector2(0, 0);
+                            break;
+                    }
+                    #endregion
+                }
+            }
+            Move(direction, gameTime);
 
             SetAnimationFrame();
             sprite.Update(gameTime);
@@ -254,6 +312,14 @@ namespace Game_Test
 
             bool CollisionY = CheckCollision(new Vector2(sprite.Position.X + dirX, sprite.Position.Y + dirY), sprite.Position, (int)direction.Y),
             CollisionX = CheckCollision(new Vector2(sprite.Position.X + dirX, sprite.Position.Y + dirY), sprite.Position, (int)direction.X + 1);
+
+            if (CollisionX && CollisionY)
+                duration = 0;
+            else if (CollisionX && direction.Y == 0)
+                duration = 0;
+            else if (CollisionY && direction.X == 0)
+                duration = 0;
+
 
             //change sprSheetX and sprSheetY based on previous movement direction
             if (direction.Y == -1)//up
@@ -419,25 +485,30 @@ namespace Game_Test
         {
             Vector2 returnvalue = new Vector2(0, 0);
             Rectangle Enemyrect = new Rectangle(new Point((int)(sprite.Position.X + 0.5 * GameSettings.Instance.Tilescale.X), (int)(sprite.Position.Y + GameSettings.Instance.Tilescale.Y)), new Point((int)GameSettings.Instance.Tilescale.X, (int)(GameSettings.Instance.Tilescale.Y))),
-                Playerrect = new Rectangle(new Point((int)(PlayerPosition.X + 0.5 * GameSettings.Instance.Tilescale.X), (int)(PlayerPosition.Y + GameSettings.Instance.Tilescale.Y)), new Point((int)GameSettings.Instance.Tilescale.X, (int)(GameSettings.Instance.Tilescale.Y)));
-
+                Playerrect = new Rectangle((int)(PlayerPosition.X + 0.5 * GameSettings.Instance.Tilescale.X), (int)(PlayerPosition.Y + GameSettings.Instance.Tilescale.Y), (int)GameSettings.Instance.Tilescale.X, (int)(GameSettings.Instance.Tilescale.Y));
             if (PlayerState == PlayerEnums.ActionState.Thrust)
             {
                 switch (PlayerLookDirection)
                 {
                     case PlayerEnums.LookDirection.Up:
+                        Playerrect.Height = (int)GameSettings.Instance.Tilescale.Y / 4;
                         if (Enemyrect.Intersects(Playerrect))
                             returnvalue = new Vector2(1, 1);
                         break;
                     case PlayerEnums.LookDirection.left:
+                        Playerrect.Width = (int)GameSettings.Instance.Tilescale.X / 4;
                         if (Enemyrect.Intersects(Playerrect))
                             returnvalue = new Vector2(1, 2);
                         break;
                     case PlayerEnums.LookDirection.Down:
+                        Playerrect.Height = (int)GameSettings.Instance.Tilescale.Y / 4;
+                        Playerrect.Y = (int)(PlayerPosition.Y + (2 * GameSettings.Instance.Tilescale.Y - Playerrect.Height));
                         if (Enemyrect.Intersects(Playerrect))
                             returnvalue = new Vector2(1, 3);
                         break;
                     case PlayerEnums.LookDirection.Right:
+                        Playerrect.Width = (int)GameSettings.Instance.Tilescale.X / 4;
+                        Playerrect.X = (int)(PlayerPosition.X + (1.5 * GameSettings.Instance.Tilescale.X - Playerrect.Width));
                         if (Enemyrect.Intersects(Playerrect))
                             returnvalue = new Vector2(1, 4);
                         break;

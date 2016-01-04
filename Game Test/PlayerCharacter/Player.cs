@@ -39,7 +39,7 @@ namespace Game_Test
             //this.player = player;
             State = PlayerEnums.ActionState.None;
             lookDirection = PlayerEnums.LookDirection.Down;
-            sprSheetY = PlayerEnums.Action.WalkDown;
+            sprSheetY = PlayerEnums.Action.None;
             sprSheetX = 0;
             
             direction = new Vector2(0, 1);
