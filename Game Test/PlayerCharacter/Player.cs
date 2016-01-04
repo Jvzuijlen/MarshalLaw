@@ -241,8 +241,8 @@ namespace Game_Test
             dirX *= SpeedScale * (32 / GameSettings.Instance.Tilescale.X);
             dirY *= SpeedScale * (32 / GameSettings.Instance.Tilescale.X);
 
-            bool CollisionY = CheckCollision(new Vector2(sprite.Position.X + dirX, sprite.Position.Y + dirY), sprite.Position, (int)direction.Y),
-            CollisionX = CheckCollision(new Vector2(sprite.Position.X + dirX, sprite.Position.Y + dirY), sprite.Position, (int)direction.X + 1);
+            bool CollisionY = CheckCollision(new Vector2(sprite.Position.X + dirX, sprite.Position.Y + dirY), sprite.Position, (int)direction.Y);
+            bool CollisionX = CheckCollision(new Vector2(sprite.Position.X + dirX, sprite.Position.Y + dirY), sprite.Position, (int)direction.X + 1);
             
             //change sprSheetX and sprSheetY based on previous movement direction
             if (direction.Y == -1)//up
