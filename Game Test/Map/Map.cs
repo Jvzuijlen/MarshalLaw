@@ -99,8 +99,9 @@ namespace Game_Test
             player.Update(gameTime);
             foreach (Testenemy enemy in enemies)
             {
-                enemy.SendPosition();
-                //enemy.SendLayer(player.GetLookDirection, player.GetState);
+                enemy.SendPosition(player.GetPosition());
+                enemy.PlayerLookDirection = player.lookDirection;
+                enemy.PlayerState = player.State;
                 enemy.Update(gameTime);
             }
 

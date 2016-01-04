@@ -24,74 +24,22 @@ namespace Game_Test
 
         //Collisionlayer and Tree layer(s)
         Layer[] layer;
-
-        /// <summary>
-        /// Spell: 0-3:
-        /// Spear: 4-7
-        /// Walk: 8-11
-        /// Slash: 12-15
-        /// Shoot: 16-19
-        /// </summary>
-        private enum Action
-        {
-            SpellUp,
-            SpellLeft,
-            SpellDown,
-            SpellRight,
-            SpearUp,
-            SpearLeft,
-            SpearDown,
-            SpearRight,
-            WalkUp,
-            WalkLeft,
-            WalkDown,
-            WalkRight,
-            SlashUp,
-            SlashLeft,
-            SlashDown,
-            SlashRight,
-            ShootUp,
-            ShootLeft,
-            ShootDown,
-            ShootRight,
-            None
-        };
-        Action sprSheetY;
-
-        public enum ActionState
-        {
-            None,
-            Spell = 7,
-            Thrust = 8,
-            Walk = 9,
-            Slash = 6,
-            Shoot = 13
-        };
-        ActionState State;
-
-        public enum LookDirection
-        {
-            Up,
-            left,
-            Down,
-            Right
-        };
-        LookDirection lookDirection;
-
+        
+        public PlayerEnums.Action sprSheetY { get; set; }
+        public PlayerEnums.ActionState State { get; set; }
+        public PlayerEnums.LookDirection lookDirection { get; set; }
+        
         private SprSheetImage sprite;
 
         private Weapon weapon;
-
-        public LookDirection GetLookDirection { get { return lookDirection; } }
-        public ActionState GetState { get { return State; } }
 
         public Player()
         {
             //TODO add playerstats
             //this.player = player;
-            State = ActionState.None;
-            lookDirection = LookDirection.Down;
-            sprSheetY = Action.WalkDown;
+            State = PlayerEnums.ActionState.None;
+            lookDirection = PlayerEnums.LookDirection.Down;
+            sprSheetY = PlayerEnums.Action.WalkDown;
             sprSheetX = 0;
             
             direction = new Vector2(0, 1);
@@ -120,33 +68,33 @@ namespace Game_Test
             //Check if keys are pressed
             if (InputManager.Instance.KeyDown(Keys.Space))
             {
-                if (State != ActionState.Thrust)
-                    State = ActionState.Thrust;
+                if (State != PlayerEnums.ActionState.Thrust)
+                    State = PlayerEnums.ActionState.Thrust;
             }
             else
             {
                 if (InputManager.Instance.KeyDown(Keys.W))
                 {
-                    State = ActionState.Walk;
-                    lookDirection = LookDirection.Up;
+                    State = PlayerEnums.ActionState.Walk;
+                    lookDirection = PlayerEnums.LookDirection.Up;
                     direction.Y = -1;
                 }
                 if (InputManager.Instance.KeyDown(Keys.S))
                 {
-                    State = ActionState.Walk;
-                    lookDirection = LookDirection.Down;
+                    State = PlayerEnums.ActionState.Walk;
+                    lookDirection = PlayerEnums.LookDirection.Down;
                     direction.Y = 1;
                 }
                 if (InputManager.Instance.KeyDown(Keys.A))
                 {
-                    State = ActionState.Walk;
-                    lookDirection = LookDirection.left;
+                    State = PlayerEnums.ActionState.Walk;
+                    lookDirection = PlayerEnums.LookDirection.left;
                     direction.X = -1;
                 }
                 if (InputManager.Instance.KeyDown(Keys.D))
                 {
-                    State = ActionState.Walk;
-                    lookDirection = LookDirection.Right;
+                    State = PlayerEnums.ActionState.Walk;
+                    lookDirection = PlayerEnums.LookDirection.Right;
                     direction.X = 1;
                 }
             }
@@ -154,15 +102,15 @@ namespace Game_Test
             //Check if keys are released
             if ((InputManager.Instance.KeyReleased(Keys.W) || InputManager.Instance.KeyReleased(Keys.A) || InputManager.Instance.KeyReleased(Keys.S) || InputManager.Instance.KeyReleased(Keys.D)) && InputManager.Instance.KeyDown(Keys.Space) == false || InputManager.Instance.KeyReleased(Keys.Space))
             {
-                State = ActionState.None;
-                sprSheetY = Action.None;
+                State = PlayerEnums.ActionState.None;
+                sprSheetY = PlayerEnums.Action.None;
                 sprSheetX = 0;
                 sprite.SprSheetX = 0;
                 direction = new Vector2(0, 0);
             }
-            else if (State == ActionState.Walk)
+            else if (State == PlayerEnums.ActionState.Walk)
                 Move(direction.X, direction.Y, direction, gameTime);
-            else if (State == ActionState.Thrust)
+            else if (State == PlayerEnums.ActionState.Thrust)
                 Attack(gameTime);
 
             SetAnimationFrame();
@@ -180,36 +128,36 @@ namespace Game_Test
         {
             switch (lookDirection)
             {
-                case LookDirection.Up:
-                    if (sprSheetY == Action.SpearUp)
+                case PlayerEnums.LookDirection.Up:
+                    if (sprSheetY == PlayerEnums.Action.SpearUp)
                         UpdateAnimationFrame(gameTime);
                     else
                     {
-                        sprSheetY = Action.SpearUp;
+                        sprSheetY = PlayerEnums.Action.SpearUp;
                     }
                     break;
-                case LookDirection.left:
-                    if (sprSheetY == Action.SpearLeft)
+                case PlayerEnums.LookDirection.left:
+                    if (sprSheetY == PlayerEnums.Action.SpearLeft)
                         UpdateAnimationFrame(gameTime);
                     else
                     {
-                        sprSheetY = Action.SpearLeft;
+                        sprSheetY = PlayerEnums.Action.SpearLeft;
                     }
                     break;
-                case LookDirection.Down:
-                    if (sprSheetY == Action.SpearDown)
+                case PlayerEnums.LookDirection.Down:
+                    if (sprSheetY == PlayerEnums.Action.SpearDown)
                         UpdateAnimationFrame(gameTime);
                     else
                     {
-                        sprSheetY = Action.SpearDown;
+                        sprSheetY = PlayerEnums.Action.SpearDown;
                     }
                     break;
-                case LookDirection.Right:
-                    if (sprSheetY == Action.SpearRight)
+                case PlayerEnums.LookDirection.Right:
+                    if (sprSheetY == PlayerEnums.Action.SpearRight)
                         UpdateAnimationFrame(gameTime);
                     else
                     {
-                        sprSheetY = Action.SpearRight;
+                        sprSheetY = PlayerEnums.Action.SpearRight;
                     }
                     break;
             }
@@ -227,44 +175,44 @@ namespace Game_Test
             //change sprSheetX and sprSheetY based on previous movement direction
             if (direction.Y == -1)//up
             {
-                if (sprSheetY == Action.WalkUp)
+                if (sprSheetY == PlayerEnums.Action.WalkUp)
                     UpdateAnimationFrame(gameTime);
                 else if (direction.X == 0)
                 {
-                    sprSheetY = Action.WalkUp;
+                    sprSheetY = PlayerEnums.Action.WalkUp;
                 }
                 if (CollisionY)
                     dirY = 0;
             }
             if (direction.Y == 1)//down
             {
-                if (sprSheetY == Action.WalkDown)
+                if (sprSheetY == PlayerEnums.Action.WalkDown)
                     UpdateAnimationFrame(gameTime);
                 else if(direction.X == 0)
                 {
-                    sprSheetY = Action.WalkDown;
+                    sprSheetY = PlayerEnums.Action.WalkDown;
                 }
                 if (CollisionY)
                     dirY = 0;
             }
             if (direction.X == -1)//left
             {
-                if (sprSheetY == Action.WalkLeft)
+                if (sprSheetY == PlayerEnums.Action.WalkLeft)
                     UpdateAnimationFrame(gameTime);
                 else
                 {
-                    sprSheetY = Action.WalkLeft;
+                    sprSheetY = PlayerEnums.Action.WalkLeft;
                 }
                 if (CollisionX)
                     dirX = 0;
             }
             if (direction.X == 1)//right
             {
-                if (sprSheetY == Action.WalkRight)
+                if (sprSheetY == PlayerEnums.Action.WalkRight)
                     UpdateAnimationFrame(gameTime);
                 else
                 {
-                    sprSheetY = Action.WalkRight;
+                    sprSheetY = PlayerEnums.Action.WalkRight;
                 }
                 if (CollisionX)
                     dirX = 0;
@@ -371,11 +319,16 @@ namespace Game_Test
             sprite.SprSheetX = (int)sprSheetX;
             weapon.SprSheetX = (int)sprSheetX;
 
-            if (sprSheetY != Action.None)
+            if (sprSheetY != PlayerEnums.Action.None)
             {
                 sprite.SprSheetY = (int)sprSheetY;
                 weapon.SprSheetY = (int)sprSheetY;
             }
+        }
+
+        public Vector2 GetPosition()
+        {
+            return sprite.Position;
         }
     }
 }
