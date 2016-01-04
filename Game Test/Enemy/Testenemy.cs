@@ -13,6 +13,8 @@ namespace Game_Test
     {
         //Playerstats player;
 
+        private Vector2 Position;
+
         private float SpeedScale; //Scales up the movementspeed
 
         private float sprSheetX;
@@ -85,10 +87,13 @@ namespace Game_Test
         int dir = 0;
         double duration = 0;
 
-        public Testenemy()
+        public Testenemy(int X, int Y)
         {
             //TODO add playerstats
             //this.player = player;
+
+            Position = new Vector2(X, Y);
+
             State = ActionState.None;
             PlayerState = ActionState.None;
             lookDirection = LookDirection.Down;
@@ -104,10 +109,10 @@ namespace Game_Test
             weapon = new Weapon();
         }
 
-        public void LoadContent(int X, int Y)
+        public void LoadContent()
         {
-            sprite.LoadContent(X, Y, false, new Vector2(64 / (GameSettings.Instance.Tilescale.X * 2), 64 / (GameSettings.Instance.Tilescale.Y * 2)));
-            weapon.LoadContent(X, Y);
+            sprite.LoadContent(Position.X, Position.Y, false, new Vector2(64 / (GameSettings.Instance.Tilescale.X * 2), 64 / (GameSettings.Instance.Tilescale.Y * 2)));
+            weapon.LoadContent((int)Position.X, (int)Position.Y);
         }
 
         public void UnloadContent()
@@ -364,9 +369,9 @@ namespace Game_Test
             }
         }
 
-        public void SendLayer(Layer[] layer)
+        public void SendLayer(Layer layer, int number)
         {
-            this.layer = layer;
+            this.layer[number] = layer;
         }
 
         public void SetLayernumber(int number)
@@ -393,6 +398,17 @@ namespace Game_Test
                 sprite.SprSheetY = (int)sprSheetY;
                 weapon.SprSheetY = (int)sprSheetY;
             }
+        }
+
+        public void SendPosition()
+        {
+
+        }
+
+        public void SendStates(LookDirection ld, ActionState s)
+        {
+            PlayerLookDirection = ld;
+            PlayerState = s;
         }
     }
 }
