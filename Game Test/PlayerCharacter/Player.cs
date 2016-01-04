@@ -25,6 +25,8 @@ namespace Game_Test
         //Collisionlayer and Tree layer(s)
         Layer[] layer;
 
+        List<Testenemy> enemies;
+
         /// <summary>
         /// Spell: 0-3:
         /// Spear: 4-7
@@ -102,18 +104,25 @@ namespace Game_Test
 
         public void LoadContent(int X, int Y)
         {
+            foreach(Testenemy enemy in enemies)
+                enemy.LoadContent(500, 500);
             sprite.LoadContent(X, Y, false, new Vector2(64 / (GameSettings.Instance.Tilescale.X * 2), 64 / (GameSettings.Instance.Tilescale.Y * 2)));
             weapon.LoadContent(X, Y);
         }
 
         public void UnloadContent()
         {
+            foreach(Testenemy enemy in enemies)
+                enemy.UnloadContent();
             sprite.UnloadContent();
             weapon.UnloadContent();
         }
 
         public void Update(GameTime gameTime)
         {
+            foreach (Testenemy enemy in enemies)
+                enemy.Update(gameTime);
+
             //Check if keys are pressed
             if (InputManager.Instance.KeyDown(Keys.Space))
             {
@@ -171,6 +180,9 @@ namespace Game_Test
         {
             sprite.Draw(spriteBatch);
             weapon.Draw(spriteBatch);
+
+            foreach (Testenemy enemy in enemies)
+                enemy.Draw(spriteBatch);
         }
 
         private void Attack(GameTime gameTime)
@@ -344,7 +356,7 @@ namespace Game_Test
             }
         }
 
-        public void SendLayer(Layer layer, int number, int numlayers)
+        public void SendLayer(Layer layer, int number)
         {
             this.layer[number] = layer;
         }
@@ -373,6 +385,18 @@ namespace Game_Test
                 sprite.SprSheetY = (int)sprSheetY;
                 weapon.SprSheetY = (int)sprSheetY;
             }
+        }
+
+        public void CreateEnemies()
+        {
+            enemies = new List<Testenemy>();
+
+            Testenemy enemy = new Testenemy();
+
+            enemy.SetLayernumber(layer.Length);
+            enemy.SendLayer(layer);
+
+            enemies.Add(enemy);
         }
     }
 }

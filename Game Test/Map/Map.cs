@@ -17,7 +17,6 @@ namespace Game_Test
         List<string> spriteSheets = new List<string>();
 
         Player player;
-        Testenemy enemy;
 
         private bool PlayerActive;
 
@@ -35,11 +34,8 @@ namespace Game_Test
             mapDimensions = mapLoader.GetMapDimensions();
             NumberLayers = mapLoader.GetNumLayers();
             spriteSheets = mapLoader.GetSpritesheetList();
-
-
-
+            
             player = new Player();
-            enemy = new Testenemy();
 
             for (int l = 0; l < Layers.Count; l++)
             {
@@ -52,14 +48,13 @@ namespace Game_Test
             int temp = 0;
 
             player.SetLayernumber(NumberLayers - layer_player_num);
-            enemy.SetLayernumber(NumberLayers - layer_player_num);
-            GetLayerP("Collision", temp);
-            GetLayerE("Collision", temp++, enemy);
+            GetLayerP("Collision", temp++);
+
+            player.CreateEnemies();
 
             for (int l = layer_player_num; l < Layers.Count - 1; l++)
             {
-                GetLayerP(Layers[l].Layername, temp);
-                GetLayerE(Layers[l].Layername, temp++, enemy);
+                GetLayerP(Layers[l].Layername, temp++);
             }
 
             foreach (var layer in Layers)
@@ -72,7 +67,6 @@ namespace Game_Test
         public virtual void LoadContent()
         {
             player.LoadContent(32, 32);
-            enemy.LoadContent(500, 500);
 
             foreach (var layer in Layers)
             {
@@ -83,7 +77,6 @@ namespace Game_Test
         public virtual void UnloadContent()
         {
             player.UnloadContent();
-            enemy.UnloadContent();
 
             foreach (var layer in Layers)
             {
@@ -94,7 +87,6 @@ namespace Game_Test
         public virtual void Update(GameTime gameTime)
         {
             player.Update(gameTime);
-            enemy.Update(gameTime);
             //foreach (var layer in Layers)
             //{
                 //layer.Update(gameTime);
@@ -113,7 +105,6 @@ namespace Game_Test
                             Layers[l].DrawTile(spriteBatch, x, y);
                         if (Layers[l].Layername == "Player" && PlayerActive == false)
                         {
-                            enemy.Draw(spriteBatch);
                             player.Draw(spriteBatch);
                             PlayerActive = true;
                         }
@@ -144,18 +135,7 @@ namespace Game_Test
             {
                 if (Layers[l].Layername == Name)
                 {
-                    player.SendLayer(Layers[l], number, NumberLayers - layer_player_num);
-                }
-            }
-        }
-
-        public void GetLayerE(string Name, int number, Testenemy enemy)
-        {
-            for (int l = 0; l < Layers.Count; l++)
-            {
-                if (Layers[l].Layername == Name)
-                {
-                    enemy.SendLayer(Layers[l], number, NumberLayers - layer_player_num);
+                    player.SendLayer(Layers[l], number);
                 }
             }
         }

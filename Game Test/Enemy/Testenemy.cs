@@ -67,7 +67,7 @@ namespace Game_Test
             Slash = 6,
             Shoot = 13
         };
-        ActionState State;
+        ActionState State, PlayerState;
 
         private enum LookDirection
         {
@@ -76,7 +76,7 @@ namespace Game_Test
             Down,
             Right
         };
-        LookDirection lookDirection;
+        LookDirection lookDirection, PlayerLookDirection;
 
         private SprSheetImage sprite;
 
@@ -90,6 +90,7 @@ namespace Game_Test
             //TODO add playerstats
             //this.player = player;
             State = ActionState.None;
+            PlayerState = ActionState.None;
             lookDirection = LookDirection.Down;
             sprSheetY = Action.WalkDown;
             sprSheetX = 0;
@@ -238,6 +239,7 @@ namespace Game_Test
 
             bool CollisionY = CheckCollision(new Vector2(sprite.Position.X + dirX, sprite.Position.Y + dirY), sprite.Position, (int)direction.Y),
             CollisionX = CheckCollision(new Vector2(sprite.Position.X + dirX, sprite.Position.Y + dirY), sprite.Position, (int)direction.X + 1);
+            
 
             //change sprSheetX and sprSheetY based on previous movement direction
             if (direction.Y == -1)//up
@@ -362,9 +364,9 @@ namespace Game_Test
             }
         }
 
-        public void SendLayer(Layer layer, int number, int numlayers)
+        public void SendLayer(Layer[] layer)
         {
-            this.layer[number] = layer;
+            this.layer = layer;
         }
 
         public void SetLayernumber(int number)
