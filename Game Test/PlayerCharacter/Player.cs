@@ -40,6 +40,7 @@ namespace Game_Test
         Movestate sprSheetY;
 
         private SprSheetImage sprite;
+        private ArduinoRead reader;
 
         public Player()
         {
@@ -57,6 +58,12 @@ namespace Game_Test
             sprite = new SprSheetImage("OptionsScreen/light");
             
             SpeedScale = 1.5f;
+
+            ArduinoPortDetection Detect = new ArduinoPortDetection();
+            if(Detect.portFound)
+            {
+                reader = new ArduinoRead(Detect.ReturnPorts()[0]);
+            }    
         }
 
         public void LoadContent(int X, int Y)
@@ -72,7 +79,7 @@ namespace Game_Test
         public void Update(GameTime gameTime)
         {
             //Check if keys are pressed
-            if (InputManager.Instance.KeyDown(Keys.W))
+            if (InputManager.Instance.KeyDown(Keys.W))// || reader.X() > 1)
             {
                 moveActive = true;
                 direction = "up";
