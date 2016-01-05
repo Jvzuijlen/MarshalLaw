@@ -299,23 +299,29 @@ namespace Game_Test
         private bool CheckCollision(Vector2 PositionNew, Vector2 PositionOld, int direction)
         {
             float tilescale_x = GameSettings.Instance.Tilescale.X, tilescale_y = GameSettings.Instance.Tilescale.Y;
-            
+
             int x = (int)((PositionOld.X + tilescale_x) / tilescale_x),
             y = (int)((PositionOld.Y + tilescale_y) / tilescale_y);
+    
+            int temp1 = 1, temp2 = 1;
 
             switch (direction)
             {
                 case -1://up
                     y--;
+                    temp1 = 2;
                     break;
                 case 1://down
                     y++;
+                    temp1 = 2;
                     break;
                 case 0://left
                     x--;
+                    temp2 = 2;
                     break;
                 case 2://right
                     x++;
+                    temp2 = 2;
                     break;
             }
 
@@ -323,16 +329,23 @@ namespace Game_Test
 
             int TileID;
             
-            TileID = layer[0].getTileID(x, y);
-            Rectangle rect;
-            if (TileID != 0)
+            for (int i = 0; i < temp2; i++)
             {
-                rect = new Rectangle(x * (int)tilescale_x, y * (int)tilescale_y, (int)tilescale_x, (int)tilescale_y);
-                if (rect.Intersects(playerRect))
+                for (int j = 0; j < temp1; j++)
                 {
-                    return true;
+                    TileID = layer[0].getTileID(x + j, y + i);
+                    Rectangle rect;
+                    if (TileID != 0)
+                    {
+                        rect = new Rectangle((x + j) * (int)tilescale_x, (y + i) * (int)tilescale_y, (int)tilescale_x, (int)tilescale_y);
+                        if (rect.Intersects(playerRect))
+                        {
+                            return true;
+                        }
+                    }
                 }
             }
+
             return false;
         }
 
