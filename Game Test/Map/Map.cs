@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,9 @@ namespace Game_Test
         List<Enemy> enemies;
 
         private bool PlayerActive;
+
+        Texture2D grid;
+        ContentManager content;
 
         //Property's
         public Vector2 mapDimensions { get; private set; }
@@ -79,6 +83,14 @@ namespace Game_Test
             {
                 layer.LoadContent();
             }
+
+
+
+            content = new ContentManager(ScreenManager.Instance.Content.ServiceProvider, "Content");
+
+            grid = content.Load<Texture2D>("Spritesheets/grid");
+            //grid.LoadContent(0, 0, false, new Vector2(GameSettings.Instance.Dimensions.X / 1920, GameSettings.Instance.Dimensions.Y / 1080));
+            //grid.SetScale(new Vector2(GameSettings.Instance.Dimensions.X / 1920, GameSettings.Instance.Dimensions.Y / 1080));
         }
 
         public virtual void UnloadContent()
@@ -92,6 +104,8 @@ namespace Game_Test
             {
                 layer.UnloadContent();
             }
+
+            content.Unload();
         }
 
         public virtual void Update(GameTime gameTime)
@@ -111,12 +125,14 @@ namespace Game_Test
 
             //foreach (var layer in Layers)
             //{
-                //layer.Update(gameTime);
+            //layer.Update(gameTime);
             //}
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
+            spriteBatch.Draw(grid, new Vector2(0, 0), new Rectangle(0, 0, 1920, 1088), Color.White, 0f, Vector2.Zero, new Vector2((int)GameSettings.Instance.Dimensions.X / 1920, (int)GameSettings.Instance.Dimensions.Y / 1080), SpriteEffects.None, 1.0f);
+
             for (int y = 0; y < mapDimensions.Y; y++)
             {
                 for (int x = 0; x < mapDimensions.X; x++)
@@ -139,6 +155,7 @@ namespace Game_Test
             }
             //player.Draw(spriteBatch);
             PlayerActive = false;
+
         }
 
         public void DrawBackground(SpriteBatch spriteBatch)
@@ -160,7 +177,7 @@ namespace Game_Test
             for (int l = 0; l < Layers.Count; l++)
             {
                 if (Layers[l].Layername == Name)
-                {
+                { 
                     player.SendLayer(Layers[l], number);
                     foreach (Enemy enemy in enemies)
                         enemy.SendLayer(Layers[l], number);

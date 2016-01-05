@@ -26,6 +26,8 @@ namespace Game_Test
 
         //Collisionlayer and Tree layer(s)
         Layer[] layer;
+
+        Image boundingBox;
         
         private PlayerEnums.Action sprSheetY { get; set; }
         public PlayerEnums.ActionState State { get; set; }
@@ -65,12 +67,16 @@ namespace Game_Test
         {
             sprite.LoadContent(X, Y, false, new Vector2(64 / (GameSettings.Instance.Tilescale.X * 2), 64 / (GameSettings.Instance.Tilescale.Y * 2)));
             weapon.LoadContent(X, Y);
+
+            boundingBox = new Image("Images/green");
+            boundingBox.LoadContent(X + (0.5f * GameSettings.Instance.Tilescale.X), Y + GameSettings.Instance.Tilescale.Y, false, new Vector2(GameSettings.Instance.Tilescale.X, GameSettings.Instance.Tilescale.Y));
         }
 
         public void UnloadContent()
         {
             sprite.UnloadContent();
             weapon.UnloadContent();
+            boundingBox.UnloadContent();
         }
 
         public void Update(GameTime gameTime)
@@ -189,8 +195,10 @@ namespace Game_Test
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            boundingBox.Draw(spriteBatch);
             sprite.Draw(spriteBatch);
             weapon.Draw(spriteBatch);
+            
         }
 
         private void Attack(GameTime gameTime)
@@ -241,8 +249,8 @@ namespace Game_Test
             dirX *= SpeedScale * (32 / GameSettings.Instance.Tilescale.X);
             dirY *= SpeedScale * (32 / GameSettings.Instance.Tilescale.X);
 
-            bool CollisionY = CheckCollision(new Vector2(sprite.Position.X + dirX, sprite.Position.Y + dirY), sprite.Position, (int)direction.Y),
-            CollisionX = CheckCollision(new Vector2(sprite.Position.X + dirX, sprite.Position.Y + dirY), sprite.Position, (int)direction.X + 1);
+            bool CollisionY = CheckCollision(new Vector2(sprite.Position.X + dirX, sprite.Position.Y + dirY), sprite.Position, (int)direction.Y);
+            bool CollisionX = CheckCollision(new Vector2(sprite.Position.X + dirX, sprite.Position.Y + dirY), sprite.Position, (int)direction.X + 1);
             
             //change sprSheetX and sprSheetY based on previous movement direction
             if (direction.Y == -1)//up
