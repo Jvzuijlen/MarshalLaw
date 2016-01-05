@@ -164,6 +164,8 @@ namespace Game_Test
                     {
                             Layers[l].DrawTile(spriteBatch, x, y);
                     }
+
+                    Layers[11].DrawTile(spriteBatch, x, y);
                 }
             }
 
