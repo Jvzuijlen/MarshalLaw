@@ -26,6 +26,8 @@ namespace Game_Test
 
         //Collisionlayer and Tree layer(s)
         Layer[] layer;
+
+        Image boundingBox;
         
         private PlayerEnums.Action sprSheetY { get; set; }
         public PlayerEnums.ActionState State { get; set; }
@@ -65,12 +67,16 @@ namespace Game_Test
         {
             sprite.LoadContent(X, Y, false, new Vector2(64 / (GameSettings.Instance.Tilescale.X * 2), 64 / (GameSettings.Instance.Tilescale.Y * 2)));
             weapon.LoadContent(X, Y);
+
+            boundingBox = new Image("Images/green");
+            boundingBox.LoadContent(X + (0.5f * GameSettings.Instance.Tilescale.X), Y + GameSettings.Instance.Tilescale.Y, false, new Vector2(GameSettings.Instance.Tilescale.X, GameSettings.Instance.Tilescale.Y));
         }
 
         public void UnloadContent()
         {
             sprite.UnloadContent();
             weapon.UnloadContent();
+            boundingBox.UnloadContent();
         }
 
         public void Update(GameTime gameTime)
@@ -189,8 +195,10 @@ namespace Game_Test
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            boundingBox.Draw(spriteBatch);
             sprite.Draw(spriteBatch);
             weapon.Draw(spriteBatch);
+            
         }
 
         private void Attack(GameTime gameTime)
