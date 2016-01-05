@@ -84,8 +84,6 @@ namespace Game_Test
                 layer.LoadContent();
             }
 
-
-
             content = new ContentManager(ScreenManager.Instance.Content.ServiceProvider, "Content");
 
             grid = content.Load<Texture2D>("Spritesheets/grid");
@@ -131,8 +129,6 @@ namespace Game_Test
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(grid, new Vector2(0, 0), new Rectangle(0, 0, 1920, 1088), Color.White, 0f, Vector2.Zero, new Vector2((int)GameSettings.Instance.Dimensions.X / 1920, (int)GameSettings.Instance.Dimensions.Y / 1080), SpriteEffects.None, 1.0f);
-
             for (int y = 0; y < mapDimensions.Y; y++)
             {
                 for (int x = 0; x < mapDimensions.X; x++)
@@ -170,6 +166,17 @@ namespace Game_Test
                     }
                 }
             }
+
+            spriteBatch.Draw(
+                texture: grid, 
+                position: new Vector2(0, 0), 
+                sourceRectangle: new Rectangle(0, 0, 1920, 1088), 
+                color: Color.White, 
+                rotation: 0f, 
+                origin: Vector2.Zero, 
+                scale: new Vector2(24f / 32f, 24f / 32f), 
+                effects: SpriteEffects.None, 
+                layerDepth: 0.0f);
         }
 
         public void GetLayer(string Name, int number)
