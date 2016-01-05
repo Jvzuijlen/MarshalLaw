@@ -13,214 +13,348 @@ namespace Game_Test
     {
         //Playerstats player;
 
+        private Vector2 EnemyPosition;
+
         private float SpeedScale; //Scales up the movementspeed
 
         private float sprSheetX;
-        private int MaxSheetX;
-
-        private float mHor, mVer;
-        private string direction;
-        private bool moveActive;
+        
+        private Vector2 direction;
 
         //Slow down animation speed
-        private const float Interval = 0.25f;
+        private float Interval = 0.125f;
 
         //Collisionlayer and Tree layer(s)
         Layer[] layer;
 
-        private enum Movestate
-        {
-            none,
-            up = 8,
-            left = 9,
-            down = 10,
-            right = 11
-        };
+        Image boundingBox;
+        
+        private PlayerEnums.Action sprSheetY { get; set; }
+        public PlayerEnums.ActionState State { get; set; }
+        public PlayerEnums.ActionState EnemyState { get; set; }
+        public PlayerEnums.LookDirection lookDirection { get; set; }
+        public PlayerEnums.LookDirection EnemyLookDirection { get; set; }
 
-        Movestate sprSheetY;
-
+        private List<Enemy> enemies = new List<Enemy>();
+        
         private SprSheetImage sprite;
-        private ArduinoRead reader;
+
+        private Weapon weapon;
+
+        private bool knockback;
+        private double knockbacktimer;
+        private Vector2 knockbackdirection;
 
         public Player()
         {
             //TODO add playerstats
             //this.player = player;
-
-            sprSheetY = Movestate.down;
+            State = PlayerEnums.ActionState.None;
+            lookDirection = PlayerEnums.LookDirection.Down;
+            sprSheetY = PlayerEnums.Action.None;
             sprSheetX = 0;
-            MaxSheetX = 6;
-
-            mHor = 0.0f;
-            mVer = 0.0f;
-            direction = "down";
             
-            sprite = new SprSheetImage("OptionsScreen/light");
+            direction = new Vector2(0, 1);
+            
+            sprite = new SprSheetImage("Character/light");
             
             SpeedScale = 1.5f;
 
-            ArduinoPortDetection Detect = new ArduinoPortDetection();
-            if(Detect.portFound)
-            {
-                reader = new ArduinoRead(Detect.ReturnPorts()[0]);
-            }    
+            weapon = new Weapon();
         }
 
         public void LoadContent(int X, int Y)
         {
             sprite.LoadContent(X, Y, false, new Vector2(64 / (GameSettings.Instance.Tilescale.X * 2), 64 / (GameSettings.Instance.Tilescale.Y * 2)));
+            weapon.LoadContent(X, Y);
+
+            boundingBox = new Image("Images/green");
+            boundingBox.LoadContent(X + (0.5f * GameSettings.Instance.Tilescale.X), Y + GameSettings.Instance.Tilescale.Y, false, new Vector2(GameSettings.Instance.Tilescale.X, GameSettings.Instance.Tilescale.Y));
         }
 
         public void UnloadContent()
         {
             sprite.UnloadContent();
+            weapon.UnloadContent();
+            boundingBox.UnloadContent();
         }
 
         public void Update(GameTime gameTime)
         {
+            Vector2 temp;
+            foreach (Enemy enemy in enemies)
+            {
+                temp = CheckHit();
+                if (temp.X == 1)
+                {
+                    //TODO
+                    //Lose health
+                    knockback = true;
+                    knockbacktimer = 0.2f;
+                    knockbackdirection.X = 0;
+                    sprSheetY = PlayerEnums.Action.Hit;
+                    sprSheetX = 4;
+                    knockbackdirection = temp;
+
+                    return;
+                }
+            }
+
+            #region Knockback
+            if (knockback)
+            {
+                SpeedScale = 2.0f;
+                switch ((int)knockbackdirection.Y)
+                {
+                    case 1:
+                        Move(direction = new Vector2(0, -1), gameTime);
+                        break;
+                    case 2:
+                        Move(direction = new Vector2(-1, 0), gameTime);
+                        break;
+                    case 3:
+                        Move(direction = new Vector2(0, 1), gameTime);
+                        break;
+                    case 4:
+                        Move(direction = new Vector2(1, 0), gameTime);
+                        break;
+                }
+
+                knockbacktimer -= gameTime.ElapsedGameTime.TotalSeconds;
+
+                if (knockbacktimer <= 0)
+                {
+                    knockback = false;
+                    knockbackdirection.Y = 0;
+                }
+                else
+                {
+                    SetAnimationFrame();
+                    sprite.Update(gameTime);
+                    weapon.Update(gameTime);
+                    return;
+                }
+            }
+            #endregion
+
             //Check if keys are pressed
-            if (InputManager.Instance.KeyDown(Keys.W))// || reader.X() > 1)
+            if (InputManager.Instance.KeyDown(Keys.Space))
             {
-                moveActive = true;
-                direction = "up";
-                mVer = -1;
+                if (State != PlayerEnums.ActionState.Thrust)
+                    State = PlayerEnums.ActionState.Thrust;
             }
-            if (InputManager.Instance.KeyDown(Keys.S))
+            #region Movement
+            else
             {
-                moveActive = true;
-                direction = "down";
-                mVer = 1;
+                if (InputManager.Instance.KeyDown(Keys.W))
+                {
+                    State = PlayerEnums.ActionState.Walk;
+                    lookDirection = PlayerEnums.LookDirection.Up;
+                    direction.Y = -1;
+                }
+                if (InputManager.Instance.KeyDown(Keys.S))
+                {
+                    State = PlayerEnums.ActionState.Walk;
+                    lookDirection = PlayerEnums.LookDirection.Down;
+                    direction.Y = 1;
+                }
+                if (InputManager.Instance.KeyDown(Keys.A))
+                {
+                    State = PlayerEnums.ActionState.Walk;
+                    lookDirection = PlayerEnums.LookDirection.left;
+                    direction.X = -1;
+                }
+                if (InputManager.Instance.KeyDown(Keys.D))
+                {
+                    State = PlayerEnums.ActionState.Walk;
+                    lookDirection = PlayerEnums.LookDirection.Right;
+                    direction.X = 1;
+                }
             }
-            if (InputManager.Instance.KeyDown(Keys.A))
-            {
-                moveActive = true;
-                direction = "left";
-                mHor = -1;
-            }
-            if (InputManager.Instance.KeyDown(Keys.D))
-            {
-                moveActive = true;
-                direction = "right";
-                mHor = 1;
-            }
+            #endregion
 
-            //Check if keys are released
-            if (InputManager.Instance.KeyReleased(Keys.W) || InputManager.Instance.KeyReleased(Keys.A) || InputManager.Instance.KeyReleased(Keys.S) || InputManager.Instance.KeyReleased(Keys.D))
+            #region Keyreleased
+            if ((InputManager.Instance.KeyReleased(Keys.W) || InputManager.Instance.KeyReleased(Keys.A) || InputManager.Instance.KeyReleased(Keys.S) || InputManager.Instance.KeyReleased(Keys.D)) && InputManager.Instance.KeyDown(Keys.Space) == false || InputManager.Instance.KeyReleased(Keys.Space))
             {
-                moveActive = false;
-                sprSheetY = Movestate.none;
+                State = PlayerEnums.ActionState.None;
+                sprSheetY = PlayerEnums.Action.None;
+                sprSheetX = 0;
                 sprite.SprSheetX = 0;
-                mHor = 0;
-                mVer = 0;
+                direction = new Vector2(0, 0);
             }
-            else if (moveActive)
-                Move(mHor, mVer, direction, gameTime);
+            #endregion
+            else if (State == PlayerEnums.ActionState.Walk)
+                Move(direction, gameTime);
+            else if (State == PlayerEnums.ActionState.Thrust)
+                Attack(gameTime);
 
+            SetAnimationFrame();
             sprite.Update(gameTime);
+            weapon.Update(gameTime);
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            boundingBox.Draw(spriteBatch);
             sprite.Draw(spriteBatch);
+            weapon.Draw(spriteBatch);
+            
         }
 
-        private void Move(float dirX, float dirY, string direction, GameTime gameTime)
+        private void Attack(GameTime gameTime)
         {
+            switch (lookDirection)
+            {
+                case PlayerEnums.LookDirection.Up:
+                    if (sprSheetY == PlayerEnums.Action.SpearUp)
+                        UpdateAnimationFrame(gameTime);
+                    else
+                    {
+                        sprSheetY = PlayerEnums.Action.SpearUp;
+                    }
+                    break;
+                case PlayerEnums.LookDirection.left:
+                    if (sprSheetY == PlayerEnums.Action.SpearLeft)
+                        UpdateAnimationFrame(gameTime);
+                    else
+                    {
+                        sprSheetY = PlayerEnums.Action.SpearLeft;
+                    }
+                    break;
+                case PlayerEnums.LookDirection.Down:
+                    if (sprSheetY == PlayerEnums.Action.SpearDown)
+                        UpdateAnimationFrame(gameTime);
+                    else
+                    {
+                        sprSheetY = PlayerEnums.Action.SpearDown;
+                    }
+                    break;
+                case PlayerEnums.LookDirection.Right:
+                    if (sprSheetY == PlayerEnums.Action.SpearRight)
+                        UpdateAnimationFrame(gameTime);
+                    else
+                    {
+                        sprSheetY = PlayerEnums.Action.SpearRight;
+                    }
+                    break;
+            }
+        }
+
+        private void Move(Vector2 direction, GameTime gameTime)
+        {
+            float dirX = direction.X,
+            dirY = direction.Y;
+
             //Scale the movement
             dirX *= SpeedScale * (32 / GameSettings.Instance.Tilescale.X);
             dirY *= SpeedScale * (32 / GameSettings.Instance.Tilescale.X);
 
-            //change sprSheetX and sprSheetY based on previous movement direction
-            switch (direction)
-            {
-                case "up":
-                    if (sprSheetY == Movestate.up)
-                        sprSheetX += (float)gameTime.ElapsedGameTime.TotalMilliseconds / gameTime.ElapsedGameTime.Milliseconds * Interval;
-                    else
-                    { 
-                        sprSheetY = Movestate.up;
-                        sprSheetX = 0;
-                    }
-                    break;
-                case "down":
-                    if (sprSheetY == Movestate.down)
-                        sprSheetX += (float)gameTime.ElapsedGameTime.TotalMilliseconds / gameTime.ElapsedGameTime.Milliseconds * Interval;
-                    else
-                    {
-                        sprSheetY = Movestate.down;
-                        sprSheetX = 0;
-                    }
-                    break;
-                case "left":
-                    if (sprSheetY == Movestate.left)
-                        sprSheetX += (float)gameTime.ElapsedGameTime.TotalMilliseconds / gameTime.ElapsedGameTime.Milliseconds * Interval;
-                    else
-                    {
-                        sprSheetY = Movestate.left;
-                        sprSheetX = 0;
-                    }
-                    break;
-                case "right":
-                    if (sprSheetY == Movestate.right)
-                        sprSheetX += (float)gameTime.ElapsedGameTime.TotalMilliseconds / gameTime.ElapsedGameTime.Milliseconds * Interval;
-                    else
-                    {
-                        sprSheetY = Movestate.right;
-                        sprSheetX = 0;
-                    }
-                    break;
-            }
-
-            //Reset X at the final animation frame
-            if (sprSheetX > MaxSheetX)
-                sprSheetX = 0;
+            bool CollisionY = CheckCollision(new Vector2(sprite.Position.X + dirX, sprite.Position.Y + dirY), sprite.Position, (int)direction.Y);
+            bool CollisionX = CheckCollision(new Vector2(sprite.Position.X + dirX, sprite.Position.Y + dirY), sprite.Position, (int)direction.X + 1);
             
-            if (!(
-                CheckCollision(new Vector2(sprite.Position.X + dirX, sprite.Position.Y + dirY))
-                ))
-
-            /*if (sprite.Position.X + dirX >= 0 &&
-                sprite.Position.X + dirX <= GameSettings.Instance.Dimensions.X - 64 &&
-                sprite.Position.Y + dirY >= 0 &&
-                sprite.Position.Y + dirY <= GameSettings.Instance.Dimensions.Y - 64)*/
+            //change sprSheetX and sprSheetY based on previous movement direction
+            if (direction.Y == -1)//up
             {
-                for (int l = 1; l < layer.Length; l++)
-                    ChangeAlpha(new Vector2(sprite.Position.X + dirX, sprite.Position.Y + dirY), l);
-                sprite.Position = new Vector2(sprite.Position.X + dirX, sprite.Position.Y + dirY); //Set new position
+                if (sprSheetY == PlayerEnums.Action.WalkUp)
+                    UpdateAnimationFrame(gameTime);
+                else if (direction.X == 0)
+                {
+                    sprSheetY = PlayerEnums.Action.WalkUp;
+                }
+                if (CollisionY)
+                    dirY = 0;
             }
-
-
-            sprite.SprSheetX = (int)sprSheetX;
-            sprite.SprSheetY = (int)sprSheetY;
+            if (direction.Y == 1)//down
+            {
+                if (sprSheetY == PlayerEnums.Action.WalkDown)
+                    UpdateAnimationFrame(gameTime);
+                else if(direction.X == 0)
+                {
+                    sprSheetY = PlayerEnums.Action.WalkDown;
+                }
+                if (CollisionY)
+                    dirY = 0;
+            }
+            if (direction.X == -1)//left
+            {
+                if (sprSheetY == PlayerEnums.Action.WalkLeft)
+                    UpdateAnimationFrame(gameTime);
+                else
+                {
+                    sprSheetY = PlayerEnums.Action.WalkLeft;
+                }
+                if (CollisionX)
+                    dirX = 0;
+            }
+            if (direction.X == 1)//right
+            {
+                if (sprSheetY == PlayerEnums.Action.WalkRight)
+                    UpdateAnimationFrame(gameTime);
+                else
+                {
+                    sprSheetY = PlayerEnums.Action.WalkRight;
+                }
+                if (CollisionX)
+                    dirX = 0;
+            }
+            
+            for (int l = 1; l < layer.Length; l++)
+                ChangeAlpha(new Vector2(sprite.Position.X + dirX, sprite.Position.Y + dirY), l);
+            sprite.Position = new Vector2(sprite.Position.X + dirX, sprite.Position.Y + dirY); //Set new position
+            boundingBox.Position = new Vector2(boundingBox.Position.X + dirX, boundingBox.Position.Y + dirY);
+            weapon.setPosition(new Vector2(weapon.getPosition().X + dirX, weapon.getPosition().Y + dirY)); //Move weapon with you
         }
 
-        private bool CheckCollision(Vector2 position)
+        private bool CheckCollision(Vector2 PositionNew, Vector2 PositionOld, int direction)
         {
             float tilescale_x = GameSettings.Instance.Tilescale.X, tilescale_y = GameSettings.Instance.Tilescale.Y;
 
-            int x1 = (int)(position.X / tilescale_x),
-            y1 = (int)(position.Y / tilescale_y),
-            x2 = (int)((position.X + 2 * tilescale_x) / tilescale_x),
-            y2 = (int)((position.Y + 2 * tilescale_y) / tilescale_y);
+            int x = (int)((PositionOld.X + tilescale_x) / tilescale_x),
+            y = (int)((PositionOld.Y + tilescale_y) / tilescale_y);
+    
+            int temp1 = 1, temp2 = 1;
 
-            Rectangle playerRect = new Rectangle(new Point((int)(position.X) + 12, (int)(position.Y + tilescale_y)), new Point((int)tilescale_x, (int)(tilescale_y)));
+            switch (direction)
+            {
+                case -1://up
+                    y--;
+                    temp1 = 2;
+                    break;
+                case 1://down
+                    y++;
+                    temp1 = 2;
+                    break;
+                case 0://left
+                    x--;
+                    temp2 = 2;
+                    break;
+                case 2://right
+                    x++;
+                    temp2 = 2;
+                    break;
+            }
+
+            Rectangle playerRect = new Rectangle(new Point((int)(PositionNew.X + 0.5 * tilescale_x), (int)(PositionNew.Y + tilescale_y)), new Point((int)tilescale_x, (int)(tilescale_y)));
 
             int TileID;
-
-            for (int i = y1; i < y2 + 1; i++)
+            
+            for (int i = 0; i < temp2; i++)
             {
-                for (int j = x1; j < x2 + 1; j++)
+                for (int j = 0; j < temp1; j++)
                 {
-                    TileID = layer[0].getTileID(j, i);
+                    TileID = layer[0].getTileID(x + j, y + i);
                     Rectangle rect;
                     if (TileID != 0)
                     {
-                        rect = new Rectangle(j * (int)tilescale_x, i * (int)tilescale_y, (int)tilescale_x, (int)tilescale_y);
+                        rect = new Rectangle((x + j) * (int)tilescale_x, (y + i) * (int)tilescale_y, (int)tilescale_x, (int)tilescale_y);
                         if (rect.Intersects(playerRect))
+                        {
                             return true;
+                        }
                     }
                 }
             }
+
             return false;
         }
 
@@ -255,7 +389,7 @@ namespace Game_Test
             }
         }
 
-        public void SendLayer(Layer layer, int number, int numlayers)
+        public void SendLayer(Layer layer, int number)
         {
             this.layer[number] = layer;
         }
@@ -263,6 +397,81 @@ namespace Game_Test
         public void SetLayernumber(int number)
         {
             layer = new Layer[number];
+        }
+
+        private void UpdateAnimationFrame(GameTime gameTime)
+        {
+            sprSheetX += (float)gameTime.ElapsedGameTime.TotalMilliseconds / gameTime.ElapsedGameTime.Milliseconds * Interval;
+            
+            //Reset X at the final animation frame
+            if ((int)sprSheetX >= (int)State)
+                sprSheetX = 0;
+        }
+        
+        private void SetAnimationFrame()
+        {
+            sprite.SprSheetX = (int)sprSheetX;
+            weapon.SprSheetX = (int)sprSheetX;
+
+            if (sprSheetY != PlayerEnums.Action.None)
+            {
+                sprite.SprSheetY = (int)sprSheetY;
+                weapon.SprSheetY = (int)sprSheetY;
+            }
+        }
+
+        public Vector2 GetPosition()
+        {
+            return sprite.Position;
+        }
+
+        private Vector2 CheckHit()
+        {
+            Vector2 returnvalue = new Vector2(0, 0);
+            Rectangle Playerrect = new Rectangle(new Point((int)(sprite.Position.X + 0.5 * GameSettings.Instance.Tilescale.X), (int)(sprite.Position.Y + GameSettings.Instance.Tilescale.Y)), new Point((int)GameSettings.Instance.Tilescale.X, (int)(GameSettings.Instance.Tilescale.Y))),
+                Enemyrect = new Rectangle((int)(EnemyPosition.X + 0.5 * GameSettings.Instance.Tilescale.X), (int)(EnemyPosition.Y + GameSettings.Instance.Tilescale.Y), (int)GameSettings.Instance.Tilescale.X, (int)(GameSettings.Instance.Tilescale.Y));
+            if (EnemyState == PlayerEnums.ActionState.Thrust)
+            {
+                switch (EnemyLookDirection)
+                {
+                    case PlayerEnums.LookDirection.Up:
+                        Enemyrect.X = (int)GameSettings.Instance.Tilescale.X / 4;
+                        Enemyrect.Height = 2 * (int)GameSettings.Instance.Tilescale.Y / 4;
+                        if (Enemyrect.Intersects(Playerrect))
+                            returnvalue = new Vector2(1, 1);
+                        break;
+                    case PlayerEnums.LookDirection.left:
+                        Enemyrect.Y = (int)GameSettings.Instance.Tilescale.Y / 4;
+                        Enemyrect.Width = 2 * (int)GameSettings.Instance.Tilescale.X / 4;
+                        if (Enemyrect.Intersects(Playerrect))
+                            returnvalue = new Vector2(1, 2);
+                        break;
+                    case PlayerEnums.LookDirection.Down:
+                        Enemyrect.Height = 2 * (int)GameSettings.Instance.Tilescale.Y / 4;
+                        Enemyrect.Y = (int)(EnemyPosition.Y + (2 * GameSettings.Instance.Tilescale.Y - 0.5 * Playerrect.Height));
+                        if (Enemyrect.Intersects(Playerrect))
+                            returnvalue = new Vector2(1, 3);
+                        break;
+                    case PlayerEnums.LookDirection.Right:
+                        Enemyrect.Width = 2 * (int)GameSettings.Instance.Tilescale.X / 4;
+                        Enemyrect.X = (int)(EnemyPosition.X + (1.5 * GameSettings.Instance.Tilescale.X - 0.5 * Playerrect.Width));
+                        if (Enemyrect.Intersects(Playerrect))
+                            returnvalue = new Vector2(1, 4);
+                        break;
+                }
+            }
+            return returnvalue;
+        }
+
+        public void SendPosition(Vector2 position)
+        {
+            EnemyPosition = position;
+        }
+
+        public void SetEnemies(List<Enemy> enemies)
+        {
+            this.enemies.Clear();
+            this.enemies = enemies;            
         }
     }
 }
