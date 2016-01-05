@@ -12,6 +12,7 @@ namespace Game_Test
     {
         Control1 control;
         CharCreation_Members charCreatin_member = new CharCreation_Members();
+
         static int numFields = 3;
 
         Control1_Field[] fields = new Control1_Field[numFields];

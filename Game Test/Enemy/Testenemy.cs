@@ -28,6 +28,8 @@ namespace Game_Test
         //Collisionlayer and Tree layer(s)
         Layer[] layer;
 
+
+
         private PlayerEnums.Action sprSheetY { get; set; }
         public PlayerEnums.ActionState State { get; set; }
         public PlayerEnums.ActionState PlayerState { get; set; }

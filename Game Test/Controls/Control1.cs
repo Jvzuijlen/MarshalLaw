@@ -11,11 +11,11 @@ namespace Game_Test
     public class Control1
     {
         Image background, field_active, mainbuttonup, mainbuttonmiddle, mainbuttondown, mainbuttonup_pressed, mainbuttondown_pressed;
-        cText buttonleft, buttonright;
+        cText buttonleft, buttonright, buttonback, buttoncontinue;
 
         public enum selection
         {
-            buttonup, buttonmiddle, buttondown, fieldactive, arrow_left, arrow_right, buttonleft, buttonright
+            buttonup, buttonmiddle, buttondown, fieldactive, arrow_left, arrow_right, buttonleft, buttonright, buttonback, buttoncontinue
         };
 
         int numberControlFields;
@@ -37,8 +37,10 @@ namespace Game_Test
             mainbuttondown = new Image("OptionsScreen/buttondown_selected");
             mainbuttonup_pressed = new Image("OptionsScreen/buttonup_selected_pressed");
             mainbuttondown_pressed = new Image("OptionsScreen/buttondown_selected_pressed");
-            buttonleft = new cText("Main Menu", "DryGood");
+            buttonleft = new cText("Reset", "DryGood");
             buttonright = new cText("Apply Changes", "DryGood");
+            buttonback = new cText("Back", "DryGood");
+            buttoncontinue = new cText("Continue", "DryGood");
             #endregion
 
             this.numberControlFields = numFields;
@@ -104,14 +106,20 @@ namespace Game_Test
 
             buttonleft.LoadContent();
             buttonright.LoadContent();
+            buttonback.LoadContent();
+            buttoncontinue.LoadContent();
 
             buttonleft.Scale = textScale;
             buttonright.Scale = textScale;
+            buttonback.Scale = textScale;
+            buttoncontinue.Scale = textScale;
 
             float x_scale = (GameSettings.Instance.Dimensions.X / 1920);
 
             buttonleft.Position = new Vector2(610 * x_scale, 800 * x_scale);
             buttonright.Position = new Vector2(1360 * x_scale, 800 * x_scale);
+            buttonback.Position = new Vector2(610 * x_scale, 1000 * x_scale);
+            buttoncontinue.Position = new Vector2(1360 * x_scale, 1000 * x_scale);
 
 
         }
@@ -128,6 +136,8 @@ namespace Game_Test
 
             buttonleft.UnloadContent();
             buttonright.UnloadContent();
+            buttonback.UnloadContent();
+            buttoncontinue.UnloadContent();
 
         }
 
@@ -300,6 +310,8 @@ namespace Game_Test
 
             buttonleft.DrawString(spriteBatch);
             buttonright.DrawString(spriteBatch);
+            buttonback.DrawString(spriteBatch);
+            buttoncontinue.DrawString(spriteBatch);
              
             //mainbuttonup_pressed.Draw(spriteBatch);
             //mainbuttondown_pressed.Draw(spriteBatch);
