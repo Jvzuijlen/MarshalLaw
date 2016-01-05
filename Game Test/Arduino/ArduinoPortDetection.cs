@@ -12,7 +12,7 @@ namespace Game_Test
     {
         List<SerialPort> Ports;
         SerialPort currentPort;
-        public bool portFound;
+        public bool portFound { get; set; }
 
         public ArduinoPortDetection()
         {
